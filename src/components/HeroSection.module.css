@@ -1,30 +1,30 @@
-.heroContainer {
-    position: relative;
-    overflow: hidden;
-    background: #000000;
-    height: 600px;
-    /* Standard hero height */
-}
+ .heroContainer {
+     position: relative;
+     overflow: hidden;
+     background: #000000;
+     height: 600px;
+     /* Standard hero height */
+ }
 
-.backgroundImage {
-    position: absolute;
-    inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=1920&h=1080&fit=crop');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.6;
-}
+ .backgroundImage {
+     position: absolute;
+     inset: 0;
+     background-image: url('https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=1920&h=1080&fit=crop');
+     background-size: cover;
+     background-position: center;
+     opacity: 0.6;
+ }
 
-.heroContainer::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
-}
+ .heroContainer::after {
+     content: '';
+     position: absolute;
+     inset: 0;
+     background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+ }
 
-@media (max-width: 640px) {
-    .heroContainer {
-        height: 500px;
-        /* Smaller height for mobile */
-    }
-}
+ @media (max-width: 640px) {
+     .heroContainer {
+         height: 500px;
+         /* Smaller height for mobile */
+     }
+ }

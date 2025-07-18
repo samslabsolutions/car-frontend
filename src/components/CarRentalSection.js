@@ -1,40 +1,87 @@
-import Image from 'next/image';
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 
 const categories = [
-    { name: "Luxury Sedans", count: 92, image: "/car.jpg" },
-    { name: "Supercars", count: 36, image: "/car.jpg" },
-    { name: "SUVs", count: 78, image: "/car.jpg" },
-    { name: "Convertibles", count: 24, image: "/car.jpg" },
-    { name: "Electric", count: 18, image: "/car.jpg" },
-    { name: "Chauffeur", count: 59, image: "/car.jpg" }
+    { name: "HERIT LUXURY", count: 993, image: "/sam.png" },
+    { name: "HEAT SPORTS", count: 219, image: "/sam.png" },
+    { name: "HEAT SUN", count: 734, image: "/sam.png" },
+    { name: "HEAT MONTHLY", count: 1610, image: "/sam.png" },
+    { name: "CHEAP RENT A CAR", count: 361, image: "/sam.png" },
+    { name: "HEAT SUPERCARS", count: 106, image: "/sam.png" },
+    { name: "HEAT CONVERTIBLE", count: 160, image: "/sam.png" },
+    { name: "HEAT ELECTRIC", count: 18, image: "/sam.png" },
+    { name: "CAR WITH DRIVER", count: 59, image: "/sam.png" },
+    { name: "ACHI RENTALS", count: 58, image: "/sam.png", suffix: "Boats" }
 ];
 
 const CarCategories = () => {
-    return (
-        <section className="py-16 px-[5%] bg-gradient-to-br from-blue-50 via-white to-purple-50">
-            <div className="max-w-7xl mx-auto">
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight mb-2">Our Collections</h2>
-                <p className="text-lg text-gray-600 mb-12 max-w-3xl">Curated for the discerning client</p>
+    const [showAll, setShowAll] = useState(false);
+    const visibleCategories = showAll ? categories : categories.slice(0, 6);
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {categories.map((category, index) => (
-                        <div key={index} className="relative h-48 overflow-hidden group">
-                            <div className="absolute inset-0">
-                                <Image
-                                    src={category.image}
-                                    alt={category.name}
-                                    layout="fill"
-                                    objectFit="cover"
-                                    className="transition-transform duration-600 ease-[cubic-bezier(0.25,0.45,0.45,0.95)] group-hover:scale-105"
-                                />
-                            </div>
-                            <div className="relative z-10 h-full flex flex-col justify-end p-6 text-white">
-                                <h3 className="text-xl font-normal mb-1 tracking-wide">{category.name}</h3>
-                                <p className="text-sm font-light opacity-80">{category.count} vehicles</p>
-                            </div>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent group-hover:from-black/90 group-hover:to-black/20 z-[1] transition-all duration-400 ease-in-out"></div>
-                        </div>
-                    ))}
+    // Animation variants for category items
+    const categoryVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
+        exit: { opacity: 0, y: -20, transition: { duration: 0.2, ease: "easeIn" } }
+    };
+
+    return (
+        <section className="py-10 px-4 bg-white">
+            <div className="max-w-6xl mx-auto">
+                {/* Title */}
+                <h2 className="text-3xl md:text-4xl font-bold text-black text-center mb-13">
+                    Browse Car Rentals in{" "}
+                    <span className="text-[#155dfc] animate-pulse">
+                        Dubai
+                    </span>
+                </h2>
+
+                {/* Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <AnimatePresence>
+                        {visibleCategories.map((category, index) => (
+                            <motion.div
+                                key={category.name}
+                                variants={categoryVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                className="flex flex-col items-center"
+                            >
+                                {/* Image with hover effect */}
+                                <div className="relative w-full h-40 mb-2 rounded-md overflow-hidden group">
+                                    <Image
+                                        src={category.image}
+                                        alt={category.name}
+                                        fill
+                                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                    />
+                                </div>
+
+                                {/* Text */}
+                                <div className="text-center w-full">
+                                    <h3 className="text-base font-semibold text-black">
+                                        {category.name}
+                                    </h3>
+                                    <p className="text-sm text-black">
+                                        {category.count} {category.suffix || "Cars"}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </div>
+
+                {/* Button */}
+                <div className="mt-8 text-center">
+                    <button
+                        onClick={() => setShowAll(!showAll)}
+                        className="bg-[#155dfc] hover:bg-[#0f4fd4] text-white px-6 py-2 rounded-lg font-medium text-sm transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+                    >
+                        {showAll ? "See Less" : "See More"}
+                    </button>
                 </div>
             </div>
         </section>
