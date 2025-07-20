@@ -24,7 +24,7 @@ const Footer = () => {
                     {/* Brand Column */}
                     <div className="lg:col-span-1">
                         <h3 className="text-2xl font-bold text-white mb-6">
-                            <span className="text-blue-400">One</span>ClickDrive
+                            <span className="text-blue-400">Sameel</span>
                         </h3>
                         <p className="mb-6 text-gray-400">
                             Dubai's premier luxury car rental platform, offering exclusive vehicles with white-glove service.
@@ -112,7 +112,7 @@ const Footer = () => {
                 {/* Bottom Footer */}
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <div className="text-sm text-gray-500 mb-4 md:mb-0">
-                        © {new Date().getFullYear()} OneClickDrive. All rights reserved.
+                        © {new Date().getFullYear()} Sameel. All rights reserved.
                     </div>
 
                     <div className="flex flex-wrap gap-4">
