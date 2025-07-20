@@ -3,6 +3,14 @@ import HeroSection from '../components/HeroSection';
 import CarCategories from '../components/CarRentalSection';
 import WhyChooseUs from '../components/WhyChooseUs';
 import CarInfoBox from '../components/carInfo';
+import AllBrands from '../components/AllBrands';
+import LocationSelector from '../components/LocationSelector';
+import DocumentsSection from '../components/DocumentsSection';
+import AffordableCar from '../components/AffordableCar';
+import FAQ from '../components/FAQ';
+import Footer from '../components/Footer';
+
+
 
 export default function Home() {
     return (
@@ -12,6 +20,14 @@ export default function Home() {
             <CarCategories />
             <CarInfoBox />
             <WhyChooseUs />
+            <AllBrands />
+            <LocationSelector />
+            <AffordableCar />
+            <DocumentsSection />
+            <FAQ />
+            <Footer />
+
+
 
         </div>
     );
