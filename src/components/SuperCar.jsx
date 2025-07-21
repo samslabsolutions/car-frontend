@@ -77,7 +77,7 @@ const cars = [
     }
 ];
 
-export default function AffordableCar() {
+export default function SportCar() {
     const [currentImageIndex, setCurrentImageIndex] = useState({});
     const containerRef = useRef(null);
 
@@ -103,7 +103,7 @@ export default function AffordableCar() {
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
                     <div>
                         <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-                            Affordable Cars
+                            Sport Cars
                         </h2>
                         <p className="mt-2 text-lg text-gray-600">
                             Discover our handpicked selection of premium vehicles, each verified and ready for your next adventure.

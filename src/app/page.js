@@ -10,6 +10,9 @@ import DocumentsSection from '../components/DocumentsSection';
 import AffordableCar from '../components/AffordableCar';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
+import LuxuryCar from '../components/LuxuryCars'
+import SportCar from '../components/SuperCar'
+import PopularLocations from '../components/PopularLocations'
 
 export default function Home() {
     return (
@@ -24,11 +27,14 @@ export default function Home() {
                 <HeroSection />
                 <CarCategories />
                 <CarInfoBox />
+                <LuxuryCar />
+                <SportCar />
+                <AffordableCar />
                 <WhyChooseUs />
                 <AllBrands />
                 <LocationSelector />
-                <AffordableCar />
                 <DocumentsSection />
+                <PopularLocations />
                 <FAQ />
                 <Footer />
             </div>

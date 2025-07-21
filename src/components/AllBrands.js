@@ -2,14 +2,14 @@
 import Image from 'next/image';
 
 const brands = [
-    { name: 'Mercedes', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'BMW', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Land Rover', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Kia', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Nissan', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Porsche', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Ferrari', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Lamborghini', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Mercedes', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/mercedes.svg' },
+    { name: 'BMW', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/bmw.svg' },
+    { name: 'Land Rover', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/range-rover.svg' },
+    { name: 'Rolls Royce', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/rolls-royce.svg' },
+    { name: 'Audi', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Porsche', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/porsche.svg' },
+    { name: 'Ferrari', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/ferrari.svg' },
+    { name: 'Lamborghini', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/lamborghini.svg' },
 ];
 
 export default function AllBrands() {
