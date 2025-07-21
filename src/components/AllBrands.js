@@ -2,12 +2,14 @@
 import Image from 'next/image';
 
 const brands = [
-    { name: 'Mercedes', logo: '/mer.png', color: '#dbeafe' },
-    { name: 'BMW', logo: '/bm.png', color: '#dbeafe' },
-    { name: 'Land Rover', logo: '/mer.png', color: '#dbeafe' },
-    { name: 'Kia', logo: '/mer.png', color: '#dbeafe' },
-    { name: 'Nissan', logo: '/mer.png', color: '#dbeafe' },
-    { name: 'Porsche', logo: '/mer.png', color: '#dbeafe' },
+    { name: 'Mercedes', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'BMW', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Land Rover', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Kia', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Nissan', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Porsche', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Ferrari', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
+    { name: 'Lamborghini', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
 ];
 
 export default function AllBrands() {
@@ -26,7 +28,6 @@ export default function AllBrands() {
                         <hr className="mt-4 w-48 border-t-2 border-blue-600" />
                     </div>
 
-                    {/* Premium CTA */}
                     <button className="
                         inline-flex items-center gap-2
                         px-5 py-2.5
@@ -42,39 +43,36 @@ export default function AllBrands() {
                     </button>
                 </div>
 
-                {/* Brand grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                {/* Brand grid - single row layout */}
+                <div className="grid grid-cols-8 gap-4">
                     {brands.map((brand) => (
-                        <div
+                        <a
                             key={brand.name}
+                            href={`/brands/${brand.name.toLowerCase()}`}
                             className="
-                                group relative flex flex-col items-center justify-center
-                                aspect-square rounded-2xl border border-gray-200
-                                bg-white hover:shadow-2xl hover:border-[#dbeafe]
-                                transition-all duration-300 cursor-pointer
-                                transform hover:-translate-y-1
+                                flex flex-col items-center justify-center
+                                bg-white p-4 rounded-lg
+                                border border-gray-200
+                                hover:shadow-md hover:border-blue-200
+                                transition-all duration-300
+                                no-underline
+                                w-full
+                                h-24
                             "
+                            title={brand.name}
                         >
-                            <div className="relative w-24 h-24"> {/* Container with fixed dimensions */}
+                            <div className="relative w-8 h-8 mb-2">
                                 <Image
                                     src={brand.logo}
                                     alt={brand.name}
                                     fill
-                                    className="object-contain p-2"
+                                    className="object-contain"
                                 />
                             </div>
-                            <span className="mt-3 text-sm font-semibold text-gray-800">
+                            <span className="text-xs text-gray-800 font-medium text-center">
                                 {brand.name}
                             </span>
-                            <div
-                                className="
-                                    absolute inset-0 rounded-2xl border-2 pointer-events-none
-                                    opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-105
-                                    transition-all duration-300
-                                "
-                                style={{ borderColor: brand.color }}
-                            />
-                        </div>
+                        </a>
                     ))}
                 </div>
             </div>
