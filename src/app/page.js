@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
 import CarCategories from '../components/CarRentalSection';
@@ -10,25 +11,27 @@ import AffordableCar from '../components/AffordableCar';
 import FAQ from '../components/FAQ';
 import Footer from '../components/Footer';
 
-
-
 export default function Home() {
     return (
-        <div className="font-sans antialiased">
-            <Navbar />
-            <HeroSection />
-            <CarCategories />
-            <CarInfoBox />
-            <WhyChooseUs />
-            <AllBrands />
-            <LocationSelector />
-            <AffordableCar />
-            <DocumentsSection />
-            <FAQ />
-            <Footer />
+        <>
+            <Head>
+                <meta name="robots" content="noindex, nofollow" />
+                <title>Home | Premium Car Rentals</title>
+            </Head>
 
-
-
-        </div>
+            <div className="font-sans antialiased">
+                <Navbar />
+                <HeroSection />
+                <CarCategories />
+                <CarInfoBox />
+                <WhyChooseUs />
+                <AllBrands />
+                <LocationSelector />
+                <AffordableCar />
+                <DocumentsSection />
+                <FAQ />
+                <Footer />
+            </div>
+        </>
     );
 }

@@ -1,6 +1,6 @@
 // components/CarListings.js
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Phone, MessageCircle, Users, Fuel, Settings, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const cars = [
@@ -83,19 +83,6 @@ export default function AffordableCar() {
 
     const formatPrice = (price) => price.toLocaleString();
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentImageIndex(prev => {
-                const newIndex = {};
-                cars.forEach(car => {
-                    newIndex[car.id] = ((prev[car.id] || 0) + 1) % car.images.length;
-                });
-                return newIndex;
-            });
-        }, 8000);
-        return () => clearInterval(timer);
-    }, []);
-
     const handleImageChange = (carId, direction) => {
         setCurrentImageIndex(prev => {
             const car = cars.find(c => c.id === carId);
@@ -124,7 +111,7 @@ export default function AffordableCar() {
                         <hr className="mt-4 w-48 border-t-2 border-blue-600" />
                     </div>
 
-                    {/* PNG-style “View all” button */}
+                    {/* PNG-style "View all" button */}
                     <button className="mt-6 sm:mt-0 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
                         View all
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -238,9 +225,9 @@ export default function AffordableCar() {
             </div>
 
             <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
-        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
+                .scrollbar-hide::-webkit-scrollbar { display: none; }
+                .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+            `}</style>
         </section>
     );
 }
