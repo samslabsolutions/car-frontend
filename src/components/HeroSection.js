@@ -27,13 +27,14 @@ const HeroSection = () => {
     ];
 
     return (
-        <div className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50">
+        <div className="relative bg-white">
+
             <div className="relative pt-20 lg:pt-24 pb-18">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center space-y-12">
                         {/* Header Section */}
                         <div className="space-y-6">
-                            <h1 className="text-[40px] font-bold text-gray-900 leading-tight">
+                            <h1 className="text-[40px] font-bold text-gray-900 leading-tight mt-4">
                                 Premium Car Rental in{' '}
                                 <span className="text-[#155dfc] hover:text-[#0f4fd4] transition-colors duration-200">{selectedEmirate}</span>
                             </h1>
