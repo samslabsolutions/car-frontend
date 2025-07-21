@@ -18,10 +18,10 @@ const HeroSection = () => {
     ];
 
     const features = [
-        { icon: <Shield className="w-5 h-5" />, text: 'Full Insurance Coverage' },
-        { icon: <Star className="w-5 h-5" />, text: '24/7 Premium Support' },
-        { icon: <Award className="w-5 h-5" />, text: 'Best Price Guarantee' },
-        { icon: <Users className="w-5 h-5" />, text: '50K+ Happy Customers' },
+        // { icon: <Shield className="w-5 h-5" />, text: 'Full Insurance Coverage' },
+        // { icon: <Star className="w-5 h-5" />, text: '24/7 Premium Support' },
+        // { icon: <Award className="w-5 h-5" />, text: 'Best Price Guarantee' },
+        // { icon: <Users className="w-5 h-5" />, text: '50K+ Happy Customers' },
     ];
 
     const services = [
