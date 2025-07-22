@@ -32,16 +32,10 @@ const AirbnbGetawaySection = () => {
 
     const getDisplayedLocations = () => {
         const locations = locationCategories[activeTab] || [];
-        return showMore ? locations : locations.slice(0, 12);
+        return showMore ? locations : locations.slice(0, 8);
     };
 
     const displayedLocations = getDisplayedLocations();
-    const columns = [];
-    const itemsPerColumn = Math.ceil(displayedLocations.length / 5);
-
-    for (let i = 0; i < displayedLocations.length; i += itemsPerColumn) {
-        columns.push(displayedLocations.slice(i, i + itemsPerColumn));
-    }
 
     return (
         <section className="py-16 bg-white">
@@ -66,8 +60,8 @@ const AirbnbGetawaySection = () => {
                                     key={tab.id}
                                     onClick={() => handleTabChange(tab.id)}
                                     className={`py-3 px-1 text-sm font-medium border-b-2 transition-colors duration-200 ${activeTab === tab.id
-                                        ? 'border-blue-600 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                            ? 'border-blue-600 text-blue-600'
+                                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                                         }`}
                                 >
                                     {tab.label}
@@ -77,39 +71,28 @@ const AirbnbGetawaySection = () => {
                     </div>
                 </div>
 
-                {/* Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-8 gap-y-8">
-                    {columns.map((column, columnIndex) => (
-                        <div key={columnIndex} className="space-y-4">
-                            {column.map((location, index) => (
-                                <button
-                                    key={index}
-                                    className="text-left w-full p-2 hover:bg-blue-50 rounded transition-colors duration-200 group border border-transparent hover:border-blue-200"
-                                >
-                                    <div className="space-y-1">
-                                        <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
-                                            {location}
-                                        </div>
-                                        <div className="text-sm text-gray-500">UAE</div>
-                                    </div>
-                                </button>
-                            ))}
-
-                            {columnIndex === columns.length - 1 &&
-                                locationCategories[activeTab] &&
-                                locationCategories[activeTab].length > 12 && (
-                                    <button
-                                        onClick={() => setShowMore(!showMore)}
-                                        className="flex items-center space-x-1 text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline p-2"
-                                    >
-                                        <span>Show more</span>
-                                        <ChevronDown
-                                            className={`h-4 w-4 transition-transform ${showMore ? 'rotate-180' : ''}`}
-                                        />
-                                    </button>
-                                )}
-                        </div>
+                {/* Location Row */}
+                <div className="flex flex-wrap gap-4">
+                    {displayedLocations.map((location, index) => (
+                        <button
+                            key={index}
+                            className="text-left px-4 py-2 bg-gray-50 hover:bg-blue-50 rounded border border-transparent hover:border-blue-200 transition-colors duration-200 text-sm font-medium text-gray-900 hover:text-blue-600"
+                        >
+                            {location}
+                        </button>
                     ))}
+
+                    {locationCategories[activeTab].length > 8 && (
+                        <button
+                            onClick={() => setShowMore(!showMore)}
+                            className="flex items-center space-x-1 text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline px-4 py-2"
+                        >
+                            <span>{showMore ? 'Show less' : 'Show more'}</span>
+                            <ChevronDown
+                                className={`h-4 w-4 transition-transform ${showMore ? 'rotate-180' : ''}`}
+                            />
+                        </button>
+                    )}
                 </div>
             </div>
         </section>
