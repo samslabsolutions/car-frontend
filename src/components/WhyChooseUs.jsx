@@ -1,10 +1,6 @@
 'use client';
-import { useState } from 'react';
 import {
     ShieldCheck,
-    DollarSign,
-    Car,
-    Smartphone,
     BadgePercent,
     CarFront,
     CheckCircle2,
@@ -38,13 +34,13 @@ export default function WhyOneClickDrive() {
     return (
         <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* header */}
+                {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
                     <div>
-                        <h2 className="text-4xl font-extrabold text-gray-900">
+                        <h2 className="text-[26px] font-bold text-gray-900">
                             Why OneClickDrive is #1
                         </h2>
-                        <p className="mt-2 text-lg text-gray-600">
+                        <p className="mt-2 text-[16px] text-gray-600">
                             Verified deals, zero commission, instant booking.
                         </p>
                         <hr className="mt-4 w-64 border-t-2 border-blue-600" />
@@ -62,7 +58,7 @@ export default function WhyOneClickDrive() {
                     </button>
                 </div>
 
-                {/* grid */}
+                {/* Grid */}
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                     {features.map((item) => (
                         <div
@@ -76,7 +72,7 @@ export default function WhyOneClickDrive() {
                             "
                         >
                             {item.icon}
-                            <span className="text-base font-semibold text-gray-800 mb-1">
+                            <span className="text-[16px] font-semibold text-gray-800 mb-1">
                                 {item.label}
                             </span>
                             <span className="text-sm text-gray-600">{item.desc}</span>

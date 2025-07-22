@@ -76,10 +76,10 @@ const FAQSection = () => {
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 mb-4">
                         <Zap className="w-4 h-4 mr-1" /> MOST ASKED QUESTIONS
                     </span>
-                    <h2 className="text-4xl font-extrabold text-gray-900 mb-4">
+                    <h2 className="text-[26px] font-bold text-gray-900 mb-4">
                         Dubai Car Rental <span className="text-blue-600">FAQs</span>
                     </h2>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                    <p className="text-[16px] text-gray-600 max-w-3xl mx-auto">
                         Everything you need for a seamless rental experience
                     </p>
                 </div>
@@ -97,7 +97,7 @@ const FAQSection = () => {
                                 >
                                     <div className="flex items-center">
                                         <span className="mr-3">{category.icon}</span>
-                                        <span className="font-medium">{category.title}</span>
+                                        <span className="text-[15px] font-medium">{category.title}</span>
                                     </div>
                                 </button>
                             ))}
@@ -108,7 +108,7 @@ const FAQSection = () => {
                     <div className="lg:w-3/4">
                         <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
                             <div className="p-6 bg-blue-50 border-b border-blue-100">
-                                <h3 className="text-2xl font-bold text-gray-900 flex items-center">
+                                <h3 className="text-[16px] font-bold text-gray-900 flex items-center">
                                     {faqData[activeCategory].icon}
                                     <span className="ml-3">{faqData[activeCategory].title}</span>
                                 </h3>
@@ -124,7 +124,7 @@ const FAQSection = () => {
                                                 className="flex justify-between items-start w-full text-left gap-4"
                                             >
                                                 <div>
-                                                    <h4 className="text-lg font-semibold text-gray-900 mb-1">
+                                                    <h4 className="text-[15px] font-semibold text-gray-900 mb-1">
                                                         {item.question}
                                                         {item.premium && (
                                                             <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -141,7 +141,7 @@ const FAQSection = () => {
                                                 <ChevronDown className={`w-5 h-5 text-blue-600 shrink-0 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
                                             </button>
                                             <div className={`overflow-hidden transition-all duration-300 ${isExpanded ? 'mt-4 max-h-96' : 'max-h-0'}`}>
-                                                <p className="text-gray-600 pr-6">{item.answer}</p>
+                                                <p className="text-[14px] text-gray-600 pr-6">{item.answer}</p>
                                                 {item.premium && (
                                                     <div className="mt-4 flex items-center text-sm text-blue-600">
                                                         <Phone className="w-4 h-4 mr-1" />
@@ -160,8 +160,8 @@ const FAQSection = () => {
                 {/* Conversion CTA */}
                 <div className="mt-16 text-center">
                     <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-8 shadow-xl">
-                        <h3 className="text-2xl font-bold text-white mb-3">Still have questions?</h3>
-                        <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+                        <h3 className="text-[20px] font-bold text-white mb-3">Still have questions?</h3>
+                        <p className="text-[15px] text-blue-100 mb-6 max-w-2xl mx-auto">
                             Our rental experts are available 24/7 to help you choose the perfect vehicle
                         </p>
                         <button className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-blue-700 bg-white hover:bg-blue-50 transition-all duration-200 hover:scale-105">

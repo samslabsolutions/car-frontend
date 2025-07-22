@@ -1,4 +1,3 @@
-// components/CarListings.js
 "use client";
 import React, { useState, useRef } from 'react';
 import { Phone, MessageCircle, Users, Fuel, Settings, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -22,7 +21,7 @@ const cars = [
     {
         id: 2,
         images: [
-            "https://images.unsplash.com/photo-1502877338535-766e1452684a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80",
+
             "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
         ],
         featured: true,
@@ -102,16 +101,15 @@ export default function AffordableCar() {
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
                     <div>
-                        <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+                        <h2 className="text-[26px] font-bold text-gray-900 tracking-tight">
                             Affordable Cars
                         </h2>
-                        <p className="mt-2 text-lg text-gray-600">
+                        <p className="mt-2 text-[16px] text-gray-600">
                             Discover our handpicked selection of premium vehicles, each verified and ready for your next adventure.
                         </p>
                         <hr className="mt-4 w-48 border-t-2 border-blue-600" />
                     </div>
 
-                    {/* PNG-style "View all" button */}
                     <button className="mt-6 sm:mt-0 inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold text-blue-600 border border-blue-600 rounded-full hover:bg-blue-50 hover:text-blue-700 transition-all duration-200">
                         View all
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -132,7 +130,6 @@ export default function AffordableCar() {
                             className="snap-start flex-shrink-0 w-[340px] mx-2"
                         >
                             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-500">
-                                {/* image carousel */}
                                 <div className="relative group">
                                     <div className="relative h-59 overflow-hidden">
                                         <img
@@ -172,7 +169,7 @@ export default function AffordableCar() {
                                 {/* content */}
                                 <div className="p-5">
                                     <div className="text-blue-600 text-sm font-medium mb-1">{car.category}</div>
-                                    <h3 className="text-lg font-semibold text-gray-900 mb-3 leading-tight">{car.title}</h3>
+                                    <h3 className="text-[17px] font-semibold text-gray-900 mb-3 leading-tight">{car.title}</h3>
 
                                     <div className="flex items-center space-x-4 mb-4">
                                         <div className="flex items-center space-x-1.5 text-gray-600">
@@ -214,7 +211,7 @@ export default function AffordableCar() {
                                             <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
                                                 <span className="text-white font-bold text-xs">T</span>
                                             </div>
-                                            <span className="text-sm font-medium text-gray-900">{car.dealer.name}</span>
+                                            <span className="text-[14px] font-medium text-gray-900">{car.dealer.name}</span>
                                         </div>
                                     </div>
                                 </div>

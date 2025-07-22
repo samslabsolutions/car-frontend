@@ -17,21 +17,20 @@ export default function AllBrands() {
         <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
                     <div>
-                        <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+                        <h2 className="text-[26px] font-bold text-gray-900 tracking-tight">
                             All Brands
                         </h2>
-                        <p className="mt-2 text-lg text-gray-600">
+                        <p className="mt-2 text-[16px] text-gray-600">
                             Explore 40+ premium marques. Swipe or hover to discover.
                         </p>
                         <hr className="mt-4 w-48 border-t-2 border-blue-600" />
                     </div>
 
                     <button className="
-                        inline-flex items-center gap-2
-                        px-5 py-2.5
-                        text-sm font-semibold text-blue-600
+                        mt-6 sm:mt-0 inline-flex items-center gap-2
+                        px-5 py-2.5 text-sm font-semibold text-blue-600
                         border border-blue-600 rounded-full
                         hover:bg-blue-50 hover:text-blue-700
                         transition-all duration-200
@@ -44,7 +43,7 @@ export default function AllBrands() {
                 </div>
 
                 {/* Brand grid - single row layout */}
-                <div className="grid grid-cols-8 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
                     {brands.map((brand) => (
                         <a
                             key={brand.name}
