@@ -34,8 +34,8 @@ export default function Home() {
                 <AllBrands />
                 <LocationSelector />
                 <DocumentsSection />
-                <PopularLocations />
                 <FAQ />
+                <PopularLocations />
                 <Footer />
             </div>
         </>
