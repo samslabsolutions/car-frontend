@@ -102,7 +102,7 @@ export default function AffordableCar() {
                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10">
                     <div>
                         <h2 className="text-[26px] font-bold text-gray-900 tracking-tight">
-                            Affordable Cars
+                            Affordable   Cars
                         </h2>
                         <p className="mt-2 text-[16px] text-gray-600">
                             Discover our handpicked selection of premium vehicles, each verified and ready for your next adventure.
