@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Navbar from '../../components/Navbar';
 import CarFilterSection from '../../components/CarFilterSection';
 import Footer from '../../components/Footer';
-import CarListingCard from '../../components/CarListingCard'
+// import CarListingCard from '../../components/CarListingCard'
 
 export default function RentPage() {
     return (
@@ -16,7 +16,7 @@ export default function RentPage() {
                 <Navbar />
                 <main >
                     <CarFilterSection />
-                    <CarListingCard />
+                    {/* <CarListingCard /> */}
 
                 </main>
                 <Footer />
