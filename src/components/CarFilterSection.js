@@ -180,17 +180,8 @@ const FilterSection = () => {
 
     return (
         <div className="w-full bg-white relative mt-28">
-            <div className="flex items-center gap-2 mb-6 text-sm ml-9">
-                <a href="#" className="text-blue-600 hover:underline">Home</a>
-                <span className="text-gray-400">›</span>
-                <a href="#" className="text-blue-600 hover:underline">Dubai</a>
-                <span className="text-gray-400">›</span>
-                <span className="text-gray-600">Economy Cars</span>
-            </div>
-            <h1 className="text-2xl font-semibold text-gray-900 ml-9 mb-7">
-                Cars for Rent in Dubai <span className="text-gray-500 font-normal">• 1,651 Ads</span>
-            </h1>
-            <div className="w-full max-w-[1100px] ml-7 border border-gray-400 px-1 py-2 rounded-lg bg-white shadow-lg shadow-black-600">
+
+            <div className="w-full max-w-[1200px] mx-auto px-4 py-2 bg-white rounded-2xl shadow-md border border-gray-400">
 
                 <div className="flex items-center gap-0">
                     {/* City Dropdown */}
@@ -600,6 +591,16 @@ const FilterSection = () => {
                     </div>
                 </div>
             </div>
+            <div className="flex items-center gap-2 mb-6 mt-8 text-sm ml-9 ">
+                <a href="#" className="text-blue-600 hover:underline">Home</a>
+                <span className="text-gray-400">›</span>
+                <a href="#" className="text-blue-600 hover:underline">Dubai</a>
+                <span className="text-gray-400">›</span>
+                <span className="text-gray-600">Economy Cars</span>
+            </div>
+            <h1 className="text-2xl font-semibold text-gray-900 ml-9 ">
+                Cars for Rent in Dubai <span className="text-gray-500 font-normal">• 1,651 Ads</span>
+            </h1>
             <div className="px-8 py-2">
                 <div className="flex justify-between items-center mb-6"></div>
                 <div className="flex flex-wrap items-center gap-3 mb-6">
