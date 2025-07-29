@@ -2,7 +2,13 @@ import Head from 'next/head';
 import Navbar from '../../components/Navbar';
 import CarFilterSection from '../../components/CarFilterSection';
 import Footer from '../../components/Footer';
-// import CarListingCard from '../../components/CarListingCard'
+import BreadcrumbHeader from '../../components/text'
+import CarListingCard from '../../components/CarListingCard'
+import Pagination from '../../components/Pagination'
+import CarRentalPricing from '../../components/CarRentalPricing'
+import DubaiCarRentalSection from '../../components/DubaiCarRentalSection'
+import PopularLocations from '../../components/PopularLocations'
+import FAQ from '../../components/FAQ';
 
 export default function RentPage() {
     return (
@@ -16,7 +22,13 @@ export default function RentPage() {
                 <Navbar />
                 <main >
                     <CarFilterSection />
-                    {/* <CarListingCard /> */}
+                    <BreadcrumbHeader />
+                    <CarListingCard />
+                    <Pagination />
+                    <CarRentalPricing />
+                    <DubaiCarRentalSection />
+                    <FAQ />
+                    <PopularLocations />
 
                 </main>
                 <Footer />

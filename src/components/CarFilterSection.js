@@ -1,628 +1,770 @@
-'use client';
+"use client";
 import React, { useState } from 'react';
-import { ChevronDown, Search } from 'lucide-react';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 
-const FilterSection = () => {
-    const [selectedCity, setSelectedCity] = useState('Dubai');
-    const [selectedMake, setSelectedMake] = useState('');
-    const [selectedPrice, setSelectedPrice] = useState('');
+const CarFilterSection = () => {
+    const [activeDropdown, setActiveDropdown] = useState(null);
+    const [showMoreFilters, setShowMoreFilters] = useState(false);
+    const [selectedFilters, setSelectedFilters] = useState({
+        transactionType: 'Rent',
+        location: '',
+        status: 'All',
+        propertyType: 'Residential',
+        bedsAndBaths: 'Beds & Baths'
+    });
+
+    // Filter states
     const [selectedRental, setSelectedRental] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
-    const [selectedKms, setSelectedKms] = useState('');
-    const [selectedFilters, setSelectedFilters] = useState('');
-    const [showCityDropdown, setShowCityDropdown] = useState(false);
-    const [showMakeDropdown, setShowMakeDropdown] = useState(false);
-    const [showPriceDropdown, setShowPriceDropdown] = useState(false);
-    const [showRentalDropdown, setShowRentalDropdown] = useState(false);
-    const [showYearDropdown, setShowYearDropdown] = useState(false);
-    const [showKmsDropdown, setShowKmsDropdown] = useState(false);
-    const [tempSelectedCity, setTempSelectedCity] = useState('Dubai');
-    const [tempSelectedMake, setTempSelectedMake] = useState('');
-    const [tempSelectedPrice, setTempSelectedPrice] = useState('');
     const [tempSelectedRental, setTempSelectedRental] = useState('');
-    const [tempSelectedYear, setTempSelectedYear] = useState('');
-    const [tempSelectedKms, setTempSelectedKms] = useState('');
-    const [searchMakeQuery, setSearchMakeQuery] = useState('');
-    const [priceRange, setPriceRange] = useState([0, 500]);
-    const [yearRange, setYearRange] = useState([2021, 2024]);
-    const [kmsRange, setKmsRange] = useState([0, 100000]);
+    const [selectedPrice, setSelectedPrice] = useState('');
+    const [tempMinPrice, setTempMinPrice] = useState('');
+    const [tempMaxPrice, setTempMaxPrice] = useState('');
+    const [selectedSort, setSelectedSort] = useState('');
+    const [tempSelectedSort, setTempSelectedSort] = useState('');
+    const [selectedCarType, setSelectedCarType] = useState('');
+    const [tempSelectedCarType, setTempSelectedCarType] = useState('');
 
-    const cities = ['Dubai', 'All Cities', 'Abu Dhabi', 'Ras Al Khaimah', 'Sharjah', 'Fujairah', 'Ajman', 'Umm Al Quwain', 'Al Ain'];
+    // More filters states
+    const [moreFiltersData, setMoreFiltersData] = useState({
+        location: '',
+        carBrand: '',
+        modelYear: '',
+        seats: '',
+        vehicleType: '',
+        priceRange: { min: '', max: '' },
+        rentalPeriod: '',
+        carFeatures: [],
+        paymentMode: '',
+        transmission: '',
+        fuelType: '',
+        carColor: '',
+        minAge: '',
+        sortBy: ''
+    });
 
-    const makes = [
-        { name: 'BMW', count: 118 },
-        { name: 'Mercedes', count: 213 },
-        { name: 'Nissan', count: 137 },
-        { name: 'Audi', count: 79 },
-        { name: 'Land Rover', count: 102 },
-        { name: 'Hyundai', count: 97 },
-    ];
+    const toggleDropdown = (dropdown) => {
+        setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+    };
 
-    const priceRanges = [
-        { label: '0-100 AED', value: '0-100' },
-        { label: '100-200 AED', value: '100-200' },
-        { label: '200-500 AED', value: '200-500' },
-        { label: '500-1000 AED', value: '500-1000' },
-        { label: '1000+ AED', value: '1000+' }
-    ];
+    const statusOptions = ['All', 'Ready', 'Off-Plan'];
 
+    // Filter options
     const rentalOptions = [
         { label: 'Daily', value: 'daily' },
         { label: 'Weekly', value: 'weekly' },
         { label: 'Monthly', value: 'monthly' }
     ];
 
-    const years = ['2021', '2022', '2023', '2024'];
+    const sortOptions = [
+        { label: 'Low to High', value: 'low-to-high' },
+        { label: 'High to Low', value: 'high-to-low' },
+        { label: 'Newest First', value: 'newest' },
+        { label: 'Most Popular', value: 'popular' }
+    ];
 
-    const kms = [
-        { label: '0-10,000 km', value: '0-10000' },
-        { label: '10,000-50,000 km', value: '10000-50000' },
-        { label: '50,000-100,000 km', value: '50000-100000' }
+    const carTypeOptions = [
+        { label: 'SUV', value: 'suv' },
+        { label: 'Luxury', value: 'luxury' },
+        { label: 'Crossover', value: 'crossover' },
+        { label: 'Sedan', value: 'sedan' },
+        { label: 'Hatchback', value: 'hatchback' },
+        { label: 'Convertible', value: 'convertible' }
+    ];
+
+    // More filters options
+    const locationOptions = [
+        'Abu Hail', 'Al Aweer', 'Al Barsha', 'Al Estiqlal St', 'Al Estiqlal Street', 'Al Fahidi',
+        'Al Garhoud', 'Al Jaddaf', 'Al Karama', 'Al Khabaisi', 'Al Khabisi', 'Al Khawaneej',
+        'Al Khawaneej 2', 'Al Quoz', 'Al Quoz 3', 'Al Qusais', 'Al Qusais 2', 'Al Rawda',
+        'Al Yarmooq', 'Barsha Heights', 'Bur Dubai', 'Business Bay', 'Creek Harbour', 'DIFC',
+        'Deira', 'Down Town Dubai', 'Downtown Dubai', 'Dubai Airport', 'Dubai Design District',
+        'Dubai Internet City', 'Dubai Mall', 'Dubai Marina', 'Dubai Production City',
+        'Dubai Silicon Oasis', 'Dubai Sports City', 'Garhoud', 'Hor Al Anz', 'JBR', 'JLT',
+        'Jumeirah', 'Jumeirah 1', 'Jumeirah Village Circle', 'Karama', 'Majan', 'Meydan',
+        'Motor city', 'Nad Al Hamar', 'Nad Al Sheba', 'Nad Al Sheba 1', 'Naif', 'Oud Metha',
+        'Palm Jumeirah', 'Port Saeed', 'Ras Al Khor', 'Sheikh Zayed Road', 'Silicon Oasis',
+        'Town Square', 'Trade Centre', 'Trade Centre 1', 'Umm Al Sheif', 'Umm Ramool',
+        'Umm Suqeim 3', 'Warsan'
     ];
 
     const carBrands = [
-        { name: 'Mercedes-Benz', count: 213 },
-        { name: 'Nissan', count: 137 },
-        { name: 'BMW', count: 118 },
-        { name: 'Land Rover', count: 102 },
-        { name: 'Hyundai', count: 97 },
-        { name: 'Kia', count: 88 },
-        { name: 'Audi', count: 79 },
-        { name: 'Chevrolet', count: 79 }
+        'Toyota', 'Honda', 'BMW', 'Mercedes-Benz', 'Audi', 'Lexus', 'Nissan', 'Hyundai',
+        'Kia', 'Ford', 'Chevrolet', 'Volkswagen', 'Mazda', 'Subaru', 'Infiniti', 'Acura'
     ];
 
-    const closeAllDropdowns = () => {
-        setShowCityDropdown(false);
-        setShowMakeDropdown(false);
-        setShowPriceDropdown(false);
-        setShowRentalDropdown(false);
-        setShowYearDropdown(false);
-        setShowKmsDropdown(false);
-    };
+    const modelYears = Array.from({ length: 15 }, (_, i) => (2024 - i).toString());
 
-    const toggleCityDropdown = () => {
-        closeAllDropdowns();
-        setShowCityDropdown(!showCityDropdown);
-    };
+    const seatOptions = ['2 Seats', '4 Seats', '5 Seats', '7 Seats', '8+ Seats'];
 
-    const toggleMakeDropdown = () => {
-        closeAllDropdowns();
-        setShowMakeDropdown(!showMakeDropdown);
-    };
+    const vehicleTypes = ['Sedan', 'SUV', 'Hatchback', 'Coupe', 'Convertible', 'Truck', 'Van'];
 
-    const togglePriceDropdown = () => {
-        closeAllDropdowns();
-        setShowPriceDropdown(!showPriceDropdown);
-    };
+    const rentalPeriods = ['Hourly', 'Daily', 'Weekly', 'Monthly', 'Long Term'];
 
-    const toggleRentalDropdown = () => {
-        closeAllDropdowns();
-        setShowRentalDropdown(!showRentalDropdown);
-    };
+    const carFeatures = [
+        'Air Conditioning', 'GPS Navigation', 'Bluetooth', 'USB Charging', 'Leather Seats',
+        'Sunroof', 'Backup Camera', 'Parking Sensors', 'Cruise Control', 'Apple CarPlay',
+        'Android Auto', 'Heated Seats', 'Premium Sound System'
+    ];
 
-    const toggleYearDropdown = () => {
-        closeAllDropdowns();
-        setShowYearDropdown(!showYearDropdown);
-    };
+    const paymentModes = ['Cash', 'Credit Card', 'Debit Card', 'Bank Transfer', 'Digital Wallet'];
 
-    const toggleKmsDropdown = () => {
-        closeAllDropdowns();
-        setShowKmsDropdown(!showKmsDropdown);
-    };
+    const transmissionTypes = ['Automatic', 'Manual', 'CVT'];
 
-    const handleApplyFilters = () => {
-        setSelectedCity(tempSelectedCity);
-        setShowCityDropdown(false);
-    };
+    const fuelTypes = ['Petrol', 'Diesel', 'Hybrid', 'Electric'];
 
-    const handleApplyMakeFilter = () => {
-        setSelectedMake(tempSelectedMake);
-        setShowMakeDropdown(false);
-        setSearchMakeQuery('');
+    const carColors = [
+        'White', 'Black', 'Silver', 'Gray', 'Red', 'Blue', 'Brown', 'Green', 'Gold', 'Yellow'
+    ];
+
+    const minAges = ['18', '21', '25', '30'];
+
+    const sortByOptions = [
+        'Price: Low to High', 'Price: High to Low', 'Newest First', 'Most Popular',
+        'Rating: High to Low', 'Distance: Nearest First'
+    ];
+
+    // Apply filter functions
+    const handleApplyRentalFilter = () => {
+        setSelectedRental(tempSelectedRental);
+        setActiveDropdown(null);
     };
 
     const handleApplyPriceFilter = () => {
-        if (tempSelectedPrice) {
-            setSelectedPrice(tempSelectedPrice);
-        } else {
-            setSelectedPrice(`${priceRange[0]}-${priceRange[1]}`);
+        if (tempMinPrice || tempMaxPrice) {
+            const priceText = `${tempMinPrice || '0'} - ${tempMaxPrice || '∞'}`;
+            setSelectedPrice(priceText);
         }
-        setShowPriceDropdown(false);
+        setActiveDropdown(null);
     };
 
-    const handleApplyRentalFilter = () => {
-        setSelectedRental(tempSelectedRental);
-        setShowRentalDropdown(false);
+    const handleApplySortFilter = () => {
+        setSelectedSort(tempSelectedSort);
+        setActiveDropdown(null);
     };
 
-    const handleApplyYearFilter = () => {
-        if (tempSelectedYear) {
-            setSelectedYear(tempSelectedYear);
-        } else {
-            setSelectedYear(`${yearRange[0]}-${yearRange[1]}`);
-        }
-        setShowYearDropdown(false);
+    const handleApplyCarTypeFilter = () => {
+        setSelectedCarType(tempSelectedCarType);
+        setActiveDropdown(null);
     };
 
-    const handleApplyKmsFilter = () => {
-        if (tempSelectedKms) {
-            setSelectedKms(tempSelectedKms);
-        } else {
-            setSelectedKms(`${kmsRange[0]}-${kmsRange[1]}`);
-        }
-        setShowKmsDropdown(false);
+    // Reset functions
+    const handleResetRental = () => {
+        setTempSelectedRental('');
+        setSelectedRental('');
+        setActiveDropdown(null);
     };
 
-    const handlePriceRangeChange = (e, index) => {
-        const newPriceRange = [...priceRange];
-        newPriceRange[index] = parseInt(e.target.value);
-        setPriceRange(newPriceRange);
-        setTempSelectedPrice('');
+    const handleResetPrice = () => {
+        setTempMinPrice('');
+        setTempMaxPrice('');
+        setSelectedPrice('');
+        setActiveDropdown(null);
     };
 
-    const handleYearRangeChange = (e, index) => {
-        const newYearRange = [...yearRange];
-        newYearRange[index] = parseInt(e.target.value);
-        setYearRange(newYearRange);
-        setTempSelectedYear('');
+    const handleResetSort = () => {
+        setTempSelectedSort('');
+        setSelectedSort('');
+        setActiveDropdown(null);
     };
 
-    const handleKmsRangeChange = (e, index) => {
-        const newKmsRange = [...kmsRange];
-        newKmsRange[index] = parseInt(e.target.value);
-        setKmsRange(newKmsRange);
-        setTempSelectedKms('');
+    const handleResetCarType = () => {
+        setTempSelectedCarType('');
+        setSelectedCarType('');
+        setActiveDropdown(null);
     };
 
-    const filteredMakes = makes.filter(make =>
-        make.name.toLowerCase().includes(searchMakeQuery.toLowerCase())
-    );
+    const handleMoreFiltersChange = (field, value) => {
+        setMoreFiltersData(prev => ({
+            ...prev,
+            [field]: value
+        }));
+    };
+
+    const handleFeatureToggle = (feature) => {
+        setMoreFiltersData(prev => ({
+            ...prev,
+            carFeatures: prev.carFeatures.includes(feature)
+                ? prev.carFeatures.filter(f => f !== feature)
+                : [...prev.carFeatures, feature]
+        }));
+    };
+
+    const handleMoreFiltersReset = () => {
+        setMoreFiltersData({
+            location: '',
+            carBrand: '',
+            modelYear: '',
+            seats: '',
+            vehicleType: '',
+            priceRange: { min: '', max: '' },
+            rentalPeriod: '',
+            carFeatures: [],
+            paymentMode: '',
+            transmission: '',
+            fuelType: '',
+            carColor: '',
+            minAge: '',
+            sortBy: ''
+        });
+    };
+
+    const handleMoreFiltersApply = () => {
+        console.log('Applied filters:', moreFiltersData);
+        setShowMoreFilters(false);
+    };
 
     return (
-        <div className="w-full bg-white relative mt-28">
-
-            <div className="w-full max-w-[1200px] mx-auto px-4 py-2 bg-white rounded-2xl shadow-md border border-gray-400">
-
-                <div className="flex items-center gap-0">
-                    {/* City Dropdown */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">City</span>
+        <>
+            <section className="py-8 mt-20">
+                <div className="w-full max-w-[1230px] px-4 mx-auto">
+                    <div className="flex flex-wrap items-center gap-3 bg-white">
+                        {/* Buy Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() => toggleDropdown('buy')}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[100px] border border-[#dedede] hover:border-[#155dfc]"
+                            >
+                                <span className="font-medium">{selectedFilters.transactionType}</span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 12 6"
+                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'buy' ? 'rotate-180' : ''}`}
+                                >
+                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                </svg>
+                            </button>
                         </div>
-                        <button
-                            onClick={toggleCityDropdown}
-                            className="appearance-none bg-transparent border-r border-gray-300 pl-3 pr-8 py-2 text-gray-800 text-sm font-medium focus:outline-none w-full h-10 text-left truncate mt-2"
-                        >
-                            {selectedCity || 'Select'}
-                        </button>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
-                        {showCityDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 min-w-[320px]">
-                                <div className="p-4">
-                                    <h3 className="text-base font-bold text-gray-900 mb-4">Select City</h3>
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
-                                        {cities.map((city) => (
+
+                        {/* Location Input */}
+                        <div className="relative flex-1 min-w-[215px] max-w-[530px]">
+                            <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white border border-[#dedede] hover:border-[#155dfc] transition-colors">
+                                <Search className="w-4 h-4 text-gray-500" />
+                                <input
+                                    type="text"
+                                    placeholder="Search the car name"
+                                    value={selectedFilters.location}
+                                    onChange={(e) => setSelectedFilters(prev => ({ ...prev, location: e.target.value }))}
+                                    className="flex-1 outline-none text-gray-700 placeholder-gray-500"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Rental Options Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() => toggleDropdown('rental')}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                            >
+                                <span className="font-medium">
+                                    {selectedRental ? rentalOptions.find(opt => opt.value === selectedRental)?.label : 'Rental Options'}
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 12 6"
+                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'rental' ? 'rotate-180' : ''}`}
+                                >
+                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                </svg>
+                            </button>
+                            {activeDropdown === 'rental' && (
+                                <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
+                                    <div className="p-4">
+                                        <h3 className="text-base font-bold text-gray-900 mb-4">Select Rental Option</h3>
+                                        <div className="grid grid-cols-2 gap-2 mb-4">
+                                            {rentalOptions.map((option) => (
+                                                <button
+                                                    key={option.value}
+                                                    onClick={() => setTempSelectedRental(option.value)}
+                                                    className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedRental === option.value
+                                                        ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
+                                                        : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-[#155dfc]'
+                                                        }`}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-3">
                                             <button
-                                                key={city}
-                                                onClick={() => setTempSelectedCity(city)}
-                                                className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedCity === city
-                                                    ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300'
-                                                    }`}
+                                                onClick={handleResetRental}
+                                                className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors border border-gray-200 hover:border-[#155dfc]"
                                             >
-                                                {city}
+                                                Reset
                                             </button>
-                                        ))}
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setShowCityDropdown(false);
-                                                setTempSelectedCity('');
-                                            }}
-                                            className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleApplyFilters}
-                                            className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors"
-                                        >
-                                            Apply Filters
-                                        </button>
+                                            <button
+                                                onClick={handleApplyRentalFilter}
+                                                className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors border border-gray-900 hover:border-[#155dfc]"
+                                            >
+                                                Apply Filters
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                    {/* Make Dropdown */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">Make</span>
+                            )}
                         </div>
-                        <button
-                            onClick={toggleMakeDropdown}
-                            className="appearance-none bg-transparent border-r border-gray-300 pl-3 pr-8 py-2 text-gray-800 text-sm font-medium focus:outline-none w-full h-10 text-left truncate mt-2"
-                        >
-                            {selectedMake || 'Search'}
-                        </button>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
-                        {showMakeDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 min-w-[320px]">
-                                <div className="p-4">
-                                    <h3 className="text-base font-bold text-gray-900 mb-4">Select Make</h3>
-                                    <div className="relative mb-4">
-                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+
+                        {/* Price Filter Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() => toggleDropdown('price')}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                            >
+                                <span className="font-medium">
+                                    {selectedPrice || 'Price Range'}
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 12 6"
+                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'price' ? 'rotate-180' : ''}`}
+                                >
+                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                </svg>
+                            </button>
+                            {activeDropdown === 'price' && (
+                                <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
+                                    <div className="p-4">
+                                        <h3 className="text-base font-bold text-gray-900 mb-4">Set Price Range</h3>
+                                        <div className="space-y-4 mb-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Price (AED)</label>
+                                                <input
+                                                    type="number"
+                                                    placeholder="Enter min price"
+                                                    value={tempMinPrice}
+                                                    onChange={(e) => setTempMinPrice(e.target.value)}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-2">Maximum Price (AED)</label>
+                                                <input
+                                                    type="number"
+                                                    placeholder="Enter max price"
+                                                    value={tempMaxPrice}
+                                                    onChange={(e) => setTempMaxPrice(e.target.value)}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={handleResetPrice}
+                                                className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors border border-gray-200 hover:border-[#155dfc]"
+                                            >
+                                                Reset
+                                            </button>
+                                            <button
+                                                onClick={handleApplyPriceFilter}
+                                                className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors border border-gray-900 hover:border-[#155dfc]"
+                                            >
+                                                Apply Filters
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Sort Filter Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() => toggleDropdown('sort')}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                            >
+                                <span className="font-medium">
+                                    {selectedSort ? sortOptions.find(opt => opt.value === selectedSort)?.label : 'Sort By'}
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 12 6"
+                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'sort' ? 'rotate-180' : ''}`}
+                                >
+                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                </svg>
+                            </button>
+                            {activeDropdown === 'sort' && (
+                                <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
+                                    <div className="p-4">
+                                        <h3 className="text-base font-bold text-gray-900 mb-4">Sort By</h3>
+                                        <div className="grid grid-cols-2 gap-2 mb-4">
+                                            {sortOptions.map((option) => (
+                                                <button
+                                                    key={option.value}
+                                                    onClick={() => setTempSelectedSort(option.value)}
+                                                    className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedSort === option.value
+                                                        ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
+                                                        : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-[#155dfc]'
+                                                        }`}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={handleResetSort}
+                                                className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors border border-gray-200 hover:border-[#155dfc]"
+                                            >
+                                                Reset
+                                            </button>
+                                            <button
+                                                onClick={handleApplySortFilter}
+                                                className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors border border-gray-900 hover:border-[#155dfc]"
+                                            >
+                                                Apply Filters
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Car Type Filter Dropdown */}
+                        <div className="relative">
+                            <button
+                                onClick={() => toggleDropdown('cartype')}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                            >
+                                <span className="font-medium">
+                                    {selectedCarType ? carTypeOptions.find(opt => opt.value === selectedCarType)?.label : 'Car Type'}
+                                </span>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 12 6"
+                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'cartype' ? 'rotate-180' : ''}`}
+                                >
+                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                </svg>
+                            </button>
+                            {activeDropdown === 'cartype' && (
+                                <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
+                                    <div className="p-4">
+                                        <h3 className="text-base font-bold text-gray-900 mb-4">Select Car Type</h3>
+                                        <div className="grid grid-cols-2 gap-2 mb-4">
+                                            {carTypeOptions.map((option) => (
+                                                <button
+                                                    key={option.value}
+                                                    onClick={() => setTempSelectedCarType(option.value)}
+                                                    className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedCarType === option.value
+                                                        ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
+                                                        : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-[#155dfc]'
+                                                        }`}
+                                                >
+                                                    {option.label}
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={handleResetCarType}
+                                                className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors border border-gray-200 hover:border-[#155dfc]"
+                                            >
+                                                Reset
+                                            </button>
+                                            <button
+                                                onClick={handleApplyCarTypeFilter}
+                                                className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors border border-gray-900 hover:border-[#155dfc]"
+                                            >
+                                                Apply Filters
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* More Filters Button */}
+                        <div className="relative">
+                            <button
+                                onClick={() => setShowMoreFilters(true)}
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                            >
+                                <span className="font-medium">More Filters</span>
+                                <SlidersHorizontal className="w-4 h-4" />
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Click outside to close dropdowns */}
+                    {activeDropdown && (
+                        <div
+                            className="fixed inset-0 z-0"
+                            onClick={() => setActiveDropdown(null)}
+                        />
+                    )}
+                </div>
+            </section>
+
+            {/* More Filters Sliding Panel */}
+            {showMoreFilters && (
+                <div className="fixed inset-0 z-50 flex" role="dialog" aria-modal="true">
+                    {/* Backdrop */}
+                    <div
+                        className="flex-1 backdrop-blur-sm"
+                        onClick={() => setShowMoreFilters(false)}
+                    />
+
+                    {/* Sliding Panel */}
+                    <div
+                        className={`w-96 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${showMoreFilters ? 'translate-x-0' : 'translate-x-full'}`}
+                    >
+                        <div className="h-full flex flex-col">
+                            {/* Header */}
+                            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                                <h2 className="text-xl font-bold text-gray-900">More Filters</h2>
+                                <button
+                                    onClick={() => setShowMoreFilters(false)}
+                                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                >
+                                    <X className="w-5 h-5 text-gray-500" />
+                                </button>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                                {/* Location */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Location</label>
+                                    <select
+                                        value={moreFiltersData.location}
+                                        onChange={(e) => handleMoreFiltersChange('location', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Location</option>
+                                        {locationOptions.map((location, index) => (
+                                            <option key={index} value={location}>{location}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Car Brand / Model */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Car Brand / Model</label>
+                                    <select
+                                        value={moreFiltersData.carBrand}
+                                        onChange={(e) => handleMoreFiltersChange('carBrand', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Brand</option>
+                                        {carBrands.map((brand, index) => (
+                                            <option key={index} value={brand}>{brand}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Model Year */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Model Year</label>
+                                    <select
+                                        value={moreFiltersData.modelYear}
+                                        onChange={(e) => handleMoreFiltersChange('modelYear', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Year</option>
+                                        {modelYears.map((year, index) => (
+                                            <option key={index} value={year}>{year}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* No. of Seats */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">No. of Seats</label>
+                                    <select
+                                        value={moreFiltersData.seats}
+                                        onChange={(e) => handleMoreFiltersChange('seats', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Seats</option>
+                                        {seatOptions.map((seat, index) => (
+                                            <option key={index} value={seat}>{seat}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Vehicle Type */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Vehicle Type</label>
+                                    <select
+                                        value={moreFiltersData.vehicleType}
+                                        onChange={(e) => handleMoreFiltersChange('vehicleType', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Type</option>
+                                        {vehicleTypes.map((type, index) => (
+                                            <option key={index} value={type}>{type}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Price Range */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Price Range (AED)</label>
+                                    <div className="flex gap-2">
                                         <input
-                                            type="text"
-                                            placeholder="Search makes..."
-                                            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                            value={searchMakeQuery}
-                                            onChange={(e) => setSearchMakeQuery(e.target.value)}
+                                            type="number"
+                                            placeholder="Min"
+                                            value={moreFiltersData.priceRange.min}
+                                            onChange={(e) => handleMoreFiltersChange('priceRange', { ...moreFiltersData.priceRange, min: e.target.value })}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        />
+                                        <input
+                                            type="number"
+                                            placeholder="Max"
+                                            value={moreFiltersData.priceRange.max}
+                                            onChange={(e) => handleMoreFiltersChange('priceRange', { ...moreFiltersData.priceRange, max: e.target.value })}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
                                         />
                                     </div>
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
-                                        {filteredMakes.map((make) => (
-                                            <button
-                                                key={make.name}
-                                                onClick={() => setTempSelectedMake(make.name)}
-                                                className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedMake === make.name
-                                                    ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                {make.name} ({make.count})
-                                            </button>
+                                </div>
+
+                                {/* Rental Period */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Rental Period</label>
+                                    <select
+                                        value={moreFiltersData.rentalPeriod}
+                                        onChange={(e) => handleMoreFiltersChange('rentalPeriod', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Period</option>
+                                        {rentalPeriods.map((period, index) => (
+                                            <option key={index} value={period}>{period}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Car Features */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Car Features</label>
+                                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                                        {carFeatures.map((feature, index) => (
+                                            <label key={index} className="flex items-center space-x-2 cursor-pointer">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={moreFiltersData.carFeatures.includes(feature)}
+                                                    onChange={() => handleFeatureToggle(feature)}
+                                                    className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                                />
+                                                <span className="text-sm text-gray-700">{feature}</span>
+                                            </label>
                                         ))}
                                     </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setShowMakeDropdown(false);
-                                                setSearchMakeQuery('');
-                                            }}
-                                            className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleApplyMakeFilter}
-                                            className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors"
-                                        >
-                                            Apply Filters
-                                        </button>
-                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                    {/* Price Dropdown */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">Price (AED)</span>
-                        </div>
-                        <button
-                            onClick={togglePriceDropdown}
-                            className="appearance-none bg-transparent border-r border-gray-300 pl-3 pr-8 py-2 text-gray-800 text-sm font-medium focus:outline-none w-full h-10 text-left truncate mt-2"
-                        >
-                            {selectedPrice || 'Select'}
-                        </button>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
-                        {showPriceDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 min-w-[320px]">
-                                <div className="p-4">
-                                    <h3 className="text-base font-bold text-gray-900 mb-4">Select Price Range</h3>
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
-                                        {priceRanges.map((range) => (
-                                            <button
-                                                key={range.value}
-                                                onClick={() => setTempSelectedPrice(range.value)}
-                                                className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedPrice === range.value
-                                                    ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                {range.label}
-                                            </button>
+
+                                {/* Payment Mode */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Payment Mode</label>
+                                    <select
+                                        value={moreFiltersData.paymentMode}
+                                        onChange={(e) => handleMoreFiltersChange('paymentMode', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Payment Mode</option>
+                                        {paymentModes.map((mode, index) => (
+                                            <option key={index} value={mode}>{mode}</option>
                                         ))}
-                                    </div>
-                                    <div className="mb-6">
-                                        <div className="flex justify-between mb-2">
-                                            <span className="text-xs font-medium">Min: {priceRange[0]} AED</span>
-                                            <span className="text-xs font-medium">Max: {priceRange[1]} AED</span>
-                                        </div>
-                                        <div className="flex items-center space-x-4">
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="1000"
-                                                value={priceRange[0]}
-                                                onChange={(e) => handlePriceRangeChange(e, 0)}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                            />
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="1000"
-                                                value={priceRange[1]}
-                                                onChange={(e) => handlePriceRangeChange(e, 1)}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setShowPriceDropdown(false);
-                                                setTempSelectedPrice('');
-                                            }}
-                                            className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleApplyPriceFilter}
-                                            className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors"
-                                        >
-                                            Apply Filters
-                                        </button>
-                                    </div>
+                                    </select>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                    {/* Rental Options Dropdown */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">Rental Options</span>
-                        </div>
-                        <button
-                            onClick={toggleRentalDropdown}
-                            className="appearance-none bg-transparent border-r border-gray-300 pl-3 pr-8 py-2 text-gray-800 text-sm font-medium focus:outline-none w-full h-10 text-left truncate mt-2"
-                        >
-                            {selectedRental ? rentalOptions.find(opt => opt.value === selectedRental)?.label : 'Select'}
-                        </button>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
-                        {showRentalDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 min-w-[320px]">
-                                <div className="p-4">
-                                    <h3 className="text-base font-bold text-gray-900 mb-4">Select Rental Option</h3>
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
-                                        {rentalOptions.map((option) => (
-                                            <button
-                                                key={option.value}
-                                                onClick={() => setTempSelectedRental(option.value)}
-                                                className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedRental === option.value
-                                                    ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                {option.label}
-                                            </button>
+
+                                {/* Transmission */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Transmission</label>
+                                    <select
+                                        value={moreFiltersData.transmission}
+                                        onChange={(e) => handleMoreFiltersChange('transmission', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Transmission</option>
+                                        {transmissionTypes.map((type, index) => (
+                                            <option key={index} value={type}>{type}</option>
                                         ))}
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setShowRentalDropdown(false);
-                                                setTempSelectedRental('');
-                                            }}
-                                            className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleApplyRentalFilter}
-                                            className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors"
-                                        >
-                                            Apply Filters
-                                        </button>
-                                    </div>
+                                    </select>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                    {/* Year Dropdown */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">Year</span>
-                        </div>
-                        <button
-                            onClick={toggleYearDropdown}
-                            className="appearance-none bg-transparent border-r border-gray-300 pl-3 pr-8 py-2 text-gray-800 text-sm font-medium focus:outline-none w-full h-10 text-left truncate mt-2"
-                        >
-                            {selectedYear || 'Select'}
-                        </button>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
-                        {showYearDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 min-w-[320px]">
-                                <div className="p-4">
-                                    <h3 className="text-base font-bold text-gray-900 mb-4">Select Year Range</h3>
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
-                                        {years.map((year) => (
-                                            <button
-                                                key={year}
-                                                onClick={() => setTempSelectedYear(year)}
-                                                className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedYear === year
-                                                    ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                {year}
-                                            </button>
+
+                                {/* Fuel Type */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Fuel Type</label>
+                                    <select
+                                        value={moreFiltersData.fuelType}
+                                        onChange={(e) => handleMoreFiltersChange('fuelType', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Fuel Type</option>
+                                        {fuelTypes.map((type, index) => (
+                                            <option key={index} value={type}>{type}</option>
                                         ))}
-                                    </div>
-                                    <div className="mb-6">
-                                        <div className="flex justify-between mb-2">
-                                            <span className="text-xs font-medium">Min: {yearRange[0]}</span>
-                                            <span className="text-xs font-medium">Max: {yearRange[1]}</span>
-                                        </div>
-                                        <div className="flex items-center space-x-4">
-                                            <input
-                                                type="range"
-                                                min="2021"
-                                                max="2024"
-                                                value={yearRange[0]}
-                                                onChange={(e) => handleYearRangeChange(e, 0)}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                            />
-                                            <input
-                                                type="range"
-                                                min="2021"
-                                                max="2024"
-                                                value={yearRange[1]}
-                                                onChange={(e) => handleYearRangeChange(e, 1)}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setShowYearDropdown(false);
-                                                setTempSelectedYear('');
-                                            }}
-                                            className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleApplyYearFilter}
-                                            className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors"
-                                        >
-                                            Apply Filters
-                                        </button>
-                                    </div>
+                                    </select>
                                 </div>
-                            </div>
-                        )}
-                    </div>
-                    {/* Kilometers Dropdown */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">Kilometers</span>
-                        </div>
-                        <button
-                            onClick={toggleKmsDropdown}
-                            className="appearance-none bg-transparent border-r border-gray-300 pl-3 pr-8 py-2 text-gray-800 text-sm font-medium focus:outline-none w-full h-10 text-left truncate mt-2"
-                        >
-                            {selectedKms ? kms.find(km => km.value === selectedKms)?.label : 'Select'}
-                        </button>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
-                        {showKmsDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 min-w-[320px]">
-                                <div className="p-4">
-                                    <h3 className="text-base font-bold text-gray-900 mb-4">Select Kilometers Range</h3>
-                                    <div className="grid grid-cols-2 gap-2 mb-4">
-                                        {kms.map((km) => (
-                                            <button
-                                                key={km.value}
-                                                onClick={() => setTempSelectedKms(km.value)}
-                                                className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all duration-200 ${tempSelectedKms === km.value
-                                                    ? 'bg-blue-500 border-blue-500 text-white shadow-sm'
-                                                    : 'bg-gray-50 border-gray-200 text-gray-800 hover:bg-gray-100 hover:border-gray-300'
-                                                    }`}
-                                            >
-                                                {km.label}
-                                            </button>
+
+                                {/* Car Colors */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Car Colors</label>
+                                    <select
+                                        value={moreFiltersData.carColor}
+                                        onChange={(e) => handleMoreFiltersChange('carColor', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Color</option>
+                                        {carColors.map((color, index) => (
+                                            <option key={index} value={color}>{color}</option>
                                         ))}
-                                    </div>
-                                    <div className="mb-6">
-                                        <div className="flex justify-between mb-2">
-                                            <span className="text-xs font-medium">Min: {kmsRange[0]} km</span>
-                                            <span className="text-xs font-medium">Max: {kmsRange[1]} km</span>
-                                        </div>
-                                        <div className="flex items-center space-x-4">
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="100000"
-                                                value={kmsRange[0]}
-                                                onChange={(e) => handleKmsRangeChange(e, 0)}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                            />
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="100000"
-                                                value={kmsRange[1]}
-                                                onChange={(e) => handleKmsRangeChange(e, 1)}
-                                                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-3">
-                                        <button
-                                            onClick={() => {
-                                                setShowKmsDropdown(false);
-                                                setTempSelectedKms('');
-                                            }}
-                                            className="flex-1 bg-gray-100 text-gray-800 py-3 rounded-xl font-medium text-xs hover:bg-gray-200 transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            onClick={handleApplyKmsFilter}
-                                            className="flex-1 bg-gray-900 text-white py-3 rounded-xl font-medium text-xs hover:bg-black transition-colors"
-                                        >
-                                            Apply Filters
-                                        </button>
-                                    </div>
+                                    </select>
+                                </div>
+
+                                {/* Minimum Required Age */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Minimum Required Age</label>
+                                    <select
+                                        value={moreFiltersData.minAge}
+                                        onChange={(e) => handleMoreFiltersChange('minAge', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Age</option>
+                                        {minAges.map((age, index) => (
+                                            <option key={index} value={age}>{age}+ years</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                {/* Sort By */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Sort By</label>
+                                    <select
+                                        value={moreFiltersData.sortBy}
+                                        onChange={(e) => handleMoreFiltersChange('sortBy', e.target.value)}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        <option value="">Select Sort Option</option>
+                                        {sortByOptions.map((option, index) => (
+                                            <option key={index} value={option}>{option}</option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
-                        )}
-                    </div>
-                    {/* Filters */}
-                    <div className="group relative w-40 hover:bg-gray-100 transition-all duration-200 rounded-lg">
-                        <div className="absolute -top-0.5 left-2 group-hover:bg-transparent bg-white px-1 text-xs text-gray-700 font-medium z-10">
-                            <span className="relative top-[1px]">Filters</span>
+
+                            {/* Footer */}
+                            <div className="p-6 border-t border-gray-200 bg-gray-50">
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={handleMoreFiltersReset}
+                                        className="flex-1 px-4 py-3 bg-white text-gray-700 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 hover:border-[#155dfc] transition-colors"
+                                    >
+                                        Reset All
+                                    </button>
+                                    <button
+                                        onClick={handleMoreFiltersApply}
+                                        className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 hover:border-[#155dfc] transition-colors border border-blue-600"
+                                    >
+                                        Apply Filters
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <select
-                            value={selectedFilters}
-                            onChange={(e) => setSelectedFilters(e.target.value)}
-                            className="appearance-none bg-transparent px-3 py-2 pr-8 text-gray-600 text-sm focus:outline-none w-full h-10 mt-2"
-                        >
-                            <option value="">Year, Body Type, etc</option>
-                            <option value="2024">2024</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Sedan">Sedan</option>
-                        </select>
-                        <ChevronDown className="absolute right-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-700 pointer-events-none" />
                     </div>
                 </div>
-            </div>
-            <div className="flex items-center gap-2 mb-6 mt-8 text-sm ml-9 ">
-                <a href="#" className="text-blue-600 hover:underline">Home</a>
-                <span className="text-gray-400">›</span>
-                <a href="#" className="text-blue-600 hover:underline">Dubai</a>
-                <span className="text-gray-400">›</span>
-                <span className="text-gray-600">Economy Cars</span>
-            </div>
-            <h1 className="text-2xl font-semibold text-gray-900 ml-9 ">
-                Cars for Rent in Dubai <span className="text-gray-500 font-normal">• 1,651 Ads</span>
-            </h1>
-            <div className="px-8 py-2">
-                <div className="flex justify-between items-center mb-6"></div>
-                <div className="flex flex-wrap items-center gap-3 mb-6">
-                    {carBrands.map((brand) => (
-                        <button
-                            key={brand.name}
-                            className="
-                                inline-flex items-center gap-2
-                                px-4 py-2 text-xs font-semibold text-blue-600
-                                border border-blue-600 rounded-full
-                                hover:bg-blue-50 hover:text-blue-700
-                                transition-all duration-200
-                            "
-                            onClick={() => setTempSelectedMake(brand.name)}
-                        >
-                            {brand.name} ({brand.count})
-                        </button>
-                    ))}
-                </div>
-            </div>
-        </div >
+            )}
+        </>
     );
 };
 
-export default FilterSection;
+export default CarFilterSection;

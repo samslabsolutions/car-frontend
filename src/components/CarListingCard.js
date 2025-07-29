@@ -1,7 +1,10 @@
 'use client';
 import React, { useState } from 'react';
-import { Heart, Phone, MessageCircle, Users, Settings, Fuel, ChevronLeft, ChevronRight, MapPin, CheckCircle } from 'lucide-react';
+import { Heart, Phone, CheckCircle, MessageCircle, Users, Settings, MapPin, Mail, ChevronLeft, ChevronRight } from 'lucide-react';
+// Import the separate pagination component
+import Pagination from '../components/Pagination'; // Adjust path as needed
 
+// Car Listing Card Component
 const CarListingCard = ({ car }) => {
     const [isLiked, setIsLiked] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,11 +24,11 @@ const CarListingCard = ({ car }) => {
     const formatPrice = (price) => price.toLocaleString();
 
     return (
-        <div className="bg-white rounded-2xl h-62 shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-500 mb-6">
+        <article className="rounded-lg border border-gray-200 overflow-hidden transition-all duration-300 mb-6">
             <div className="flex">
                 {/* Image Section */}
-                <div className="relative w-80 h-62 flex-shrink-0 group">
-                    <div className="relative h-full overflow-hidden">
+                <div className="relative w-[360px] h-[343px] flex-shrink-0 group">
+                    <div className="relative h-full w-full overflow-hidden">
                         <img
                             src={car.images[currentImageIndex]}
                             alt={car.title}
@@ -33,27 +36,29 @@ const CarListingCard = ({ car }) => {
                         />
                     </div>
 
-                    {/* Featured Badge */}
-                    {car.featured && (
-                        <div className="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                            FEATURED
-                        </div>
-                    )}
+                    {/* Badges Container */}
+                    <div className="absolute top-4 left-4 flex gap-2">
+                        {car.featured && (
+                            <div className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                                FEATURED
+                            </div>
+                        )}
+                    </div>
 
                     {/* Navigation Arrows */}
                     {car.images.length > 1 && (
                         <>
                             <button
                                 onClick={() => handleImageChange('prev')}
-                                className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
+                                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
                             >
-                                <ChevronLeft className="w-5 h-5" />
+                                <ChevronLeft className="w-4 h-4" />
                             </button>
                             <button
                                 onClick={() => handleImageChange('next')}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
+                                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
                             >
-                                <ChevronRight className="w-5 h-5" />
+                                <ChevronRight className="w-4 h-4" />
                             </button>
                         </>
                     )}
@@ -61,9 +66,9 @@ const CarListingCard = ({ car }) => {
                     {/* Heart Button */}
                     <button
                         onClick={toggleLike}
-                        className="absolute top-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center hover:bg-gray-50 transition-colors shadow-sm"
+                        className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-sm"
                     >
-                        <Heart className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} />
+                        <Heart className={`w-5 h-5 ${isLiked ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} />
                     </button>
 
                     {/* Image Dots */}
@@ -81,203 +86,193 @@ const CarListingCard = ({ car }) => {
                 </div>
 
                 {/* Content Section */}
-                <div className="flex-1 p-6">
-                    <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                            {/* Category and Title */}
-                            <div className="text-blue-600 text-sm font-medium mb-1">{car.category}</div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-3 leading-tight">{car.title}</h3>
-
-                            {/* Car Specs */}
-                            <div className="flex items-center space-x-6 mb-4">
-                                <div className="flex items-center space-x-1.5 text-gray-600">
-                                    <Users className="w-4 h-4" />
-                                    <span className="text-sm">{car.specs.seats}</span>
-                                </div>
-                                <div className="flex items-center space-x-1.5 text-gray-600">
-                                    <Settings className="w-4 h-4" />
-                                    <span className="text-sm">{car.specs.doors}</span>
-                                </div>
-                                <div className="flex items-center space-x-1.5 text-gray-600">
-                                    <Fuel className="w-4 h-4" />
-                                    <span className="text-sm">{car.specs.fuel}</span>
-                                </div>
-                                <div className="text-sm text-gray-600">{car.year}</div>
+                <div className="flex-1 p-6 flex flex-col">
+                    {/* Price Section */}
+                    <div className="mb-4 flex gap-8 items-center">
+                        {car.pricing.daily && (
+                            <div className="flex items-baseline gap-1">
+                                <h4 className="text-lg font-semibold text-gray-900">
+                                    <span className="text-sm">AED</span> {formatPrice(car.pricing.daily)}
+                                </h4>
+                                <span className="text-sm text-gray-500">/day</span>
                             </div>
-
-                            {/* Features */}
-                            <div className="flex items-center gap-6 mb-4 text-sm">
-                                <div className="flex items-center gap-1 text-green-600">
-                                    <CheckCircle className="w-4 h-4" />
-                                    <span className="whitespace-nowrap">{car.availability}</span>
-                                </div>
-                                <div className="flex items-center gap-1 text-green-600">
-                                    <CheckCircle className="w-4 h-4" />
-                                    <span className="whitespace-nowrap">{car.insurance}</span>
-                                </div>
+                        )}
+                        {car.pricing.monthly && (
+                            <div className="flex items-baseline gap-1">
+                                <h4 className="text-lg font-semibold text-gray-900">
+                                    <span className="text-sm">AED</span> {formatPrice(car.pricing.monthly)}
+                                </h4>
+                                <span className="text-sm text-gray-500">/monthly</span>
                             </div>
+                        )}
+                    </div>
 
 
-                            {/* Location */}
-                            <div className="flex items-center gap-1 text-sm text-gray-600 mb-4">
-                                <MapPin className="w-4 h-4" />
-                                {car.location}
-                            </div>
 
-                            {/* Action Buttons and Dealer */}
-                            <div className="flex items-center justify-between">
-                                <div className="flex gap-2">
-                                    <button className="w-10 h-10 bg-purple-100 hover:bg-purple-200 text-purple-600 rounded-lg flex items-center justify-center transition-colors">
-                                        <Phone className="w-4 h-4" />
-                                    </button>
-                                    <button className="w-10 h-10 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg flex items-center justify-center transition-colors">
-                                        <MessageCircle className="w-4 h-4" />
-                                    </button>
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center">
-                                        <span className="text-white font-bold text-xs">{car.dealer.name.charAt(0)}</span>
-                                    </div>
-                                    <span className="text-sm font-medium text-gray-900">{car.dealer.name}</span>
-                                </div>
-                            </div>
+                    {/* Car Details */}
+                    <div className="flex items-center gap-4 mb-4 text-sm">
+                        <div className="flex items-center">
+                            <span className=" text-black-500 font-medium">{car.category}</span>
                         </div>
+                        <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                        <div className="flex items-center gap-1">
+                            <Users className="w-4 h-4  text-black-500" />
+                            <span className=" text-black-500">{car.specs.seats}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Settings className="w-4 h-4  text-black-500" />
+                            <span className=" text-black-500">{car.specs.doors}</span>
+                        </div>
+                        <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+                        <div className="flex items-center">
+                            <Settings className="w-4 h-4  text-black-500" />
+                            <span className=" text-black-500 ml-1">{car.specs.fuel}L</span>
+                        </div>
+                    </div>
 
-                        {/* Pricing Section */}
-                        <div className="ml-6 text-right">
-                            <div className="mb-4">
-                                <div className="mb-2">
-                                    <span className="text-2xl font-bold text-blue-600">AED {formatPrice(car.pricing.daily)}</span>
-                                    <span className="text-gray-500 text-sm">/day</span>
-                                </div>
-                                <div>
-                                    <span className="text-lg font-semibold text-gray-900">AED {formatPrice(car.pricing.weekly)}</span>
-                                    <span className="text-gray-500 text-sm">/week</span>
+                    {/* Title */}
+                    <h2 className="text-xl font-medium text-gray-900 mb-3 ">
+                        {car.title}
+                    </h2>
+
+                    {/* Location */}
+                    <div className="flex items-center gap-2 mb-4">
+                        <MapPin className="w-4 h-4 text-black-500" />
+                        <h3 className=" text-black-500 text-[15px]  ">{car.location}</h3>
+                    </div>
+
+                    <div className="mb-5 space-y-1 text-sm text-gray-700">
+                        <div className="flex items-center gap-2">
+                            <CheckCircle className="text-green-600 w-4 h-4" />
+                            <span>Free Delivery</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <CheckCircle className="text-green-600 w-4 h-4" />
+                            <span>2 days rental available</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <CheckCircle className="text-green-600 w-4 h-4" />
+                            <span>Insurance included</span>
+                        </div>
+                    </div>
+
+                    {/* Action Buttons and Agency */}
+                    <div className="mt-auto">
+                        <div className="flex items-center justify-between">
+                            {/* Updated Buttons with exact styling from image */}
+                            <div className="flex gap-2 mt-2">
+                                {/* Call Button with hover */}
+                                <button className="flex items-center justify-center gap-2 bg-[#155dfc] hover:bg-[#003fcc] text-white px-3 py-2 rounded-sm text-sm font-medium h-[40px] min-w-[90px] transition-colors duration-200">
+                                    <Phone className="w-4 h-4" />
+                                    Call
+                                </button>
+
+                                {/* WhatsApp Button with hover */}
+                                <button className="flex items-center justify-center bg-[#25D366] hover:bg-[#1da851] text-white px-4 py-2 rounded-sm text-sm font-medium h-[40px] min-w-[90px] transition-colors duration-200">
+                                    <MessageCircle className="w-6 h-6" />
+                                </button>
+                            </div>
+
+
+
+                            {/* Agency Logo */}
+                            <div className="flex items-center mt-2">
+                                <div className="w-12 h-9 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+                                    <span className="text-xs font-bold text-gray-600">{car.dealer.name}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </article>
     );
 };
 
-// Sample car data adapted to your structure
+// Sample car data
 const sampleCars = [
     {
         id: 1,
         images: [
             "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
         ],
         featured: true,
-        year: 2024,
         category: "Sedan",
-        title: "Honda Accord 2.0 Turbo",
+        title: "Honda Accord 2024",
         specs: { seats: 5, doors: 4, fuel: 3 },
-        pricing: { daily: 34402, weekly: 68804 },
-        dealer: { name: "MS", logo: "/dollar-logo.png", rating: 4.8, reviews: 324 },
-        availability: '1 day rental available',
-        insurance: 'Basic Insurance',
-        location: 'Palm Jumeirah, Dubai'
+        pricing: {
+            daily: 3945000,
+            monthly: 7900000, // ✅ Added monthly price
+        },
+        dealer: { name: "ARADA" },
+        location: 'Akala Hotels and Residences, DIFC, Dubai'
     },
-    {
-        id: 2,
+    // Add more cars here...
+    ...Array.from({ length: 25 }, (_, i) => ({
+        id: i + 2,
         images: [
-            "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            "https://images.unsplash.com/photo-1494905998402-395d579af36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
         ],
-        featured: true,
-        year: 2017,
-        category: "Hatchback",
-        title: "Honda Civic 1.5 Turbo",
-        specs: { seats: 4, doors: 2, fuel: 4 },
-        pricing: { daily: 27701, weekly: 55403 },
-        dealer: { name: "RC", logo: "/dollar-logo.png", rating: 4.9, reviews: 189 },
-        availability: 'Available now',
-        insurance: 'Full Insurance',
-        location: 'Dubai Marina, Dubai'
-    },
-    {
-        id: 3,
-        images: [
-            "https://images.unsplash.com/photo-1494905998402-395d579af36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2018,
-        category: "SUV",
-        title: "Jeep Wrangler 2024",
-        specs: { seats: 7, doors: 4, fuel: 4 },
-        pricing: { daily: 28740, weekly: 57480 },
-        dealer: { name: "LX", logo: "/dollar-logo.png", rating: 4.7, reviews: 267 },
-        availability: '2 day rental available',
-        insurance: 'Comprehensive Insurance',
-        location: 'Business Bay, Dubai'
-    },
-    {
-        id: 4,
-        images: [
-            "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1541348263662-e068671d90af?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2022,
-        category: "SUV",
-        title: "Toyota RAV4 Hybrid",
-        specs: { seats: 5, doors: 4, fuel: 5 },
-        pricing: { daily: 32000, weekly: 64000 },
-        dealer: { name: "TR", logo: "/dollar-logo.png", rating: 4.6, reviews: 215 },
-        availability: 'Available now',
-        insurance: 'Basic Insurance',
-        location: 'Jumeirah, Dubai'
-    },
-    {
-        id: 5,
-        images: [
-            "https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&auto=format&fit=crop&w=2064&q=80",
-            "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2023,
-        category: "Luxury",
-        title: "BMW 3 Series",
+        featured: i % 3 === 0,
+        category: ["SUV", "Sedan", "Hatchback", "Luxury"][i % 4],
+        title: `Car Model ${i + 2}`,
         specs: { seats: 5, doors: 4, fuel: 4 },
-        pricing: { daily: 45000, weekly: 90000 },
-        dealer: { name: "BM", logo: "/dollar-logo.png", rating: 4.9, reviews: 412 },
-        availability: 'Available now',
-        insurance: 'Premium Insurance',
-        location: 'Downtown Dubai'
-    }
+        pricing: {
+            daily: 345,
+            monthly: 790, // ✅ Added monthly price
+        },
+        dealer: { name: ["ARADA", "EMAAR", "DAMAC", "SOBHA"][i % 4] },
+        location: 'Dubai, UAE'
+    }))
 ];
 
-// Main component to display cards with sticky sidebar
+// Main component with pagination
 const CarListingGrid = () => {
-    const formatPrice = (price) => price.toLocaleString();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+    const totalItems = sampleCars.length;
+
+    // Calculate current items to display
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentCars = sampleCars.slice(startIndex, endIndex);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        // Scroll to top when page changes
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
-        <div className="p-8  min-h-screen">
-            <div className="max-w-7xl mx-auto flex gap-12">
+        <div className="mr-5 pr-6 py-6 bg-white min-h-screen">
+            <div className="max-w-6xl mx-auto flex gap-6">
                 {/* Car Listings - Left Side */}
                 <div className="flex-1">
-
-                    <div className="space-y-0">
-                        {sampleCars.map((car) => (
-                            <CarListingCard key={car.id} car={car} />
+                    <div className="space-y-4">
+                        {currentCars.map((car) => (
+                            <div key={car.id} className="max-w-full w-[800px] mx-auto">
+                                <CarListingCard car={car} />
+                            </div>
                         ))}
                     </div>
+
+                    {/* Using the imported Pagination component */}
+                    <Pagination
+                        currentPage={currentPage}
+                        totalItems={totalItems}
+                        itemsPerPage={itemsPerPage}
+                        onPageChange={handlePageChange}
+                    />
                 </div>
 
                 {/* Sticky Sidebar - Right Side */}
-                <div className="w-74 flex-shrink-0">
-                    <div className="sticky top-8">
+                <div className="w-[360px]  flex-shrink-0 ml-3">
+                    <div className="sticky top-6">
                         <img
                             src="https://auto-deal-rho.vercel.app/assets/images/section/Vertical-Banner.jpg"
                             alt="Vertical Banner"
-                            className="w-full h-auto rounded-lg shadow-lg"
+                            className="w-full h-[500px] object-cover rounded-lg shadow-lg"
                         />
                     </div>
                 </div>
