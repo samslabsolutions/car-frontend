@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useState } from 'react';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 
@@ -216,21 +216,32 @@ const CarFilterSection = () => {
     return (
         <>
             <section className="py-8 mt-20">
+                <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+                <style>{`
+                    h2, h3, p, span, button, input, label, select {
+                        font-family: 'Poppins', sans-serif;
+                    }
+                    button.font-semibold, label.font-semibold, span.font-semibold, input.font-semibold::placeholder {
+                        font-weight: 400;
+                        color: #222222;
+                        font-size: 15px;
+                    }
+                `}</style>
                 <div className="w-full max-w-[1230px] px-4 mx-auto">
                     <div className="flex flex-wrap items-center gap-3 bg-white">
                         {/* Buy Dropdown */}
                         <div className="relative">
                             <button
                                 onClick={() => toggleDropdown('buy')}
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[100px] border border-[#dedede] hover:border-[#155dfc]"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[100px] border border-[#dedede] hover:border-[#155dfc] font-semibold"
                             >
-                                <span className="font-medium">{selectedFilters.transactionType}</span>
+                                <span className="font-semibold">{selectedFilters.transactionType}</span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 12 6"
-                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'buy' ? 'rotate-180' : ''}`}
+                                    viewBox="0 0 12 7"
+                                    className={`w-[12px] h-[7px] transition-transform duration-200 ${activeDropdown === 'buy' ? 'rotate-180' : ''}`}
                                 >
-                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                    <path className="fill-gray-500" d="M12 7L6 0 0 7h12z" />
                                 </svg>
                             </button>
                         </div>
@@ -238,13 +249,13 @@ const CarFilterSection = () => {
                         {/* Location Input */}
                         <div className="relative flex-1 min-w-[215px] max-w-[530px]">
                             <div className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white border border-[#dedede] hover:border-[#155dfc] transition-colors">
-                                <Search className="w-4 h-4 text-gray-500" />
+                                <Search className="w-[17px] h-[17px] text-gray-500" />
                                 <input
                                     type="text"
                                     placeholder="Search the car name"
                                     value={selectedFilters.location}
                                     onChange={(e) => setSelectedFilters(prev => ({ ...prev, location: e.target.value }))}
-                                    className="flex-1 outline-none text-gray-700 placeholder-gray-500"
+                                    className="flex-1 outline-none text-gray-700 placeholder-gray-500 font-semibold"
                                 />
                             </div>
                         </div>
@@ -253,23 +264,23 @@ const CarFilterSection = () => {
                         <div className="relative">
                             <button
                                 onClick={() => toggleDropdown('rental')}
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc] font-semibold"
                             >
-                                <span className="font-medium">
+                                <span className="font-semibold">
                                     {selectedRental ? rentalOptions.find(opt => opt.value === selectedRental)?.label : 'Rental Options'}
                                 </span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 12 6"
-                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'rental' ? 'rotate-180' : ''}`}
+                                    viewBox="0 0 12 7"
+                                    className={`w-[12px] h-[7px] transition-transform duration-200 ${activeDropdown === 'rental' ? 'rotate-180' : ''}`}
                                 >
-                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                    <path className="fill-gray-500" d="M12 7L6 0 0 7h12z" />
                                 </svg>
                             </button>
                             {activeDropdown === 'rental' && (
                                 <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
                                     <div className="p-4">
-                                        <h3 className="text-base font-bold text-gray-900 mb-4">Select Rental Option</h3>
+                                        <h3 className="text-base font-semibold text-gray-900 mb-4">Select Rental Option</h3>
                                         <div className="grid grid-cols-2 gap-2 mb-4">
                                             {rentalOptions.map((option) => (
                                                 <button
@@ -307,26 +318,26 @@ const CarFilterSection = () => {
                         <div className="relative">
                             <button
                                 onClick={() => toggleDropdown('price')}
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc] font-semibold"
                             >
-                                <span className="font-medium">
+                                <span className="font-semibold">
                                     {selectedPrice || 'Price Range'}
                                 </span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 12 6"
-                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'price' ? 'rotate-180' : ''}`}
+                                    viewBox="0 0 12 7"
+                                    className={`w-[12px] h-[7px] transition-transform duration-200 ${activeDropdown === 'price' ? 'rotate-180' : ''}`}
                                 >
-                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                    <path className="fill-gray-500" d="M12 7L6 0 0 7h12z" />
                                 </svg>
                             </button>
                             {activeDropdown === 'price' && (
                                 <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
                                     <div className="p-4">
-                                        <h3 className="text-base font-bold text-gray-900 mb-4">Set Price Range</h3>
+                                        <h3 className="text-base font-semibold text-gray-900 mb-4">Set Price Range</h3>
                                         <div className="space-y-4 mb-4">
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">Minimum Price (AED)</label>
+                                                <label className="block text-sm font-semibold text-gray-900 mb-2">Minimum Price (AED)</label>
                                                 <input
                                                     type="number"
                                                     placeholder="Enter min price"
@@ -336,7 +347,7 @@ const CarFilterSection = () => {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">Maximum Price (AED)</label>
+                                                <label className="block text-sm font-semibold text-gray-900 mb-2">Maximum Price (AED)</label>
                                                 <input
                                                     type="number"
                                                     placeholder="Enter max price"
@@ -369,23 +380,23 @@ const CarFilterSection = () => {
                         <div className="relative">
                             <button
                                 onClick={() => toggleDropdown('sort')}
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc] font-semibold"
                             >
-                                <span className="font-medium">
+                                <span className="font-semibold">
                                     {selectedSort ? sortOptions.find(opt => opt.value === selectedSort)?.label : 'Sort By'}
                                 </span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 12 6"
-                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'sort' ? 'rotate-180' : ''}`}
+                                    viewBox="0 0 12 7"
+                                    className={`w-[12px] h-[7px] transition-transform duration-200 ${activeDropdown === 'sort' ? 'rotate-180' : ''}`}
                                 >
-                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                    <path className="fill-gray-500" d="M12 7L6 0 0 7h12z" />
                                 </svg>
                             </button>
                             {activeDropdown === 'sort' && (
                                 <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
                                     <div className="p-4">
-                                        <h3 className="text-base font-bold text-gray-900 mb-4">Sort By</h3>
+                                        <h3 className="text-base font-semibold text-gray-900 mb-4">Sort By</h3>
                                         <div className="grid grid-cols-2 gap-2 mb-4">
                                             {sortOptions.map((option) => (
                                                 <button
@@ -423,23 +434,23 @@ const CarFilterSection = () => {
                         <div className="relative">
                             <button
                                 onClick={() => toggleDropdown('cartype')}
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc] font-semibold"
                             >
-                                <span className="font-medium">
+                                <span className="font-semibold">
                                     {selectedCarType ? carTypeOptions.find(opt => opt.value === selectedCarType)?.label : 'Car Type'}
                                 </span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 12 6"
-                                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === 'cartype' ? 'rotate-180' : ''}`}
+                                    viewBox="0 0 12 7"
+                                    className={`w-[12px] h-[7px] transition-transform duration-200 ${activeDropdown === 'cartype' ? 'rotate-180' : ''}`}
                                 >
-                                    <path className="fill-gray-500" d="M12 6L6 0 0 6h12z" />
+                                    <path className="fill-gray-500" d="M12 7L6 0 0 7h12z" />
                                 </svg>
                             </button>
                             {activeDropdown === 'cartype' && (
                                 <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-lg z-10 min-w-[320px] border border-[#dedede] hover:border-[#155dfc] transition-colors">
                                     <div className="p-4">
-                                        <h3 className="text-base font-bold text-gray-900 mb-4">Select Car Type</h3>
+                                        <h3 className="text-base font-semibold text-gray-900 mb-4">Select Car Type</h3>
                                         <div className="grid grid-cols-2 gap-2 mb-4">
                                             {carTypeOptions.map((option) => (
                                                 <button
@@ -477,10 +488,10 @@ const CarFilterSection = () => {
                         <div className="relative">
                             <button
                                 onClick={() => setShowMoreFilters(true)}
-                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc]"
+                                className="flex items-center gap-2 px-4 py-3 rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-colors min-w-[130px] border border-[#dedede] hover:border-[#155dfc] font-semibold"
                             >
-                                <span className="font-medium">More Filters</span>
-                                <SlidersHorizontal className="w-4 h-4" />
+                                <span className="font-semibold">More Filters</span>
+                                <SlidersHorizontal className="w-[15px] h-[15px]" />
                             </button>
                         </div>
                     </div>
@@ -511,12 +522,12 @@ const CarFilterSection = () => {
                         <div className="h-full flex flex-col">
                             {/* Header */}
                             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                                <h2 className="text-xl font-bold text-gray-900">More Filters</h2>
+                                <h2 className="text-xl font-semibold text-gray-900">More Filters</h2>
                                 <button
                                     onClick={() => setShowMoreFilters(false)}
                                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                                 >
-                                    <X className="w-5 h-5 text-gray-500" />
+                                    <X className="w-[12px] h-[7px] text-gray-500" />
                                 </button>
                             </div>
 

@@ -3,201 +3,291 @@ import React from 'react';
 const DubaiCarRentalSection = () => {
     const carData = [
         {
-            name: "Chevrolet Captiva (Black), 2023",
+            name: "Chevrolet Captiva (Black, 2023)",
             daily: "AED 130",
             weekly: "-",
-            monthly: "AED 2,400"
+            monthly: "AED 2,400",
+            features: ["5 Seats", "Automatic", "Premium Sound"],
+            badge: "Most Popular"
         },
         {
-            name: "Hyundai Creta 5-Seater (Blue), 2024",
+            name: "Hyundai Creta (Blue, 2024)",
             daily: "AED 99",
             weekly: "AED 599",
-            monthly: "AED 1,799"
+            monthly: "AED 1,799",
+            features: ["5 Seats", "Sunroof", "Keyless Entry"]
         },
         {
-            name: "Mazda CX5 (Golden), 2025",
+            name: "Mazda CX-5 (Golden, 2025)",
             daily: "AED 139",
             weekly: "-",
-            monthly: "AED 2,489"
+            monthly: "AED 2,489",
+            features: ["Leather Seats", "Heads-Up Display", "Bose Audio"],
+            badge: "New Model"
         },
         {
-            name: "MG 3 (White), 2025",
+            name: "MG 3 (White, 2025)",
             daily: "AED 49",
             weekly: "AED 340",
-            monthly: "AED 1,225"
-        },
-        {
-            name: "MG 3 (Black), 2025",
-            daily: "AED 120",
-            weekly: "AED 699",
-            monthly: "AED 1,399"
+            monthly: "AED 1,225",
+            features: ["Fuel Efficient", "Compact", "City Package"]
         }
     ];
 
     return (
+        <div className="w-full px-9 py-14 bg-white">
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+            <style>{`
+                h2, h3, p, span, blockquote {
+                    font-family: 'Poppins', sans-serif;
+                }
+            `}</style>
+            {/* Premium Header */}
+            <div className="mb-16 border-b border-gray-100 pb-10">
+                {/* <span className="text-xs font-semibold tracking-widest text-blue-600 uppercase mb-4 inline-block">
+                    Exclusive Selection
+                </span> */}
+                <h2 className="text-[26px] font-light text-gray-900 mb-6 leading-tight">
+                    Premium <span className="font-medium">Economy Vehicle</span><br />
+                    Rentals in <span className="font-medium">Dubai</span>
+                </h2>
+                <p className="text-base text-gray-600 leading-relaxed">
+                    Experience unmatched comfort and value with our curated collection of premium economy vehicles,
+                    available for short-term and extended rentals.
+                </p>
+            </div>
 
-        <div className="w-full px-9  bg-white mt-12">
-            <div className="w-full border-t-1 border-gray-200 mb-8"></div>
-            {/* Pricing Table Section */}
-            <div className="mb-14">
-                <h1 className="text-[26px] font-bold text-gray-900 mb-10 mt-13 text-left">
-                    Economy car rental price in Dubai
-                </h1>
+            {/* Luxury Pricing Table */}
+            <div className="mb-24">
+                <div className="mb-8">
+                    <h2 className="text-[26px] font-light text-gray-900 mb-2">
+                        Current <span className="font-medium">Availability</span>
+                    </h2>
+                    <p className="text-base text-gray-600">
+                        Updated inventory as of {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    </p>
+                </div>
 
-                <div className="overflow-x-auto shadow-sm border border-gray-200 rounded-lg">
-                    <table className="w-full border-collapse bg-white text-left">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wide border-b border-gray-200">
-                                    Vehicle
+                {/* Premium Table */}
+                <div className="max-w-4xl overflow-hidden">
+                    <table className="w-full">
+                        <thead>
+                            <tr className="border-b border-gray-200">
+                                <th className="pb-6 px-4 text-left font-medium text-gray-500 uppercase tracking-wider text-xs">
+                                    Vehicle Details
                                 </th>
-                                <th className="py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wide border-b border-gray-200">
+                                <th className="pb-6 px-4 text-right font-medium text-gray-500 uppercase tracking-wider text-xs">
                                     Daily
                                 </th>
-                                <th className="py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wide border-b border-gray-200">
+                                <th className="pb-6 px-4 text-right font-medium text-gray-500 uppercase tracking-wider text-xs">
                                     Weekly
                                 </th>
-                                <th className="py-4 px-6 font-semibold text-gray-700 text-sm uppercase tracking-wide border-b border-gray-200">
+                                <th className="pb-6 px-4 text-right font-medium text-gray-500 uppercase tracking-wider text-xs">
                                     Monthly
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-gray-100">
                             {carData.map((car, index) => (
-                                <tr
-                                    key={index}
-                                    className={`hover:bg-gray-50 transition-colors duration-200 ${index !== carData.length - 1 ? 'border-b border-gray-100' : ''
-                                        }`}
-                                >
-                                    <td className="py-4 px-6 text-gray-800 font-medium">
-                                        {car.name}
+                                <tr key={index} className="hover:bg-gray-50 transition-colors duration-150">
+                                    <td className="py-8 px-4">
+                                        <div className="flex items-center">
+                                            <div>
+                                                <div className="flex items-center">
+                                                    <h3 className="text-[20px] font-medium text-gray-900">
+                                                        {car.name}
+                                                    </h3>
+                                                    {car.badge && (
+                                                        <span className={`ml-3 px-2.5 py-1 rounded-full text-xs font-medium ${car.badge.includes("Popular") ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
+                                                            {car.badge}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                                <div className="mt-2 flex flex-wrap gap-2">
+                                                    {car.features.map((feature, i) => (
+                                                        <span key={i} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                            {feature}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td className="py-4 px-6 text-gray-800 font-semibold">
-                                        {car.daily}
+                                    <td className="py-8 px-4 text-right">
+                                        <div className="text-gray-900 font-medium">{car.daily}</div>
+                                        <div className="text-gray-500 text-xs mt-1">per day</div>
                                     </td>
-                                    <td className="py-4 px-6 text-gray-800 font-semibold">
-                                        {car.weekly}
+                                    <td className="py-8 px-4 text-right">
+                                        {car.weekly !== "-" ? (
+                                            <>
+                                                <div className="text-gray-900 font-medium">{car.weekly}</div>
+                                                <div className="text-gray-500 text-xs mt-1">per week</div>
+                                            </>
+                                        ) : (
+                                            <span className="text-gray-400">-</span>
+                                        )}
                                     </td>
-                                    <td className="py-4 px-6 text-gray-800 font-semibold">
-                                        {car.monthly}
+                                    <td className="py-8 px-4 text-right">
+                                        <div className="text-gray-900 font-medium">{car.monthly}</div>
+                                        <div className="text-gray-500 text-xs mt-1">per month</div>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-
-                {/* Mobile Cards */}
-                <div className="md:hidden mt-6">
-                    <div className="space-y-4">
-                        {carData.map((car, index) => (
-                            <div key={index} className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm text-left">
-                                <h3 className="font-semibold text-gray-800 mb-3 text-sm">{car.name}</h3>
-                                <div className="grid grid-cols-3 gap-3 text-sm">
-                                    <div className="text-left">
-                                        <div className="text-gray-500 uppercase tracking-wide text-xs mb-1">Daily</div>
-                                        <div className="font-semibold text-gray-800">{car.daily}</div>
-                                    </div>
-                                    <div className="text-left">
-                                        <div className="text-gray-500 uppercase tracking-wide text-xs mb-1">Weekly</div>
-                                        <div className="font-semibold text-gray-800">{car.weekly}</div>
-                                    </div>
-                                    <div className="text-left">
-                                        <div className="text-gray-500 uppercase tracking-wide text-xs mb-1">Monthly</div>
-                                        <div className="font-semibold text-gray-800">{car.monthly}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
             </div>
 
-            {/* Content Sections */}
-            <div className="space-y-12 text-left">
-                {/* Rent Economy Cars in Dubai */}
+            {/* Editorial Content - Left Aligned */}
+            <div className="space-y-16">
+                {/* Experience Section */}
                 <section>
-                    <h2 className="text-[26px] font-bold text-gray-900 mb-6">
-                        Rent Economy Cars in Dubai
+                    {/* <span className="text-xs font-semibold tracking-widest text-blue-600 uppercase mb-4 inline-block">
+                        The Experience
+                    </span> */}
+                    <h2 className="text-[26px] font-light text-gray-900 mb-6">
+                        Why choose our <span className="font-medium">premium economy</span> collection
                     </h2>
-                    <div className="space-y-4 text-gray-700 leading-relaxed">
+                    <div className="prose text-base text-gray-600">
                         <p>
-                            From budget hatchback cars including Chevrolet Spark, Nissan Microsoft, Kia Picanto, Toyota Yaris to economy sedan cars such as Toyota Corolla, Nissan Sunny, Mitsubishi Attrage, everything in between is available on OneClickDrive.com. At the best possible rates across the emirates. With the ability to compare offers from over 70 different suppliers, you can be sure to get the best rate.
+                            Our premium economy vehicles bridge the gap between standard rentals and luxury cars, offering
+                            exceptional comfort and features at accessible price points. Each vehicle in our collection is
+                            hand-selected based on reliability, comfort, and driving experience.
                         </p>
                         <p>
-                            Rent a car in Dubai at budget-friendly rates provided directly by suppliers without having to pay commission or third-party costs. Choose from hatchbacks, sedans and crossovers listed by multiple car rental agencies in our network. Rent economy cars at competitive rates in the market inclusive of insurance and standard mileage.
-                        </p>
-                        <p>
-                            Our suppliers offer free delivery across Dubai, Abu Dhabi, Sharjah and other emirates on monthly car rentals. Feel free to explore our lowest rates for luxury car rentals and sports car rentals in Dubai. Shortlist a car of your liking, compare prices offered by multiple car rental agencies and book directly the agency offering your desired car and price.
+                            We understand that discerning clients expect more than just transportation - they seek an
+                            experience that begins the moment they make their reservation and continues through every
+                            kilometer of their journey.
                         </p>
                     </div>
                 </section>
 
-                {/* Compare and Shortlist Offers */}
+                {/* Benefits Section */}
                 <section>
-                    <h2 className="text-[26px] font-bold text-gray-900 mb-6">
-                        Economy Rent a Car
-                    </h2>
-                    <div className="space-y-4 text-gray-700 leading-relaxed">
-                        <p>
-                            OneClickDrive.com is the UAE's no. 1 car rental and leasing marketplace. Explore live offers from both large scale and small scale local rent a car companies in the emirates with ease.
-                        </p>
-                        <p>
-                            Seeking to rent a car in Dubai on a daily or monthly basis at affordable prices? You are in the right place. Choose from a number of cheap rent a car plans on a variety of cars offered by our network of car rental agencies in Dubai all in just a few clicks. Bid farewell to your worries about not finding a car suiting your budget needs and rent a car right away!
-                        </p>
-                        <p>
-                            OneClickDrive.com is a car rental portal which makes the process of renting a car as easy as it can get. We believe that renting a quality car should be as easy as picking a movie to watch - completely hassle-free with no hidden costs! We are well known for providing the best rates for rent a car in Dubai. With our huge and reliable network of rent a car agencies you are sure to find a rental car that perfectly suits all your needs. Get the best monthly car rental options.
-                        </p>
+                    <div className="space-y-8">
+                        <div className="border-l border-gray-300 pl-6">
+                            <h3 className="text-[20px] font-medium text-gray-900 mb-4">Included Benefits</h3>
+                            <ul className="space-y-4">
+                                <li className="flex items-start">
+                                    <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-base text-gray-700">Complimentary airport meet & greet</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-base text-gray-700">24/7 VIP concierge support</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-base text-gray-700">Premium insurance coverage</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="border-l border-gray-300 pl-6">
+                            <h3 className="text-[20px] font-medium text-gray-900 mb-4">Optional Upgrades</h3>
+                            <ul className="space-y-4">
+                                <li className="flex items-start">
+                                    <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-base text-gray-700">Unlimited mileage package</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-base text-gray-700">Child safety seats</span>
+                                </li>
+                                <li className="flex items-start">
+                                    <svg className="h-5 w-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                    </svg>
+                                    <span className="text-base text-gray-700">GPS navigation systems</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </section>
 
-                {/* Direct from Supplier */}
-                <section>
-                    <h2 className="text-[26px] font-bold text-gray-900 mb-6">
-                        Direct from Supplier
-                    </h2>
-                    <p className="text-gray-700 leading-relaxed">
-                        We deliver exclusive cars and quality services at cheap rates for a memorable travel experience - with minimal hassle! We offer future booking, reservation options and the option to get the vehicle at your desired time and place anywhere across Dubai. Our network of car rental agencies allow you to select and pay on a monthly or daily basis, whichever is most suitable for your convenience. The website offers a full exposure of our exciting cheap car rental options in Dubai.
-                    </p>
-                </section>
-
-                {/* For Residents and Tourists */}
-                <section>
-                    <h2 className="text-[26px] font-bold text-gray-900 mb-6">
-                        For Residents and Tourists
-                    </h2>
-                    <p className="text-gray-700 leading-relaxed">
-                        If you're visiting the UAE on short-term visa or here for a project, a rental car is the best way to be independent on the road. Besides, renting a car of your choice on monthly-basis in the UAE provides a range of advantages over buying one. It's economical and hassle-free. Most car rental companies even provide free delivery and pick-up for monthly rentals. They come inclusive of standard mileage: 4000km or above which is enough for most users. Salik (toll) usage is billed at the end of the month. Maintenance and registration is taken care of by the company. In case of a breakdown or accident, you're provided a replacement vehicle till the time your car is fixed.
-                    </p>
-                </section>
-
-                {/* Cheap Monthly Rentals */}
-                <section>
-                    <h2 className="text-[26px] font-bold text-gray-900 mb-6">
-                        Cheap Monthly Rentals in Dubai
-                    </h2>
-                    <div className="space-y-4 text-gray-700 leading-relaxed">
-                        <p>
-                            Monthly car rentals allow for instant upgrade or downgrade to your preferred car. So you could be driving a Land Cruiser (AED 7000) for month one and switch to a Chevrolet Cruze (AED 1700) for month two.
-                        </p>
-                        <p>
-                            We will get you the best rates for rental of any type of car in Dubai. Based on your preference, you can select the car you wish to rent with the rental company you want to deal with. Simply get in touch with the supplier directly and save on booking fees. Best rates guaranteed!
-                        </p>
+                {/* Testimonial */}
+                <section className="bg-gray-50 p-8 rounded-xl">
+                    <div className="flex items-start">
+                        <svg className="w-8 h-8 text-gray-400 mr-4 mt-1 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                        <div>
+                            <blockquote className="text-base text-gray-700 italic mb-6">
+                                "The attention to detail in both vehicle preparation and customer service sets this service apart. My premium economy rental felt like a luxury experience from start to finish."
+                            </blockquote>
+                            <div className="font-medium">
+                                <p className="text-base text-gray-900">Sarah Al-Farsi</p>
+                                <p className="text-sm text-gray-500">Corporate Client</p>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
-                {/* How to go about Economy Rental Car */}
+                {/* Process Section */}
                 <section>
-                    <h2 className="text-[26px] font-bold text-gray-900 mb-6">
-                        How to go about Economy Rental Car
+                    {/* <span className="text-xs font-semibold tracking-widest text-blue-600 uppercase mb-4 inline-block">
+                        Our Process
+                    </span> */}
+                    <h2 className="text-[26px] font-light text-gray-900 mb-12">
+                        Seamless <span className="font-medium">rental experience</span>
                     </h2>
-                    <div className="space-y-4 text-gray-700 leading-relaxed">
-                        <p>
-                            The process of renting a car in Dubai is fairly simple. Contact the car rental company which has your required car for hire. Discuss the charges, terms and conditions and other details. If required, share your documents to prove your eligibility. You can also request real time pictures of the car to ensure the quality of both the interior and exterior of your car. Confirm your booking and choose a suitable pick-up or delivery time.
-                        </p>
-                        <p className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
-                            <strong className="text-amber-800">Important Tip:</strong> Don't rent with the company that's offering the cheapest deal. It's important to check reviews online on Google and Facebook before finalizing a rental, especially when a company requests advance booking payment. Reading experiences of other users definitely helps in setting your expectations and to avoid choosing an ill-fated company.
-                        </p>
+
+                    <div className="space-y-12">
+                        <div className="flex">
+                            <div className="flex flex-col items-center mr-6">
+                                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-medium">
+                                    1
+                                </div>
+                                <div className="w-px h-full bg-gray-300 mt-2"></div>
+                            </div>
+                            <div className="pb-12">
+                                <h3 className="text-[20px] font-medium text-gray-900 mb-3">Personal Consultation</h3>
+                                <p className="text-base text-gray-700">
+                                    Our specialists will guide you through vehicle selection based on your specific needs,
+                                    preferences, and itinerary to ensure the perfect match.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex">
+                            <div className="flex flex-col items-center mr-6">
+                                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-medium">
+                                    2
+                                </div>
+                                <div className="w-px h-full bg-gray-300 mt-2"></div>
+                            </div>
+                            <div className="pb-12">
+                                <h3 className="text-[20px] font-medium text-gray-900 mb-3">Paperless Documentation</h3>
+                                <p className="text-base text-gray-700">
+                                    Complete all paperwork electronically prior to arrival. We verify all documents in advance
+                                    to ensure a quick and efficient collection process.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex">
+                            <div className="flex flex-col items-center mr-6">
+                                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-medium">
+                                    3
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="text-[20px] font-medium text-gray-900 mb-3">White Glove Delivery</h3>
+                                <p className="text-base text-gray-700">
+                                    Choose your preferred delivery location and time. Our representative will personally
+                                    introduce you to your vehicle and all its features.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
