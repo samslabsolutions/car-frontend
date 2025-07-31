@@ -227,7 +227,7 @@ const CarFilterSection = () => {
                         font-size: 15px;
                     }
                 `}</style>
-                <div className="w-full max-w-[1230px] px-4 mx-auto">
+                <div className="w-full max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex flex-wrap items-center gap-3 bg-white">
                         {/* Buy Dropdown */}
                         <div className="relative">
@@ -517,29 +517,29 @@ const CarFilterSection = () => {
 
                     {/* Sliding Panel */}
                     <div
-                        className={`w-96 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${showMoreFilters ? 'translate-x-0' : 'translate-x-full'}`}
+                        className={`w-80 sm:w-96 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out ${showMoreFilters ? 'translate-x-0' : 'translate-x-full'}`}
                     >
                         <div className="h-full flex flex-col">
                             {/* Header */}
-                            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-                                <h2 className="text-xl font-semibold text-gray-900">More Filters</h2>
+                            <div className="flex items-center justify-between p-4 lg:p-6 border-b border-gray-200">
+                                <h2 className="text-lg lg:text-xl font-semibold text-gray-900">More Filters</h2>
                                 <button
                                     onClick={() => setShowMoreFilters(false)}
                                     className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                                 >
-                                    <X className="w-[12px] h-[7px] text-gray-500" />
+                                    <X className="w-5 h-5 text-gray-500" />
                                 </button>
                             </div>
 
                             {/* Content */}
-                            <div className="flex-1 overflow-y-auto p-6 space-y-6">
+                            <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-6">
                                 {/* Location */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Location</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Location</label>
                                     <select
                                         value={moreFiltersData.location}
                                         onChange={(e) => handleMoreFiltersChange('location', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Location</option>
                                         {locationOptions.map((location, index) => (
@@ -550,11 +550,11 @@ const CarFilterSection = () => {
 
                                 {/* Car Brand / Model */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Car Brand / Model</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Car Brand / Model</label>
                                     <select
                                         value={moreFiltersData.carBrand}
                                         onChange={(e) => handleMoreFiltersChange('carBrand', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Brand</option>
                                         {carBrands.map((brand, index) => (
@@ -565,11 +565,11 @@ const CarFilterSection = () => {
 
                                 {/* Model Year */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Model Year</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Model Year</label>
                                     <select
                                         value={moreFiltersData.modelYear}
                                         onChange={(e) => handleMoreFiltersChange('modelYear', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Year</option>
                                         {modelYears.map((year, index) => (
@@ -580,11 +580,11 @@ const CarFilterSection = () => {
 
                                 {/* No. of Seats */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">No. of Seats</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">No. of Seats</label>
                                     <select
                                         value={moreFiltersData.seats}
                                         onChange={(e) => handleMoreFiltersChange('seats', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Seats</option>
                                         {seatOptions.map((seat, index) => (
@@ -595,11 +595,11 @@ const CarFilterSection = () => {
 
                                 {/* Vehicle Type */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Vehicle Type</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Vehicle Type</label>
                                     <select
                                         value={moreFiltersData.vehicleType}
                                         onChange={(e) => handleMoreFiltersChange('vehicleType', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Type</option>
                                         {vehicleTypes.map((type, index) => (
@@ -610,32 +610,32 @@ const CarFilterSection = () => {
 
                                 {/* Price Range */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Price Range (AED)</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Price Range (AED)</label>
                                     <div className="flex gap-2">
                                         <input
                                             type="number"
                                             placeholder="Min"
                                             value={moreFiltersData.priceRange.min}
                                             onChange={(e) => handleMoreFiltersChange('priceRange', { ...moreFiltersData.priceRange, min: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                         />
                                         <input
                                             type="number"
                                             placeholder="Max"
                                             value={moreFiltersData.priceRange.max}
                                             onChange={(e) => handleMoreFiltersChange('priceRange', { ...moreFiltersData.priceRange, max: e.target.value })}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                         />
                                     </div>
                                 </div>
 
                                 {/* Rental Period */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Rental Period</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Rental Period</label>
                                     <select
                                         value={moreFiltersData.rentalPeriod}
                                         onChange={(e) => handleMoreFiltersChange('rentalPeriod', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Period</option>
                                         {rentalPeriods.map((period, index) => (
@@ -646,8 +646,8 @@ const CarFilterSection = () => {
 
                                 {/* Car Features */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Car Features</label>
-                                    <div className="space-y-2 max-h-40 overflow-y-auto">
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Car Features</label>
+                                    <div className="space-y-2 max-h-32 lg:max-h-40 overflow-y-auto">
                                         {carFeatures.map((feature, index) => (
                                             <label key={index} className="flex items-center space-x-2 cursor-pointer">
                                                 <input
@@ -664,11 +664,11 @@ const CarFilterSection = () => {
 
                                 {/* Payment Mode */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Payment Mode</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Payment Mode</label>
                                     <select
                                         value={moreFiltersData.paymentMode}
                                         onChange={(e) => handleMoreFiltersChange('paymentMode', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Payment Mode</option>
                                         {paymentModes.map((mode, index) => (
@@ -679,11 +679,11 @@ const CarFilterSection = () => {
 
                                 {/* Transmission */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Transmission</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Transmission</label>
                                     <select
                                         value={moreFiltersData.transmission}
                                         onChange={(e) => handleMoreFiltersChange('transmission', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Transmission</option>
                                         {transmissionTypes.map((type, index) => (
@@ -694,11 +694,11 @@ const CarFilterSection = () => {
 
                                 {/* Fuel Type */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Fuel Type</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Fuel Type</label>
                                     <select
                                         value={moreFiltersData.fuelType}
                                         onChange={(e) => handleMoreFiltersChange('fuelType', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Fuel Type</option>
                                         {fuelTypes.map((type, index) => (
@@ -709,11 +709,11 @@ const CarFilterSection = () => {
 
                                 {/* Car Colors */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Car Colors</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Car Colors</label>
                                     <select
                                         value={moreFiltersData.carColor}
                                         onChange={(e) => handleMoreFiltersChange('carColor', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Color</option>
                                         {carColors.map((color, index) => (
@@ -724,11 +724,11 @@ const CarFilterSection = () => {
 
                                 {/* Minimum Required Age */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Minimum Required Age</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Minimum Required Age</label>
                                     <select
                                         value={moreFiltersData.minAge}
                                         onChange={(e) => handleMoreFiltersChange('minAge', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Age</option>
                                         {minAges.map((age, index) => (
@@ -739,11 +739,11 @@ const CarFilterSection = () => {
 
                                 {/* Sort By */}
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-900 mb-3">Sort By</label>
+                                    <label className="block text-sm font-semibold text-gray-900 mb-2 lg:mb-3">Sort By</label>
                                     <select
                                         value={moreFiltersData.sortBy}
                                         onChange={(e) => handleMoreFiltersChange('sortBy', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         <option value="">Select Sort Option</option>
                                         {sortByOptions.map((option, index) => (
@@ -754,17 +754,17 @@ const CarFilterSection = () => {
                             </div>
 
                             {/* Footer */}
-                            <div className="p-6 border-t border-gray-200 bg-gray-50">
+                            <div className="p-4 lg:p-6 border-t border-gray-200 bg-gray-50">
                                 <div className="flex gap-3">
                                     <button
                                         onClick={handleMoreFiltersReset}
-                                        className="flex-1 px-4 py-3 bg-white text-gray-700 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 hover:border-[#155dfc] transition-colors"
+                                        className="flex-1 px-4 py-2.5 lg:py-3 bg-white text-gray-700 border border-gray-300 rounded-lg font-medium hover:bg-gray-50 hover:border-[#155dfc] transition-colors text-sm"
                                     >
                                         Reset All
                                     </button>
                                     <button
                                         onClick={handleMoreFiltersApply}
-                                        className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 hover:border-[#155dfc] transition-colors border border-blue-600"
+                                        className="flex-1 px-4 py-2.5 lg:py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 hover:border-[#155dfc] transition-colors border border-blue-600 text-sm"
                                     >
                                         Apply Filters
                                     </button>
