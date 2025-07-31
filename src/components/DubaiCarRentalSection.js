@@ -37,7 +37,7 @@ const DubaiCarRentalSection = () => {
     ];
 
     return (
-        <section className="pt-10 pb-16  font-poppins">
+        <section className="pt-10 pb-16 bg-white font-poppins">
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
                 {/* Header */}
                 <div className="mb-16">
