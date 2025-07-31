@@ -25,7 +25,7 @@ const CarListingCard = ({ car }) => {
     };
 
     return (
-        <article className="rounded-lg border border-gray-200 overflow-hidden transition-all duration-300  w-full max-w-[775px] h-[316px] mb-6">
+        <article className="rounded-lg border border-gray-200 overflow-hidden transition-all duration-300  w-full max-w-[875px] h-[316px] mb-6">
             <div className="flex flex-col lg:flex-row">
                 {/* Image Section */}
                 <div className="relative lg:w-[360px] lg:h-[316px] w-full h-64 flex-shrink-0 group">
