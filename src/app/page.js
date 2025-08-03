@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
-import CarCategories from '../components/CarRentalSection';
+import VehicleCategories from '../components/VehicleCategories';
 import WhyChooseUs from '../components/WhyChooseUs';
 import CarInfoBox from '../components/carInfo';
 import AllBrands from '../components/AllBrands';
@@ -25,7 +25,7 @@ export default function Home() {
             <div className="font-sans antialiased">
                 <Navbar />
                 <HeroSection />
-                <CarCategories />
+                <VehicleCategories />
                 <CarInfoBox />
                 <LuxuryCar />
                 <SportCar />
