@@ -61,10 +61,10 @@ const AirbnbStyleRental = () => {
                     <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
                         {/* Left Side - Main Info */}
                         <div className="flex-1">
-                            <h1 className="text-[22px] md:text-[22px] font-[500] text-gray-900 mb-2">
+                            <h1 className="text-[22px] md:text-[22px] font-[600] text-black mb-2">
                                 Ferrari Purosangue 2025 in Dubai, UAE
                             </h1>
-                            <div className="text-black-400 mb-3">
+                            <div className="text-black mb-3 font-[400]">
                                 SUV • 4 passengers • Auto transmission
                             </div>
 
@@ -88,41 +88,41 @@ const AirbnbStyleRental = () => {
                                 <div className="mb-6">
                                     <div className="flex gap-3 mb-4">
                                         <div className="border-2 border-black rounded-lg py-2 px-3 flex-1 text-center bg-gray-900 text-white">
-                                            <div className="text-[10px] text-gray-300 line-through mb-0.5">AED 9,999</div>
+                                            <div className="text-[10px] text-gray-400 line-through mb-0.5">AED 9,999</div>
                                             <div className="text-sm font-semibold">AED 7,499</div>
                                             <div className="text-[10px]">per day</div>
                                         </div>
                                         <div className="border border-gray-300 rounded-lg py-2 px-3 flex-1 text-center bg-gray-100">
                                             <div className="text-xs font-medium text-gray-500">UNAVAILABLE</div>
-                                            <div className="text-[10px] text-gray-500">per week</div>
+                                            <div className="text-[10px] text-gray-400">per week</div>
                                         </div>
                                         <div className="border border-gray-300 rounded-lg py-2 px-3 flex-1 text-center bg-gray-100">
                                             <div className="text-xs font-medium text-gray-500">UNAVAILABLE</div>
-                                            <div className="text-[10px] text-gray-500">per month</div>
+                                            <div className="text-[10px] text-gray-400">per month</div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="text-center text-sm text-gray-600 mb-4">
+                                <div className="text-center text-sm text-black mb-4 font-[400]">
                                     You won't be charged yet
                                 </div>
 
                                 {/* Price Breakdown */}
                                 <div className="space-y-3 py-4 border-t border-gray-200">
                                     <div className="flex justify-between">
-                                        <span className="text-gray-600">Included mileage limit</span>
-                                        <span className="text-gray-900">250 km</span>
+                                        <span className="text-black font-[400]">Included mileage limit</span>
+                                        <span className="text-black font-[500]">250 km</span>
                                     </div>
                                     <div className="flex justify-between">
-                                        <span className="text-gray-600">Additional mileage charge</span>
-                                        <span className="text-gray-900">AED 50/km</span>
+                                        <span className="text-black font-[400]">Additional mileage charge</span>
+                                        <span className="text-black font-[500]">AED 50/km</span>
                                     </div>
                                     <div className="flex justify-between">
-                                        <span className="text-gray-600">Security deposit</span>
-                                        <span className="text-gray-900">AED 10,000</span>
+                                        <span className="text-black font-[400]">Security deposit</span>
+                                        <span className="text-black font-[500]">AED 10,000</span>
                                     </div>
                                     <div className="flex justify-between pt-3 border-t border-gray-200 font-semibold">
-                                        <span>Insurance</span>
+                                        <span className="text-black">Insurance</span>
                                         <span className="text-green-600">Included</span>
                                     </div>
                                 </div>
@@ -143,8 +143,8 @@ const AirbnbStyleRental = () => {
                                     <span className="text-white font-bold text-sm">MKV</span>
                                 </div>
                                 <div>
-                                    <h2 className="text-[16px] font-[500] text-gray-900">Rental by MKV Car Rental</h2>
-                                    <div className="text-gray-600 text-[14px]">3 years hosting</div>
+                                    <h2 className="text-[16px] font-[500] text-black">Rental by MKV Car Rental</h2>
+                                    <div className="text-black text-[14px] font-[400]">3 years hosting</div>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +156,7 @@ const AirbnbStyleRental = () => {
                                     <Car className="w-6 h-6 text-black mt-1" />
                                     <div>
                                         <div className="font-[500] text-black">Self pickup</div>
-                                        <div className="text-gray-600">Check yourself in with the keypad.</div>
+                                        <div className="text-black font-[400]">Check yourself in with the keypad.</div>
                                     </div>
                                 </div>
 
@@ -164,7 +164,7 @@ const AirbnbStyleRental = () => {
                                     <Shield className="w-6 h-6 text-black mt-1" />
                                     <div>
                                         <div className="font-[500] text-black">Full insurance coverage</div>
-                                        <div className="text-gray-600">Recent customers gave MKV a 5-star rating for service.</div>
+                                        <div className="text-black font-[400]">Recent customers gave MKV a 5-star rating for service.</div>
                                     </div>
                                 </div>
 
@@ -172,7 +172,7 @@ const AirbnbStyleRental = () => {
                                     <Clock className="w-6 h-6 text-black mt-1" />
                                     <div>
                                         <div className="font-[500] text-black">Available 24/7</div>
-                                        <div className="text-gray-600">Flexible pickup and return times to suit your schedule.</div>
+                                        <div className="text-black font-[400]">Flexible pickup and return times to suit your schedule.</div>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +180,7 @@ const AirbnbStyleRental = () => {
 
                         {/* Description */}
                         <div className="py-8 border-b border-gray-200">
-                            <p className="text-black leading-relaxed">
+                            <p className="text-gray-700 leading-relaxed font-[400] text-[15px]">
                                 Experience the ultimate luxury with our Ferrari Purosangue 2025. This stunning SUV combines Ferrari's legendary performance with practical everyday usability. Perfect for exploring Dubai in style, this vehicle offers an unforgettable driving experience with comprehensive insurance coverage and flexible rental terms.
                             </p>
                         </div>
@@ -193,8 +193,8 @@ const AirbnbStyleRental = () => {
                                     const IconComponent = feature.icon;
                                     return (
                                         <div key={index} className="flex items-center gap-4 py-3">
-                                            <IconComponent className="w-6 h-6 text-black" />
-                                            <span className="text-black">{feature.name}</span>
+                                            <IconComponent className="w-6 h-6 text-gray-700" />
+                                            <span className="text-gray-800 font-[400]">{feature.name}</span>
                                         </div>
                                     );
                                 })}
@@ -213,8 +213,8 @@ const AirbnbStyleRental = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {specifications.map((spec, index) => (
                                     <div key={index} className="flex justify-between items-center py-4 px-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                        <span className="text-gray-700 font-medium">{spec.label}</span>
-                                        <span className="text-gray-900 font-semibold">{spec.value}</span>
+                                        <span className="text-gray-700 font-[400]">{spec.label}</span>
+                                        <span className="text-gray-900 font-[500]">{spec.value}</span>
                                     </div>
                                 ))}
                             </div>
@@ -245,7 +245,7 @@ const AirbnbStyleRental = () => {
                                     <FileText className="w-4 h-4 text-blue-600 mt-0.5" />
                                     <div className="text-sm text-blue-700">
                                         <div className="font-medium">Dealer Note</div>
-                                        <div>+ 5% VAT applicable. Free Delivery & Pickup in Dubai</div>
+                                        <div className="font-[400]">+ 5% VAT applicable. Free Delivery & Pickup in Dubai</div>
                                     </div>
                                 </div>
                             </div>
@@ -261,7 +261,7 @@ const AirbnbStyleRental = () => {
                                     <Clock className="w-5 h-5 text-green-600" />
                                     <div className="text-left">
                                         <div className="font-semibold text-gray-900">Open Now</div>
-                                        <div className="text-sm text-gray-600">Available 24 hours</div>
+                                        <div className="text-sm text-gray-600 font-[400]">Available 24 hours</div>
                                     </div>
                                 </div>
                                 <ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${isHoursOpen ? 'rotate-90' : ''}`} />
@@ -271,8 +271,8 @@ const AirbnbStyleRental = () => {
                                 <div className="px-4 pb-4 space-y-2 text-sm border-t border-gray-200 pt-4">
                                     {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(day => (
                                         <div key={day} className="flex justify-between">
-                                            <span className="text-gray-700">{day}</span>
-                                            <span className="text-gray-900">Open 24 hours</span>
+                                            <span className="text-gray-600 font-[400]">{day}</span>
+                                            <span className="text-gray-900 font-[500]">Open 24 hours</span>
                                         </div>
                                     ))}
                                 </div>
@@ -281,7 +281,7 @@ const AirbnbStyleRental = () => {
 
                         {/* Report Listing */}
                         <div className="text-center">
-                            <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 underline mx-auto">
+                            <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 underline mx-auto font-[400]">
                                 <Flag className="w-4 h-4" />
                                 Report this listing
                             </button>
@@ -322,8 +322,8 @@ const AirbnbStyleRental = () => {
                                                     const IconComponent = feature.icon;
                                                     return (
                                                         <div key={index} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                                                            <IconComponent className="w-6 h-6 text-gray-700 flex-shrink-0" />
-                                                            <span className="text-gray-900">{feature.name}</span>
+                                                            <IconComponent className="w-6 h-6 text-gray-600 flex-shrink-0" />
+                                                            <span className="text-gray-800 font-[400]">{feature.name}</span>
                                                         </div>
                                                     );
                                                 })}
