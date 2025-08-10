@@ -26,12 +26,13 @@ export default function Home() {
                 <Navbar />
                 <HeroSection />
                 <VehicleCategories />
+                <AllBrands />
                 <CarInfoBox />
                 <LuxuryCar />
                 <SportCar />
                 <AffordableCar />
                 <WhyChooseUs />
-                <AllBrands />
+
                 <LocationSelector />
                 <DocumentsSection />
                 <FAQ />

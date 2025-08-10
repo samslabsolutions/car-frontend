@@ -828,16 +828,26 @@ export default function VehicleCategories() {
             </div>
 
             {/* Car Cards Grid */}
-            <div className="mt-25">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            <div className="mt-14">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 pb-20 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+
+                    {/* Special First Card */}
+                    <div className="rounded-lg shadow-[0_1px_10px_rgba(0,0,0,0.10)]  p-6  hover:shadow-md flex flex-col text-left text-black h-[202px]">
+                        <h2 className="text-[26px] mt-9 font-bold mb-2">All new EVs</h2>
+                        <p className="text-sm">
+                            Experience the best way to search new cars
+                        </p>
+                    </div>
+
+
+                    {/* Remaining Cars */}
                     {getCurrentCars().map((car) => (
                         <div
                             key={car.id}
-                            className="bg-white rounded-lg overflow-hidden"
-                            style={{ width: '181px', height: '278px' }}
+                            className="bg-white rounded-lg shadow-[0_1px_10px_rgba(0,0,0,0.10)] hover:shadow-md pr-9 h-[202px] overflow-hidden"
                         >
                             {/* Car Image */}
-                            <div className="relative h-22 w-42">
+                            <div className="relative h-22 w-42 ml-5 mt-6">
                                 <img
                                     src={car.image}
                                     alt={car.name}
@@ -855,12 +865,7 @@ export default function VehicleCategories() {
                             {/* Car Details */}
                             <div className="py-4 flex flex-col justify-between h-[150px]">
                                 <div>
-                                    <div>
-                                        <h1 className="text-xs text-gray-600 leading-tight">
-                                            2025
-                                        </h1>
-                                    </div>
-                                    <h1 className="text-md mt-2 text-black-600 leading-tight">
+                                    <h1 className="text-md mt-2 text-center text-black-600 leading-tight">
                                         {car.name}
                                     </h1>
                                 </div>
@@ -869,6 +874,7 @@ export default function VehicleCategories() {
                     ))}
                 </div>
             </div>
+
 
             {/* Custom scrollbar styles */}
             <style jsx>{`

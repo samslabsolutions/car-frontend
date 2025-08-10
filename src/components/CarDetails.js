@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import { Play, Pause, X, ChevronLeft, ChevronRight, Share, Heart, Volume2, VolumeX, Maximize, MoreHorizontal } from 'lucide-react';
+import { Play, Pause, X, ChevronLeft, ChevronRight, Share, Heart, Volume2, VolumeX, Maximize } from 'lucide-react';
 
 const FerrariMediaGallery = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -28,11 +28,6 @@ const FerrariMediaGallery = () => {
         },
         {
             type: 'image',
-            src: 'https://static.oneclickdrive.com/uploads/cars/Land-Rover-Range-Rover-Velar-2021_33545_28023558893-8_small.jpg?vee=3.6',
-            title: 'Ferrari with Dubai Skyline'
-        },
-        {
-            type: 'image',
             src: 'https://static.oneclickdrive.com/uploads/cars/Land-Rover_Range-Rover-Velar_2021_33545_33545_2802248859-7_small.jpg?vee=3.6',
             title: 'Ferrari Steering Wheel'
         },
@@ -43,8 +38,13 @@ const FerrariMediaGallery = () => {
         },
         {
             type: 'image',
-            src: 'https://static.oneclickdrive.com/uploads/cars/Land-Rover_Range-Rover-Velar_2021_33545_33545_28021763592-1_small.jpg?vee=3.6',
+            src: 'https://static.oneclickdrive.com/uploads/cars/Land-Rover_Range-Rover-Velar_2021_33545_33545_2802248859-7_small.jpg?vee=3.6',
             title: 'Ferrari Interior'
+        },
+        {
+            type: 'image',
+            src: 'https://static.oneclickdrive.com/uploads/cars/Land-Rover_Range-Rover-Velar_2021_33545_33545_28021754364-1_small.jpg?vee=3.6',
+            title: 'Ferrari Exterior'
         }
     ];
 
@@ -80,7 +80,6 @@ const FerrariMediaGallery = () => {
 
     const handleVideoError = (e) => {
         console.error('Video error:', e);
-        // Fallback to a different video source
         if (videoRef.current) {
             videoRef.current.src = 'https://www.w3schools.com/html/mov_bbb.mp4';
         }
@@ -187,7 +186,6 @@ const FerrariMediaGallery = () => {
         setIsDragging(false);
     };
 
-    // Add global mouse up listener for dragging
     useEffect(() => {
         if (isDragging) {
             const handleMouseUp = () => setIsDragging(false);
@@ -205,7 +203,6 @@ const FerrariMediaGallery = () => {
     const closePopup = () => {
         setIsPopupOpen(false);
         document.body.style.overflow = 'unset';
-        // Pause any playing video when closing popup
         if (popupVideoRef.current) {
             popupVideoRef.current.pause();
         }
@@ -219,18 +216,15 @@ const FerrariMediaGallery = () => {
         setCurrentMediaIndex((prev) => (prev - 1 + mediaItems.length) % mediaItems.length);
     };
 
-    // Reset video states when media changes
     useEffect(() => {
         setIsPlaying(false);
         setCurrentTime(0);
         setDuration(0);
     }, [currentMediaIndex]);
 
-    // Autoplay video when component mounts
     useEffect(() => {
         const video = videoRef.current;
         if (video) {
-            // Try to autoplay after a short delay
             const timer = setTimeout(() => {
                 const playPromise = video.play();
                 if (playPromise !== undefined) {
@@ -241,7 +235,6 @@ const FerrariMediaGallery = () => {
                         })
                         .catch(error => {
                             console.log('Autoplay failed:', error);
-                            // Autoplay failed, user interaction required
                             setIsPlaying(false);
                         });
                 }
@@ -252,324 +245,339 @@ const FerrariMediaGallery = () => {
     }, []);
 
     return (
-        <div className="max-w-[1300px] mx-auto px-6 py-8">
-            <div className="flex items-start justify-between mb-6">
-                <div className="flex items-start">
-                    <div className="w-12 h-12 mr-4 mt-1">
-                        <img
-                            src="/ferrari.webp"
-                            alt="Ferrari Icon"
-                            className="w-full h-full bg-gray-200 rounded-lg border-2 border-gray-200 object-contain"
-                        />
+        <div className="bg-white py-1">
+            <div className="w-full max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header Section - Responsive */}
+                <div className="flex flex-col lg:flex-row items-start justify-between mb-6 gap-4">
+                    <div className="flex items-start w-full lg:w-auto">
+                        <div className="flex-1">
+                            <h1 className="text-2xl lg:text-3xl font-[500] text-gray-900 mb-2">Ferrari Purosangue 2025</h1>
+                        </div>
                     </div>
-                    <div>
-                        <h1 className="text-2xl font-semibold text-gray-900 mb-1">Ferrari Purosangue 2025</h1>
-                        <p className="text-gray-600 text-sm leading-relaxed max-w-4xl">
-                            Dubai Hire: Red Luxury SUV, 4 Seater, V12, 725HP, Dynamic Drive system, Supercar, EPS, 8-speed dual-clutch transmission
-                        </p>
+                    <div className="flex items-center gap-3 lg:flex-shrink-0">
+                        <button className="p-2.5 lg:p-3 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors">
+                            <Share className="w-5 h-5 text-gray-600" />
+                        </button>
+                        <button
+                            onClick={() => setIsLiked(!isLiked)}
+                            className={`p-2.5 lg:p-3 rounded-full border transition-colors ${isLiked
+                                ? 'border-red-300 bg-red-50 text-red-600'
+                                : 'border-gray-300 hover:bg-gray-50 text-gray-600'
+                                }`}
+                        >
+                            <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
+                        </button>
                     </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <button className="p-2.5 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors">
-                        <Share className="w-4 h-4 text-gray-600" />
-                    </button>
-                    <button
-                        onClick={() => setIsLiked(!isLiked)}
-                        className={`p-2.5 rounded-full border transition-colors ${isLiked
-                            ? 'border-red-300 bg-red-50 text-red-600'
-                            : 'border-gray-300 hover:bg-gray-50 text-gray-600'
-                            }`}
+
+                {/* Gallery Grid - Adjusted Video Height */}
+                <div className="flex flex-col lg:grid lg:grid-cols-[1fr_300px_300px] xl:grid-cols-[1fr_320px_320px] 2xl:grid-cols-[1fr_350px_350px] gap-2 sm:gap-3 h-auto lg:h-[292px]">
+                    {/* Main Video - Set to match vertical images height */}
+                    <div
+                        className="relative overflow-hidden cursor-pointer rounded-tl-lg rounded-bl-lg group bg-black w-full h-[293px]"
+                        onClick={(e) => {
+                            if (!e.target.closest('.video-controls')) {
+                                openPopup(0);
+                            }
+                        }}
+                        onMouseEnter={() => {
+                            setIsHovering(true);
+                            setShowControls(true);
+                        }}
+                        onMouseLeave={() => {
+                            setIsHovering(false);
+                            setShowControls(false);
+                        }}
                     >
-                        <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
-                    </button>
-                </div>
-            </div>
+                        <video
+                            ref={videoRef}
+                            src={mediaItems[0].src}
+                            className="w-full h-full object-cover"
+                            muted={isMuted}
+                            autoPlay
+                            loop
+                            playsInline
+                            preload="metadata"
+                            onLoadedMetadata={(e) => handleVideoLoad(e.target)}
+                            onTimeUpdate={(e) => handleTimeUpdate(e.target)}
+                            onPlay={handleVideoPlay}
+                            onPause={handleVideoPause}
+                            onError={handleVideoError}
+                            onLoadStart={handleVideoLoadStart}
+                            onCanPlay={handleVideoCanPlay}
+                            onDurationChange={(e) => handleVideoLoad(e.target)}
+                            onClick={(e) => e.stopPropagation()}
+                            crossOrigin="anonymous"
+                        />
 
-            <div className="grid grid-cols-[344px_344px_172px_344px] gap-3 h-[330px]">
-                <div
-                    className="relative overflow-hidden cursor-pointer group bg-black rounded-l-lg"
-                    style={{ width: '344px', height: '330px' }}
-                    onClick={(e) => {
-                        // Only open popup if not clicking on controls
-                        if (!e.target.closest('.video-controls')) {
-                            openPopup(0);
-                        }
-                    }}
-                    onMouseEnter={() => {
-                        setIsHovering(true);
-                        setShowControls(true);
-                    }}
-                    onMouseLeave={() => {
-                        setIsHovering(false);
-                        setShowControls(false);
-                    }}
-                >
-                    <video
-                        ref={videoRef}
-                        src={mediaItems[0].src}
-                        className="w-full h-full object-cover"
-                        muted={isMuted}
-                        autoPlay
-                        loop
-                        playsInline
-                        preload="metadata"
-                        onLoadedMetadata={(e) => handleVideoLoad(e.target)}
-                        onTimeUpdate={(e) => handleTimeUpdate(e.target)}
-                        onPlay={handleVideoPlay}
-                        onPause={handleVideoPause}
-                        onError={handleVideoError}
-                        onLoadStart={handleVideoLoadStart}
-                        onCanPlay={handleVideoCanPlay}
-                        onDurationChange={(e) => handleVideoLoad(e.target)}
-                        onClick={(e) => e.stopPropagation()}
-                        crossOrigin="anonymous"
-                    />
-
-                    {/* Video Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20">
-                        {/* Featured Badge */}
-                        <div className="absolute top-3 left-3">
-                            <div className="bg-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5">
-                                <span className="text-yellow-300">✨</span>
-                                Featured
-                            </div>
-                        </div>
-
-                        {/* Center Play/Pause Button */}
-                        <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${(isHovering || !isPlaying) ? 'opacity-100' : 'opacity-0'
-                            }`}>
-                            <button
-                                onClick={togglePlayPause}
-                                className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center hover:scale-110 hover:bg-white transition-all duration-200 shadow-lg video-controls"
-                            >
-                                {isPlaying ? (
-                                    <Pause className="w-6 h-6 text-gray-900" fill="currentColor" />
-                                ) : (
-                                    <Play className="w-6 h-6 text-gray-900 ml-1" fill="currentColor" />
-                                )}
-                            </button>
-                        </div>
-
-                        {/* Video Controls */}
-                        <div className={`video-controls absolute bottom-0 left-0 right-0 p-4 transition-all duration-300 ${showControls || !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                            }`}>
-                            {/* Progress Bar */}
-                            <div
-                                className="w-full h-1 bg-white/30 rounded-full cursor-pointer hover:h-1.5 transition-all duration-200 mb-3"
-                                onClick={handleProgressClick}
-                                onMouseDown={handleProgressMouseDown}
-                                onMouseMove={handleProgressMouseMove}
-                                onMouseUp={handleProgressMouseUp}
-                            >
-                                <div
-                                    className="h-full bg-white rounded-full transition-all duration-100 relative"
-                                    style={{
-                                        width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%'
-                                    }}
-                                >
-                                    {/* Progress Handle */}
-                                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full opacity-0 hover:opacity-100 transition-opacity duration-200 shadow-md"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20">
+                            <div className="absolute top-3 lg:top-4 left-3 lg:left-4">
+                                <div className="bg-purple-600 text-white px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-full text-xs lg:text-sm font-medium flex items-center gap-1 sm:gap-1.5">
+                                    <span className="text-yellow-300">✨</span>
+                                    Featured
                                 </div>
                             </div>
 
-                            {/* Control Bar */}
-                            <div className="flex items-center justify-between text-white text-sm">
-                                {/* Left Controls */}
-                                <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={togglePlayPause}
-                                        className="hover:scale-110 transition-transform duration-200"
-                                    >
-                                        {isPlaying ? (
-                                            <Pause className="w-4 h-4" fill="currentColor" />
-                                        ) : (
-                                            <Play className="w-4 h-4" fill="currentColor" />
-                                        )}
-                                    </button>
+                            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${(isHovering || !isPlaying) ? 'opacity-100' : 'opacity-0'
+                                }`}>
+                                <button
+                                    onClick={togglePlayPause}
+                                    className="w-12 sm:w-16 lg:w-20 h-12 sm:h-16 lg:h-20 bg-white/90 rounded-full flex items-center justify-center hover:scale-110 hover:bg-white transition-all duration-200 shadow-lg video-controls"
+                                >
+                                    {isPlaying ? (
+                                        <Pause className="w-5 sm:w-6 lg:w-8 h-5 sm:h-6 lg:h-8 text-gray-900" fill="currentColor" />
+                                    ) : (
+                                        <Play className="w-5 sm:w-6 lg:w-8 h-5 sm:h-6 lg:h-8 text-gray-900 ml-0.5 sm:ml-1" fill="currentColor" />
+                                    )}
+                                </button>
+                            </div>
 
-                                    {/* Volume Controls */}
-                                    <div className="flex items-center gap-2 group/volume">
+                            <div className={`video-controls absolute bottom-0 left-0 right-0 p-3 sm:p-4 transition-all duration-300 ${showControls || !isPlaying ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                                }`}>
+                                <div
+                                    className="w-full h-1 bg-white/30 rounded-full cursor-pointer hover:h-1.5 transition-all duration-200 mb-2 sm:mb-3"
+                                    onClick={handleProgressClick}
+                                    onMouseDown={handleProgressMouseDown}
+                                    onMouseMove={handleProgressMouseMove}
+                                    onMouseUp={handleProgressMouseUp}
+                                >
+                                    <div
+                                        className="h-full bg-white rounded-full transition-all duration-100 relative"
+                                        style={{
+                                            width: duration > 0 ? `${(currentTime / duration) * 100}%` : '0%'
+                                        }}
+                                    >
+                                        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-2 sm:w-3 h-2 sm:h-3 bg-white rounded-full opacity-0 hover:opacity-100 transition-opacity duration-200 shadow-md"></div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between text-white text-xs sm:text-sm">
+                                    <div className="flex items-center gap-2 sm:gap-3">
                                         <button
-                                            onClick={toggleMute}
+                                            onClick={togglePlayPause}
                                             className="hover:scale-110 transition-transform duration-200"
                                         >
-                                            {isMuted || volume === 0 ? (
-                                                <VolumeX className="w-4 h-4" />
-                                            ) : volume < 0.5 ? (
-                                                <Volume2 className="w-4 h-4" />
+                                            {isPlaying ? (
+                                                <Pause className="w-4 h-4" fill="currentColor" />
                                             ) : (
-                                                <Volume2 className="w-4 h-4" />
+                                                <Play className="w-4 h-4" fill="currentColor" />
                                             )}
                                         </button>
 
-                                        {/* Volume Slider */}
-                                        <div className="opacity-0 group-hover/volume:opacity-100 transition-opacity duration-200">
-                                            <input
-                                                type="range"
-                                                min="0"
-                                                max="1"
-                                                step="0.1"
-                                                value={isMuted ? 0 : volume}
-                                                onChange={handleVolumeChange}
-                                                className="w-16 h-1 bg-white/30 rounded-full appearance-none cursor-pointer"
-                                                style={{
-                                                    background: `linear-gradient(to right, white 0%, white ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.3) ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.3) 100%)`
-                                                }}
-                                            />
+                                        <div className="flex items-center gap-1 sm:gap-2 group/volume">
+                                            <button
+                                                onClick={toggleMute}
+                                                className="hover:scale-110 transition-transform duration-200"
+                                            >
+                                                {isMuted || volume === 0 ? (
+                                                    <VolumeX className="w-4 h-4" />
+                                                ) : volume < 0.5 ? (
+                                                    <Volume2 className="w-4 h-4" />
+                                                ) : (
+                                                    <Volume2 className="w-4 h-4" />
+                                                )}
+                                            </button>
+
+                                            <div className="opacity-0 group-hover/volume:opacity-100 transition-opacity duration-200 hidden lg:block">
+                                                <input
+                                                    type="range"
+                                                    min="0"
+                                                    max="1"
+                                                    step="0.1"
+                                                    value={isMuted ? 0 : volume}
+                                                    onChange={handleVolumeChange}
+                                                    className="w-12 sm:w-16 h-1 bg-white/30 rounded-full appearance-none cursor-pointer"
+                                                    style={{
+                                                        background: `linear-gradient(to right, white 0%, white ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.3) ${(isMuted ? 0 : volume) * 100}%, rgba(255,255,255,0.3) 100%)`
+                                                    }}
+                                                />
+                                            </div>
                                         </div>
+
+                                        <span className="text-xs font-medium min-w-max">
+                                            {formatTime(currentTime)} / {formatTime(duration)}
+                                        </span>
                                     </div>
 
-                                    {/* Time Display */}
-                                    <span className="text-xs font-medium min-w-max">
-                                        {formatTime(currentTime)} / {formatTime(duration)}
-                                    </span>
-                                </div>
-
-                                {/* Right Controls */}
-                                <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={handleFullscreen}
-                                        className="hover:scale-110 transition-transform duration-200"
-                                    >
-                                        <Maximize className="w-4 h-4" />
-                                    </button>
-
+                                    <div className="flex items-center gap-2 sm:gap-3">
+                                        <button
+                                            onClick={handleFullscreen}
+                                            className="hover:scale-110 transition-transform duration-200"
+                                        >
+                                            <Maximize className="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div
-                    className="relative overflow-hidden cursor-pointer group"
-                    style={{ width: '344px', height: '330px' }}
-                    onClick={() => openPopup(1)}
-                >
-                    <img
-                        src={mediaItems[1].src}
-                        alt="Ferrari with Dubai Skyline"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                </div>
-
-                <div className="grid grid-cols-1 grid-rows-2 gap-3">
-                    <div
-                        className="relative overflow-hidden cursor-pointer group"
-                        style={{ width: '172px', height: '160px' }}
-                        onClick={() => openPopup(2)}
-                    >
-                        <img
-                            src={mediaItems[2].src}
-                            alt="Ferrari Steering Wheel"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                    </div>
-                    <div
-                        className="relative overflow-hidden cursor-pointer group"
-                        style={{ width: '172px', height: '160px' }}
-                        onClick={() => openPopup(3)}
-                    >
-                        <img
-                            src={mediaItems[3].src}
-                            alt="Ferrari Badge"
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                    </div>
-                </div>
-
-                <div
-                    className="relative overflow-hidden cursor-pointer group rounded-r-lg"
-                    style={{ width: '344px', height: '330px' }}
-                    onClick={() => openPopup(4)}
-                >
-                    <img
-                        src={mediaItems[4].src}
-                        alt="Ferrari Interior"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                    <div className="absolute bottom-3 right-3">
-                        <button className="bg-white text-gray-900 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors border border-gray-200">
-                            Show all photos
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {isPopupOpen && (
-                <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center">
-                    <div className="relative w-full h-full flex items-center justify-center">
-                        <button
-                            onClick={closePopup}
-                            className="absolute top-6 right-6 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                    {/* First Column of Side Images */}
+                    <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-2 sm:gap-3 w-full lg:w-[300px] xl:w-[320px] 2xl:w-[350px] h-auto lg:h-[292px]">
+                        <div
+                            className="relative overflow-hidden cursor-pointer group"
+                            style={{ height: '150px' }}
+                            onClick={() => openPopup(1)}
                         >
-                            <X className="w-5 h-5 text-white" />
-                        </button>
-                        <button
-                            onClick={prevMedia}
-                            className="absolute left-6 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-                        >
-                            <ChevronLeft className="w-5 h-5 text-white" />
-                        </button>
-                        <button
-                            onClick={nextMedia}
-                            className="absolute right-6 z-10 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
-                        >
-                            <ChevronRight className="w-5 h-5 text-white" />
-                        </button>
-                        <div className="max-w-5xl max-h-[80vh] w-full mx-6">
-                            {mediaItems[currentMediaIndex].type === 'video' ? (
-                                <video
-                                    ref={popupVideoRef}
-                                    src={mediaItems[currentMediaIndex].src}
-                                    className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
-                                    controls
-                                    preload="metadata"
-                                />
-                            ) : (
-                                <img
-                                    src={mediaItems[currentMediaIndex].src}
-                                    alt={mediaItems[currentMediaIndex].title}
-                                    className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
-                                />
-                            )}
+                            <img
+                                src={mediaItems[1].src}
+                                alt="Ferrari Steering Wheel"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
                         </div>
-                        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-                            <div className="bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm">
-                                {currentMediaIndex + 1} / {mediaItems.length}
+                        <div
+                            className="relative overflow-hidden cursor-pointer group"
+                            style={{ height: '142px' }}
+                            onClick={() => openPopup(2)}
+                        >
+                            <img
+                                src={mediaItems[2].src}
+                                alt="Ferrari Badge"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                        </div>
+                    </div>
+
+                    {/* Second Column of Side Images - Show All Photos Button on Last Image */}
+                    <div className="grid grid-cols-2 lg:grid-cols-1 lg:grid-rows-2 gap-2 sm:gap-3 w-full lg:w-[300px] xl:w-[320px] 2xl:w-[350px] h-auto lg:h-[292px]">
+                        <div
+                            className="relative overflow-hidden cursor-pointer group lg:rounded-tr-lg"
+                            style={{ height: '150px' }}
+                            onClick={() => openPopup(3)}
+                        >
+                            <img
+                                src={mediaItems[3].src}
+                                alt="Ferrari Interior"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                        </div>
+                        <div
+                            className="relative overflow-hidden cursor-pointer group lg:rounded-br-lg"
+                            style={{ height: '142px' }}
+                            onClick={() => openPopup(4)}
+                        >
+                            <img
+                                src={mediaItems[4].src}
+                                alt="Ferrari Exterior"
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                            />
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+
+                            {/* Show All Photos Button - Only on Last Image */}
+                            <div className="absolute bottom-2 sm:bottom-3 right-2 sm:right-3">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        openPopup(0);
+                                    }}
+                                    className="bg-white text-gray-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-100 transition-colors border border-gray-200 flex items-center gap-1"
+                                >
+                                    <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clipRule="evenodd" />
+                                        <path d="M11 14l-2.5-2.5L6 14h5z" />
+                                    </svg>
+                                    Show all photos
+                                </button>
                             </div>
-                        </div>
-                        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2">
-                            <div className="flex gap-2">
-                                {mediaItems.map((item, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => setCurrentMediaIndex(index)}
-                                        className={`relative w-14 h-10 rounded-md overflow-hidden border-2 transition-all ${currentMediaIndex === index
-                                            ? 'border-white scale-110'
-                                            : 'border-white/30 hover:border-white/60'
-                                            }`}
-                                    >
-                                        <img
-                                            src={item.src}
-                                            alt={`Thumbnail ${index + 1}`}
-                                            className="w-full h-full object-cover"
+
+                            {/* Dots Overlay - Positioned at bottom left */}
+                            <div className="absolute bottom-2 sm:bottom-3 left-2 sm:left-3">
+                                {/* <div className="flex gap-1">
+                                    {mediaItems.map((_, index) => (
+                                        <div
+                                            key={index}
+                                            className={`w-1.5 h-1.5 rounded-full transition-colors ${index === 0 ? 'bg-white' : 'bg-white/50'
+                                                }`}
                                         />
-                                        {item.type === 'video' && (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <Play className="w-2.5 h-2.5 text-white" fill="currentColor" />
-                                            </div>
-                                        )}
-                                    </button>
-                                ))}
+                                    ))}
+                                </div> */}
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+
+                {/* Popup Modal - Responsive */}
+                {isPopupOpen && (
+                    <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center">
+                        <div className="relative w-full h-full flex items-center justify-center">
+                            <button
+                                onClick={closePopup}
+                                className="absolute top-4 lg:top-6 right-4 lg:right-6 z-10 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                            >
+                                <X className="w-5 lg:w-6 h-5 lg:h-6 text-white" />
+                            </button>
+                            <button
+                                onClick={prevMedia}
+                                className="absolute left-4 lg:left-6 z-10 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                            >
+                                <ChevronLeft className="w-5 lg:w-6 h-5 lg:h-6 text-white" />
+                            </button>
+                            <button
+                                onClick={nextMedia}
+                                className="absolute right-4 lg:right-6 z-10 w-10 lg:w-12 h-10 lg:h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors"
+                            >
+                                <ChevronRight className="w-5 lg:w-6 h-5 lg:h-6 text-white" />
+                            </button>
+                            <div className="w-full max-w-[90vw] lg:max-w-5xl xl:max-w-6xl max-h-[80vh] mx-4 lg:mx-6">
+                                {mediaItems[currentMediaIndex].type === 'video' ? (
+                                    <video
+                                        ref={popupVideoRef}
+                                        src={mediaItems[currentMediaIndex].src}
+                                        className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+                                        controls
+                                        preload="metadata"
+                                    />
+                                ) : (
+                                    <img
+                                        src={mediaItems[currentMediaIndex].src}
+                                        alt={mediaItems[currentMediaIndex].title}
+                                        className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+                                        loading="lazy"
+                                    />
+                                )}
+                            </div>
+                            <div className="absolute bottom-4 lg:bottom-6 left-1/2 transform -translate-x-1/2">
+                                <div className="bg-white/20 backdrop-blur-sm text-white px-4 lg:px-5 py-2 lg:py-2.5 rounded-full text-sm lg:text-base">
+                                    {currentMediaIndex + 1} / {mediaItems.length}
+                                </div>
+                            </div>
+                            <div className="absolute bottom-16 lg:bottom-20 left-1/2 transform -translate-x-1/2">
+                                <div className="flex gap-2 lg:gap-3">
+                                    {mediaItems.map((item, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setCurrentMediaIndex(index)}
+                                            className={`relative w-12 lg:w-16 h-9 lg:h-12 rounded-md overflow-hidden border-2 transition-all ${currentMediaIndex === index
+                                                ? 'border-white scale-110'
+                                                : 'border-white/30 hover:border-white/60'
+                                                }`}
+                                        >
+                                            <img
+                                                src={item.src}
+                                                alt={`Thumbnail ${index + 1}`}
+                                                className="w-full h-full object-cover"
+                                                loading="lazy"
+                                            />
+                                            {item.type === 'video' && (
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <Play className="w-2.5 lg:w-3 h-2.5 lg:h-3 text-white" fill="currentColor" />
+                                                </div>
+                                            )}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
