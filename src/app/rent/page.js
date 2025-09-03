@@ -1,6 +1,6 @@
 'use client';
 import Head from 'next/head';
-import { useState, createContext, useEffect, Suspense } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import CarFilterSection from '../../components/CarFilterSection';
@@ -12,33 +12,15 @@ import DubaiCarRentalSection from '../../components/DubaiCarRentalSection';
 import PopularLocations from '../../components/PopularLocations';
 import FAQ from '../../components/FAQ';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 // Create a context for filters
 export const FilterContext = createContext();
 
-// Create a separate component for the search params logic
-function SearchParamsHandler({ setFilters }) {
+export default function RentPage() {
     const searchParams = useSearchParams();
 
-    useEffect(() => {
-        const city = searchParams.get('city');
-        const location = searchParams.get('location');
-        const selectedLocation = city || location || '';
-
-        if (selectedLocation) {
-            setFilters((prevFilters) => ({
-                ...prevFilters,
-                moreFilters: {
-                    ...prevFilters.moreFilters,
-                    location: decodeURIComponent(selectedLocation),
-                },
-            }));
-        }
-    }, [searchParams, setFilters]);
-
-    return null; // This component doesn't render anything
-}
-
-export default function RentPage() {
     const [filters, setFilters] = useState({
         transactionType: 'Rent',
         location: '',
@@ -68,6 +50,23 @@ export default function RentPage() {
         },
     });
 
+    // Read query parameters and update filters
+    useEffect(() => {
+        const city = searchParams.get('city');
+        const location = searchParams.get('location');
+        const selectedLocation = city || location || '';
+
+        if (selectedLocation) {
+            setFilters((prevFilters) => ({
+                ...prevFilters,
+                moreFilters: {
+                    ...prevFilters.moreFilters,
+                    location: decodeURIComponent(selectedLocation),
+                },
+            }));
+        }
+    }, [searchParams]);
+
     return (
         <>
             <Head>
@@ -77,11 +76,6 @@ export default function RentPage() {
 
             <div className="font-sans antialiased">
                 <FilterContext.Provider value={{ filters, setFilters }}>
-                    {/* Wrap the search params handler in Suspense */}
-                    <Suspense fallback={null}>
-                        <SearchParamsHandler setFilters={setFilters} />
-                    </Suspense>
-
                     <Navbar />
                     <main>
                         <CarFilterSection />
