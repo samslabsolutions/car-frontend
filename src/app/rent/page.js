@@ -1,25 +1,24 @@
 'use client';
 import Head from 'next/head';
 import { useState, createContext, useEffect } from 'react';
-import dynamic from 'next/dynamic';
+import { lazy, Suspense } from 'react';
 
 // Force this page to be dynamic
-export const runtime = 'edge';
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // Create a context for filters
 export const FilterContext = createContext();
 
-// Dynamic imports with no SSR
-const Navbar = dynamic(() => import('../../components/Navbar'), { ssr: false });
-const CarFilterSection = dynamic(() => import('../../components/CarFilterSection'), { ssr: false });
-const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
-const BreadcrumbHeader = dynamic(() => import('../../components/text'), { ssr: false });
-const CarListingCard = dynamic(() => import('../../components/CarListingCard'), { ssr: false });
-const CarRentalPricing = dynamic(() => import('../../components/CarRentalPricing'), { ssr: false });
-const DubaiCarRentalSection = dynamic(() => import('../../components/DubaiCarRentalSection'), { ssr: false });
-const PopularLocations = dynamic(() => import('../../components/PopularLocations'), { ssr: false });
-const FAQ = dynamic(() => import('../../components/FAQ'), { ssr: false });
+// Lazy load components
+const Navbar = lazy(() => import('../../components/Navbar'));
+const CarFilterSection = lazy(() => import('../../components/CarFilterSection'));
+const Footer = lazy(() => import('../../components/Footer'));
+const BreadcrumbHeader = lazy(() => import('../../components/text'));
+const CarListingCard = lazy(() => import('../../components/CarListingCard'));
+const CarRentalPricing = lazy(() => import('../../components/CarRentalPricing'));
+const DubaiCarRentalSection = lazy(() => import('../../components/DubaiCarRentalSection'));
+const PopularLocations = lazy(() => import('../../components/PopularLocations'));
+const FAQ = lazy(() => import('../../components/FAQ'));
 
 export default function RentPage() {
     const [mounted, setMounted] = useState(false);
@@ -102,17 +101,35 @@ export default function RentPage() {
 
             <div className="font-sans antialiased">
                 <FilterContext.Provider value={{ filters, setFilters }}>
-                    <Navbar />
+                    <Suspense fallback={<div className="h-16 bg-gray-100 animate-pulse"></div>}>
+                        <Navbar />
+                    </Suspense>
                     <main>
-                        <CarFilterSection />
-                        <BreadcrumbHeader />
-                        <CarListingCard />
-                        <CarRentalPricing />
-                        <DubaiCarRentalSection />
-                        <FAQ />
-                        <PopularLocations />
+                        <Suspense fallback={<div className="h-20 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <CarFilterSection />
+                        </Suspense>
+                        <Suspense fallback={<div className="h-8 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <BreadcrumbHeader />
+                        </Suspense>
+                        <Suspense fallback={<div className="h-40 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <CarListingCard />
+                        </Suspense>
+                        <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <CarRentalPricing />
+                        </Suspense>
+                        <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <DubaiCarRentalSection />
+                        </Suspense>
+                        <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <FAQ />
+                        </Suspense>
+                        <Suspense fallback={<div className="h-32 bg-gray-100 animate-pulse rounded m-4"></div>}>
+                            <PopularLocations />
+                        </Suspense>
                     </main>
-                    <Footer />
+                    <Suspense fallback={<div className="h-20 bg-gray-900 animate-pulse"></div>}>
+                        <Footer />
+                    </Suspense>
                 </FilterContext.Provider>
             </div>
         </>
