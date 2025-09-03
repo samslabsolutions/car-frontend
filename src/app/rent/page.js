@@ -1,54 +1,28 @@
 'use client';
 import Head from 'next/head';
 import { useState, createContext, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import Navbar from '../../components/Navbar';
-import Footer from '../../components/Footer';
 
-// Dynamically import ALL components to prevent SSR issues
-const CarFilterSection = dynamic(() => import('../../components/CarFilterSection'), {
-    ssr: false,
-    loading: () => <div className="h-20 bg-gray-100 animate-pulse rounded"></div>
-});
-
-const BreadcrumbHeader = dynamic(() => import('../../components/text'), {
-    ssr: false,
-    loading: () => <div className="h-8 bg-gray-100 animate-pulse rounded"></div>
-});
-
-const CarListingCard = dynamic(() => import('../../components/CarListingCard'), {
-    ssr: false,
-    loading: () => <div className="h-40 bg-gray-100 animate-pulse rounded mb-4"></div>
-});
-
-const CarRentalPricing = dynamic(() => import('../../components/CarRentalPricing'), {
-    ssr: false,
-    loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded mb-4"></div>
-});
-
-const DubaiCarRentalSection = dynamic(() => import('../../components/DubaiCarRentalSection'), {
-    ssr: false,
-    loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded mb-4"></div>
-});
-
-const FAQ = dynamic(() => import('../../components/FAQ'), {
-    ssr: false,
-    loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded mb-4"></div>
-});
-
-const PopularLocations = dynamic(() => import('../../components/PopularLocations'), {
-    ssr: false,
-    loading: () => <div className="h-32 bg-gray-100 animate-pulse rounded mb-4"></div>
-});
+// Force this page to be dynamic
+export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
 // Create a context for filters
 export const FilterContext = createContext();
 
-export default function RentPage() {
-    const router = useRouter();
-    const [mounted, setMounted] = useState(false);
+// Dynamic imports with no SSR
+const Navbar = dynamic(() => import('../../components/Navbar'), { ssr: false });
+const CarFilterSection = dynamic(() => import('../../components/CarFilterSection'), { ssr: false });
+const Footer = dynamic(() => import('../../components/Footer'), { ssr: false });
+const BreadcrumbHeader = dynamic(() => import('../../components/text'), { ssr: false });
+const CarListingCard = dynamic(() => import('../../components/CarListingCard'), { ssr: false });
+const CarRentalPricing = dynamic(() => import('../../components/CarRentalPricing'), { ssr: false });
+const DubaiCarRentalSection = dynamic(() => import('../../components/DubaiCarRentalSection'), { ssr: false });
+const PopularLocations = dynamic(() => import('../../components/PopularLocations'), { ssr: false });
+const FAQ = dynamic(() => import('../../components/FAQ'), { ssr: false });
 
+export default function RentPage() {
+    const [mounted, setMounted] = useState(false);
     const [filters, setFilters] = useState({
         transactionType: 'Rent',
         location: '',
@@ -78,30 +52,28 @@ export default function RentPage() {
         },
     });
 
-    // Wait for component to mount before accessing router.query
     useEffect(() => {
         setMounted(true);
+
+        // Read URL parameters manually
+        if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const city = urlParams.get('city');
+            const location = urlParams.get('location');
+            const selectedLocation = city || location || '';
+
+            if (selectedLocation) {
+                setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    moreFilters: {
+                        ...prevFilters.moreFilters,
+                        location: decodeURIComponent(selectedLocation),
+                    },
+                }));
+            }
+        }
     }, []);
 
-    // Read query parameters and update filters - using router.query instead of useSearchParams
-    useEffect(() => {
-        if (!mounted || !router.isReady) return;
-
-        const { city, location } = router.query;
-        const selectedLocation = city || location || '';
-
-        if (selectedLocation) {
-            setFilters((prevFilters) => ({
-                ...prevFilters,
-                moreFilters: {
-                    ...prevFilters.moreFilters,
-                    location: decodeURIComponent(selectedLocation),
-                },
-            }));
-        }
-    }, [router.query, router.isReady, mounted]);
-
-    // Show loading state until mounted
     if (!mounted) {
         return (
             <>
@@ -110,18 +82,12 @@ export default function RentPage() {
                     <meta name="description" content="Find cars for rent in Dubai. Filter by brand, price, and more." />
                 </Head>
                 <div className="font-sans antialiased">
-                    <Navbar />
-                    <main className="min-h-screen">
-                        <div className="container mx-auto px-4 py-8">
-                            <div className="animate-pulse space-y-4">
-                                <div className="h-20 bg-gray-200 rounded"></div>
-                                <div className="h-8 bg-gray-200 rounded"></div>
-                                <div className="h-40 bg-gray-200 rounded"></div>
-                                <div className="h-32 bg-gray-200 rounded"></div>
-                            </div>
+                    <div className="min-h-screen flex items-center justify-center">
+                        <div className="text-center">
+                            <h2 className="text-xl font-semibold mb-4 text-gray-800">Loading Car Rentals...</h2>
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
                         </div>
-                    </main>
-                    <Footer />
+                    </div>
                 </div>
             </>
         );
