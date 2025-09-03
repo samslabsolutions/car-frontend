@@ -36,6 +36,7 @@ const ListYourCarPage = () => {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -47,7 +48,47 @@ const ListYourCarPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setTimeout(() => {
+        setError(null);
+
+        // Map form values to match backend schema
+        const payload = {
+            name: formData.name,
+            email: formData.email,
+            companyName: formData.companyName,
+            jobTitle: formData.jobTitle === 'owner-founder' ? 'Owner/Founder' :
+                formData.jobTitle === 'general-manager' ? 'General Manager' :
+                    formData.jobTitle === 'sales-manager' ? 'Sales Manager' :
+                        formData.jobTitle === 'marketing-manager' ? 'Marketing Manager' :
+                            formData.jobTitle === 'admin-receptionist' ? 'Admin / Receptionist' : formData.jobTitle,
+            fleetSize: formData.fleetSize === 'upto-50' ? 'Upto 50 cars' :
+                formData.fleetSize === 'upto-100' ? 'Upto 100 cars' :
+                    formData.fleetSize === 'upto-500' ? 'Upto 500 cars' :
+                        formData.fleetSize === '500+' ? '500+ cars' : formData.fleetSize,
+            phone: `+971${formData.contactNo}`,
+            country: formData.country,
+            city: formData.city === 'abu-dhabi' ? 'Abu Dhabi' :
+                formData.city === 'ajman' ? 'Ajman' :
+                    formData.city === 'dubai' ? 'Dubai' :
+                        formData.city === 'fujairah' ? 'Fujairah' :
+                            formData.city === 'ras-al-khaimah' ? 'Ras Al Khaimah' :
+                                formData.city === 'sharjah' ? 'Sharjah' :
+                                    formData.city === 'umm-al-quwain' ? 'Umm Al Quwain' : formData.city
+        };
+
+        try {
+            const response = await fetch(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/contact/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit form');
+            }
+
             setIsSubmitting(false);
             setSubmitted(true);
             setTimeout(() => {
@@ -64,7 +105,10 @@ const ListYourCarPage = () => {
                     serviceType: 'rental'
                 });
             }, 3000);
-        }, 1500);
+        } catch (err) {
+            setIsSubmitting(false);
+            setError(err.message);
+        }
     };
 
     const jobTitleOptions = [
@@ -241,7 +285,12 @@ const ListYourCarPage = () => {
                                     <h2 className="text-2xl font-semibold text-gray-900 mb-6 tracking-tight">
                                         Advertise your cars for rent
                                     </h2>
-                                    <div className="space-y-6">
+                                    {error && (
+                                        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                                            <p className="text-sm text-red-800">{error}</p>
+                                        </div>
+                                    )}
+                                    <form onSubmit={handleSubmit} className="space-y-6">
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
                                             <input
@@ -368,8 +417,7 @@ const ListYourCarPage = () => {
                                         </div>
 
                                         <button
-                                            type="button"
-                                            onClick={handleSubmit}
+                                            type="submit"
                                             disabled={isSubmitting}
                                             className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-lg active:scale-95 flex items-center justify-center"
                                         >
@@ -388,7 +436,7 @@ const ListYourCarPage = () => {
                                                 </>
                                             )}
                                         </button>
-                                    </div>
+                                    </form>
                                 </>
                             )}
                         </div>

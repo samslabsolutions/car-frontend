@@ -1,86 +1,267 @@
 "use client";
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Phone, MessageCircle, Users, Fuel, Settings, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { toast } from 'react-toastify';
 
-const cars = [
-    {
-        id: 1,
-        images: [
-            "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1549924231-f129b911e442?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2024,
-        category: "Sedan",
-        title: "Honda Accord 2.0 Turbo",
-        specs: { seats: 5, doors: 4, fuel: 3 },
-        pricing: { daily: 34402, weekly: 68804 },
-        dealer: { name: "Car Rental", logo: "/dollar-logo.png", rating: 4.8, reviews: 324 }
-    },
-    {
-        id: 2,
-        images: [
+// Memoized car card component to prevent unnecessary re-renders
+const CarCard = React.memo(({
+    car,
+    currentImageIndex,
+    wishlist,
+    onImageChange,
+    onToggleWishlist
+}) => {
+    const formatPrice = useCallback((price) => price.toLocaleString(), []);
 
-            "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2017,
-        category: "Hatchback",
-        title: "Honda Civic 1.5 Turbo",
-        specs: { seats: 4, doors: 2, fuel: 4 },
-        pricing: { daily: 27701.5, weekly: 55403 },
-        dealer: { name: "Car Rental", logo: "/dollar-logo.png", rating: 4.9, reviews: 189 }
-    },
-    {
-        id: 3,
-        images: [
-            "https://images.unsplash.com/photo-1494905998402-395d579af36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2018,
-        category: "SUV",
-        title: "Jeep Wrangler 2024",
-        specs: { seats: 7, doors: 4, fuel: 4 },
-        pricing: { daily: 28740, weekly: 57480 },
-        dealer: { name: "Car Rental", logo: "/dollar-logo.png", rating: 4.7, reviews: 267 }
-    },
-    {
-        id: 4,
-        images: [
-            "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1541348263662-e068671d90af?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2022,
-        category: "SUV",
-        title: "Toyota RAV4 Hybrid",
-        specs: { seats: 5, doors: 4, fuel: 5 },
-        pricing: { daily: 32000, weekly: 64000 },
-        dealer: { name: "Car Rental", logo: "/dollar-logo.png", rating: 4.6, reviews: 215 }
-    },
-    {
-        id: 5,
-        images: [
-            "https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&auto=format&fit=crop&w=2064&q=80",
-            "https://images.unsplash.com/photo-1619767886558-efdc259cde1a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        year: 2023,
-        category: "Luxury",
-        title: "BMW 3 Series",
-        specs: { seats: 5, doors: 4, fuel: 4 },
-        pricing: { daily: 45000, weekly: 90000 },
-        dealer: { name: "Car Rental", logo: "/dollar-logo.png", rating: 4.9, reviews: 412 }
-    }
-];
+    return (
+        <div className="snap-start flex-shrink-0 w-[340px] mx-2">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-500">
+                <div className="relative group">
+                    <div className="relative h-59 overflow-hidden">
+                        <img
+                            src={car.images[currentImageIndex || 0]}
+                            alt={car.title}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                    </div>
 
-export default function AffordableCar() {
+                    <button
+                        onClick={() => onImageChange(car.id, 'prev')}
+                        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
+                        aria-label="Previous image"
+                    >
+                        <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button
+                        onClick={() => onImageChange(car.id, 'next')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
+                        aria-label="Next image"
+                    >
+                        <ChevronRight className="w-5 h-5" />
+                    </button>
+
+                    <button
+                        onClick={() => onToggleWishlist(car.id)}
+                        className={`absolute top-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center transition-colors shadow-sm ${wishlist.includes(car.id) ? 'text-red-500' : 'text-gray-400 hover:text-red-500'
+                            }`}
+                        aria-label={wishlist.includes(car.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                    >
+                        <Heart className="w-5 h-5" fill={wishlist.includes(car.id) ? 'currentColor' : 'none'} />
+                    </button>
+
+                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1">
+                        {car.images.map((_, idx) => (
+                            <div
+                                key={idx}
+                                className={`w-2 h-2 rounded-full transition-all ${currentImageIndex === idx ? 'bg-white' : 'bg-white/50'
+                                    }`}
+                            />
+                        ))}
+                    </div>
+                </div>
+
+                <div className="p-5">
+                    <div className="text-blue-600 text-sm font-medium mb-1">{car.category}</div>
+                    <h3 className="text-[17px] font-semibold text-gray-900 mb-3 leading-tight">{car.title}</h3>
+
+                    <div className="flex items-center space-x-4 mb-4">
+                        <div className="flex items-center space-x-1.5 text-gray-600">
+                            <Users className="w-4 h-4" />
+                            <span className="text-sm">{car.specs.seats}</span>
+                        </div>
+                        <div className="flex items-center space-x-1.5 text-gray-600">
+                            <Settings className="w-4 h-4" />
+                            <span className="text-sm">{car.specs.doors}</span>
+                        </div>
+                        <div className="flex items-center space-x-1.5 text-gray-600">
+                            <Fuel className="w-4 h-4" />
+                            <span className="text-sm">{car.specs.fuel}</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <span className="text-xl font-bold text-blue-600">AED {formatPrice(car.pricing.daily)}</span>
+                            <span className="text-gray-500 text-sm">/day</span>
+                        </div>
+                        <div className="text-right">
+                            <span className="text-base font-semibold text-gray-900">AED {formatPrice(car.pricing.weekly)}</span>
+                            <span className="text-gray-500 text-sm">/week</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <div className="flex gap-2">
+                            <button className="w-10 h-10 bg-purple-100 hover:bg-purple-200 text-purple-600 rounded-lg flex items-center justify-center transition-colors">
+                                <Phone className="w-4 h-4" />
+                            </button>
+                            <button className="w-10 h-10 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg flex items-center justify-center transition-colors">
+                                <MessageCircle className="w-4 h-4" />
+                            </button>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                                <span className="text-white font-bold text-xs">T</span>
+                            </div>
+                            <span className="text-[14px] font-medium text-gray-900">{car.dealer.name}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+});
+
+CarCard.displayName = 'CarCard';
+
+export default function LuxuryCarSection() {
+    const [cars, setCars] = useState([]);
     const [currentImageIndex, setCurrentImageIndex] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [user, setUser] = useState(null);
+    const [wishlist, setWishlist] = useState([]);
+    const [authChecked, setAuthChecked] = useState(false);
     const containerRef = useRef(null);
+    const fetchController = useRef(null);
 
-    const formatPrice = (price) => price.toLocaleString();
+    // Memoize API base URL
+    const API_BASE_URL = useMemo(() =>
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+        []
+    );
+
+    // Optimized car transformation with memoization
+    const transformCars = useCallback((apiCars) => {
+        return apiCars.map(car => ({
+            id: car._id,
+            images: car.images.length > 0
+                ? car.images.map(img => img.url ? `${API_BASE_URL}${img.url}` : '/placeholder.jpg')
+                : ['/placeholder.jpg'],
+            featured: car.featured || false,
+            year: car.year,
+            category: car.category,
+            title: `${car.make} ${car.model} ${car.year}`,
+            specs: {
+                seats: car.seatingCapacity || 'N/A',
+                doors: car.doors || 'N/A',
+                fuel: car.fuelType || 'N/A',
+            },
+            pricing: {
+                daily: car.pricing?.daily?.discountedPrice || 0,
+                weekly: car.pricing?.weekly?.discountedPrice || 0,
+            },
+            dealer: {
+                name: car.agency?.agencyName || 'Car Rental',
+                logo: '/dollar-logo.png',
+                rating: car.averageRating || 4.5,
+                reviews: car.totalReviews || 0,
+            },
+        }));
+    }, [API_BASE_URL]);
+
+    // Optimized fetch with abort controller and error handling
+    const fetchLuxuryCars = useCallback(async () => {
+        // Cancel previous request if still pending
+        if (fetchController.current) {
+            fetchController.current.abort();
+        }
+
+        fetchController.current = new AbortController();
+        setIsLoading(true);
+        setError('');
+
+        try {
+            const categorySlug = 'luxury-car-rental-dubai';
+            const apiUrl = `${API_BASE_URL}/api/cars/public/category/${categorySlug}?limit=10`;
+
+            const response = await fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                signal: fetchController.current.signal,
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to fetch luxury cars');
+            }
+
+            if (data.cars && Array.isArray(data.cars)) {
+                const transformedCars = transformCars(data.cars);
+                setCars(transformedCars);
+            } else {
+                setCars([]);
+            }
+        } catch (err) {
+            if (err.name !== 'AbortError') {
+                setError(err.message || 'An error occurred while fetching luxury cars');
+                console.error('Failed to fetch cars:', err);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }, [API_BASE_URL, transformCars]);
+
+    // Optimized auth check with caching
+    const checkAuth = useCallback(async () => {
+        const token = localStorage.getItem('jwt');
+
+        if (!token) {
+            setUser(null);
+            setWishlist([]);
+            setAuthChecked(true);
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.user) {
+                setUser({ token, ...data.user });
+                setWishlist(data.user.wishlist || []);
+            } else {
+                localStorage.removeItem('jwt');
+                setUser(null);
+                setWishlist([]);
+            }
+        } catch (error) {
+            console.error('Auth check failed:', error);
+            localStorage.removeItem('jwt');
+            setUser(null);
+            setWishlist([]);
+        } finally {
+            setAuthChecked(true);
+        }
+    }, [API_BASE_URL]);
+
+    // Load data on mount
+    useEffect(() => {
+        fetchLuxuryCars();
+        checkAuth();
+
+        // Listen for storage changes
+        const handleStorageChange = () => checkAuth();
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+            if (fetchController.current) {
+                fetchController.current.abort();
+            }
+        };
+    }, [fetchLuxuryCars, checkAuth]);
 
     const handleImageChange = (carId, direction) => {
         setCurrentImageIndex(prev => {
@@ -94,6 +275,92 @@ export default function AffordableCar() {
             return { ...prev, [carId]: nextIdx };
         });
     };
+
+    // Optimized wishlist toggle with debouncing
+    const toggleWishlist = useCallback(async (carId) => {
+        if (!user) {
+            toast.error('Please log in to add cars to your wishlist.', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: 'light',
+            });
+            return;
+        }
+
+        const isWishlisted = wishlist.includes(carId);
+        const method = isWishlisted ? 'DELETE' : 'POST';
+
+        // Optimistic update
+        setWishlist(prev =>
+            isWishlisted
+                ? prev.filter(id => id !== carId)
+                : [...prev, carId]
+        );
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/cars/wishlist/${carId}`, {
+                method,
+                headers: {
+                    'Authorization': `Bearer ${user.token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                toast.success(data.message, {
+                    position: 'top-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: 'light',
+                });
+            } else {
+                // Revert optimistic update on failure
+                setWishlist(prev =>
+                    isWishlisted
+                        ? [...prev, carId]
+                        : prev.filter(id => id !== carId)
+                );
+                throw new Error(data.message || 'Failed to update wishlist');
+            }
+        } catch (error) {
+            console.error('Wishlist toggle failed:', error);
+            // Revert optimistic update on error
+            setWishlist(prev =>
+                isWishlisted
+                    ? [...prev, carId]
+                    : prev.filter(id => id !== carId)
+            );
+            toast.error(error.message || 'An error occurred while updating wishlist', {
+                position: 'top-right',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: 'light',
+            });
+        }
+    }, [user, wishlist, API_BASE_URL]);
+
+    // Show loading until both cars and auth are loaded
+    if (isLoading || !authChecked) {
+        return (
+            <section className="py-8 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center text-gray-600">Loading luxury cars...</div>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="py-8 bg-gray-50">
@@ -118,107 +385,37 @@ export default function AffordableCar() {
                     </button>
                 </div>
 
-                {/* Slider */}
-                <div
-                    ref={containerRef}
-                    className="flex overflow-x-auto pb-6 pl-8 pr-4 snap-x snap-mandatory scrollbar-hide"
-                    style={{ scrollBehavior: 'smooth' }}
-                >
-                    {cars.map(car => (
-                        <div
-                            key={car.id}
-                            className="snap-start flex-shrink-0 w-[340px] mx-2"
-                        >
-                            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-500">
-                                <div className="relative group">
-                                    <div className="relative h-59 overflow-hidden">
-                                        <img
-                                            src={car.images[currentImageIndex[car.id] || 0]}
-                                            alt={car.title}
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        />
-                                    </div>
+                {/* Error State */}
+                {error && (
+                    <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm" role="alert">
+                        {error}
+                    </div>
+                )}
 
-                                    <button
-                                        onClick={() => handleImageChange(car.id, 'prev')}
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
-                                    >
-                                        <ChevronLeft className="w-5 h-5" />
-                                    </button>
-                                    <button
-                                        onClick={() => handleImageChange(car.id, 'next')}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all"
-                                    >
-                                        <ChevronRight className="w-5 h-5" />
-                                    </button>
+                {/* Empty State */}
+                {!error && cars.length === 0 && (
+                    <div className="text-center text-gray-600">No luxury cars found.</div>
+                )}
 
-                                    <button className="absolute top-4 right-4 w-9 h-9 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors shadow-sm">
-                                        <Heart className="w-5 h-5" />
-                                    </button>
-
-                                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex space-x-1">
-                                        {car.images.map((_, idx) => (
-                                            <div
-                                                key={idx}
-                                                className={`w-2 h-2 rounded-full transition-all ${(currentImageIndex[car.id] || 0) === idx ? 'bg-white' : 'bg-white/50'}`}
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* content */}
-                                <div className="p-5">
-                                    <div className="text-blue-600 text-sm font-medium mb-1">{car.category}</div>
-                                    <h3 className="text-[17px] font-semibold text-gray-900 mb-3 leading-tight">{car.title}</h3>
-
-                                    <div className="flex items-center space-x-4 mb-4">
-                                        <div className="flex items-center space-x-1.5 text-gray-600">
-                                            <Users className="w-4 h-4" />
-                                            <span className="text-sm">{car.specs.seats}</span>
-                                        </div>
-                                        <div className="flex items-center space-x-1.5 text-gray-600">
-                                            <Settings className="w-4 h-4" />
-                                            <span className="text-sm">{car.specs.doors}</span>
-                                        </div>
-                                        <div className="flex items-center space-x-1.5 text-gray-600">
-                                            <Fuel className="w-4 h-4" />
-                                            <span className="text-sm">{car.specs.fuel}</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div>
-                                            <span className="text-xl font-bold text-blue-600">${formatPrice(car.pricing.daily)}</span>
-                                            <span className="text-gray-500 text-sm">/day</span>
-                                        </div>
-                                        <div className="text-right">
-                                            <span className="text-base font-semibold text-gray-900">${formatPrice(car.pricing.weekly)}</span>
-                                            <span className="text-gray-500 text-sm">/week</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex gap-2">
-                                            <button className="w-10 h-10 bg-purple-100 hover:bg-purple-200 text-purple-600 rounded-lg flex items-center justify-center transition-colors">
-                                                <Phone className="w-4 h-4" />
-                                            </button>
-                                            <button className="w-10 h-10 bg-green-100 hover:bg-green-200 text-green-600 rounded-lg flex items-center justify-center transition-colors">
-                                                <MessageCircle className="w-4 h-4" />
-                                            </button>
-                                        </div>
-
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                                                <span className="text-white font-bold text-xs">T</span>
-                                            </div>
-                                            <span className="text-[14px] font-medium text-gray-900">{car.dealer.name}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                {/* Cars Slider */}
+                {!error && cars.length > 0 && (
+                    <div
+                        ref={containerRef}
+                        className="flex overflow-x-auto pb-6 pl-8 pr-4 snap-x snap-mandatory scrollbar-hide"
+                        style={{ scrollBehavior: 'smooth' }}
+                    >
+                        {cars.map(car => (
+                            <CarCard
+                                key={car.id}
+                                car={car}
+                                currentImageIndex={currentImageIndex[car.id] || 0}
+                                wishlist={wishlist}
+                                onImageChange={handleImageChange}
+                                onToggleWishlist={toggleWishlist}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
             <style jsx>{`

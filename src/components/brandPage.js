@@ -1,59 +1,57 @@
-"use client";
-import React, { useState } from "react";
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
     ArrowUpRight,
     Car,
     Search,
-    Star,
-    ShieldCheck,
-    TrendingUp,
     Zap,
     Calendar,
-    MapPin,
+    ShieldCheck,
     Users,
-    BadgeCheck,
-} from "lucide-react";
+    TrendingUp,
+} from 'lucide-react';
 
-const VehicleJourneySection = () => {
+export default function VehicleJourneySection() {
     const [hoveredCard, setHoveredCard] = useState(null);
-    const [searchValue, setSearchValue] = useState("");
+    const [searchValue, setSearchValue] = useState('');
+    const router = useRouter();
 
     const carBrands = [
-        { name: "Audi", cars: 10, slug: "audi", popular: true, luxury: true },
-        { name: "Alfa Romeo", cars: 11, slug: "alfa_romeo", popular: false, luxury: false },
-        { name: "Aston Martin", cars: 9, slug: "aston_martin", popular: false, luxury: true },
-        { name: "Bentley", cars: 7, slug: "bentley", popular: false, luxury: true },
-        { name: "BMW", cars: 19, slug: "bmw", popular: true, luxury: true },
-        { name: "Cadillac", cars: 16, slug: "cadillac", popular: false, luxury: true },
-        { name: "Chevrolet", cars: 15, slug: "chevrolet", popular: true, luxury: false },
-        { name: "Dodge", cars: 11, slug: "dodge", popular: true, luxury: false },
-        { name: "Ferrari", cars: 9, slug: "ferrari", popular: false, luxury: true },
-        { name: "Fiat", cars: 11, slug: "fiat", popular: false, luxury: false },
-        { name: "Ford", cars: 18, slug: "ford", popular: true, luxury: false },
-        { name: "GMC", cars: 12, slug: "gmc", popular: false, luxury: false },
-        { name: "Honda", cars: 14, slug: "honda", popular: true, luxury: false },
-        { name: "Hyundai", cars: 16, slug: "hyundai", popular: true, luxury: false },
-        { name: "Infiniti", cars: 8, slug: "infiniti", popular: false, luxury: true },
-        { name: "Jaguar", cars: 6, slug: "jaguar", popular: false, luxury: true },
-        { name: "Jeep", cars: 13, slug: "jeep", popular: true, luxury: false },
-        { name: "Lamborghini", cars: 5, slug: "lamborghini", popular: false, luxury: true },
-        { name: "Land Rover", cars: 12, slug: "land_rover", popular: true, luxury: true },
-        { name: "Lexus", cars: 11, slug: "lexus", popular: true, luxury: true },
-        { name: "Maserati", cars: 4, slug: "maserati", popular: false, luxury: true },
-        { name: "McLaren", cars: 3, slug: "mclaren", popular: false, luxury: true },
-        { name: "Mercedes", cars: 22, slug: "mercedes", popular: true, luxury: true },
-        { name: "MINI", cars: 7, slug: "mini", popular: false, luxury: false },
-        { name: "Nissan", cars: 17, slug: "nissan", popular: true, luxury: false },
-        { name: "Porsche", cars: 14, slug: "porsche", popular: true, luxury: true },
-        { name: "Rolls Royce", cars: 3, slug: "rolls_royce", popular: false, luxury: true },
-        { name: "Tesla", cars: 8, slug: "tesla", popular: true, luxury: false },
-        { name: "Toyota", cars: 21, slug: "toyota", popular: true, luxury: false },
-        { name: "Volvo", cars: 9, slug: "volvo", popular: false, luxury: true },
+        { name: 'Audi', cars: 10, slug: 'audi', popular: true, luxury: true },
+        { name: 'Alfa Romeo', cars: 11, slug: 'alfa_romeo', popular: false, luxury: false },
+        { name: 'Aston Martin', cars: 9, slug: 'aston_martin', popular: false, luxury: true },
+        { name: 'Bentley', cars: 7, slug: 'bentley', popular: false, luxury: true },
+        { name: 'BMW', cars: 19, slug: 'bmw', popular: true, luxury: true },
+        { name: 'Cadillac', cars: 16, slug: 'cadillac', popular: false, luxury: true },
+        { name: 'Chevrolet', cars: 15, slug: 'chevrolet', popular: true, luxury: false },
+        { name: 'Dodge', cars: 11, slug: 'dodge', popular: true, luxury: false },
+        { name: 'Ferrari', cars: 9, slug: 'ferrari', popular: false, luxury: true },
+        { name: 'Fiat', cars: 11, slug: 'fiat', popular: false, luxury: false },
+        { name: 'Ford', cars: 18, slug: 'ford', popular: true, luxury: false },
+        { name: 'GMC', cars: 12, slug: 'gmc', popular: false, luxury: false },
+        { name: 'Honda', cars: 14, slug: 'honda', popular: true, luxury: false },
+        { name: 'Hyundai', cars: 16, slug: 'hyundai', popular: true, luxury: false },
+        { name: 'Infiniti', cars: 8, slug: 'infiniti', popular: false, luxury: true },
+        { name: 'Jaguar', cars: 6, slug: 'jaguar', popular: false, luxury: true },
+        { name: 'Jeep', cars: 13, slug: 'jeep', popular: true, luxury: false },
+        { name: 'Lamborghini', cars: 5, slug: 'lamborghini', popular: false, luxury: true },
+        { name: 'Land Rover', cars: 12, slug: 'land_rover', popular: true, luxury: true },
+        { name: 'Lexus', cars: 11, slug: 'lexus', popular: true, luxury: true },
+        { name: 'Maserati', cars: 4, slug: 'maserati', popular: false, luxury: true },
+        { name: 'McLaren', cars: 3, slug: 'mclaren', popular: false, luxury: true },
+        { name: 'Mercedes', cars: 22, slug: 'mercedes', popular: true, luxury: true },
+        { name: 'MINI', cars: 7, slug: 'mini', popular: false, luxury: false },
+        { name: 'Nissan', cars: 17, slug: 'nissan', popular: true, luxury: false },
+        { name: 'Porsche', cars: 14, slug: 'porsche', popular: true, luxury: true },
+        { name: 'Rolls Royce', cars: 3, slug: 'rolls_royce', popular: false, luxury: true },
+        { name: 'Tesla', cars: 8, slug: 'tesla', popular: true, luxury: false },
+        { name: 'Toyota', cars: 21, slug: 'toyota', popular: true, luxury: false },
+        { name: 'Volvo', cars: 9, slug: 'volvo', popular: false, luxury: true },
     ];
 
     const handleCardClick = (brand) => {
-        console.log(`Clicked on ${brand.name}`);
-        // Add your navigation logic here
+        router.push(`/brands/${brand.slug}`);
     };
 
     const filteredBrands = carBrands
@@ -124,7 +122,7 @@ const VehicleJourneySection = () => {
                                 </p>
                                 <button
                                     className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-normal"
-                                    onClick={() => setSearchValue("")}
+                                    onClick={() => setSearchValue('')}
                                 >
                                     Reset Search
                                 </button>
@@ -135,11 +133,11 @@ const VehicleJourneySection = () => {
                                     <div
                                         key={brand.slug}
                                         className={`
-                      relative group shadow-md rounded-xl cursor-pointer bg-white border border-gray-200 hover:border-blue-600
-                      transition-all duration-200 ease-out hover:shadow-lg hover:-translate-y-1
-                      w-full h-[140px] sm:h-[160px] lg:h-[180px]
-                      ${hoveredCard === index ? "border-blue-600 shadow-lg -translate-y-1" : ""}
-                    `}
+                                            relative group shadow-md rounded-xl cursor-pointer bg-white border border-gray-200 hover:border-blue-600
+                                            transition-all duration-200 ease-out hover:shadow-lg hover:-translate-y-1
+                                            w-full h-[140px] sm:h-[160px] lg:h-[180px]
+                                            ${hoveredCard === index ? 'border-blue-600 shadow-lg -translate-y-1' : ''}
+                                        `}
                                         onMouseEnter={() => setHoveredCard(index)}
                                         onMouseLeave={() => setHoveredCard(null)}
                                         onClick={() => handleCardClick(brand)}
@@ -152,8 +150,8 @@ const VehicleJourneySection = () => {
                                                         alt={`${brand.name} logo`}
                                                         className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 object-contain"
                                                         onError={(e) => {
-                                                            e.target.style.display = "none";
-                                                            e.target.nextElementSibling.style.display = "flex";
+                                                            e.target.style.display = 'none';
+                                                            e.target.nextElementSibling.style.display = 'flex';
                                                         }}
                                                     />
                                                     <div className="hidden w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 items-center justify-center">
@@ -313,6 +311,4 @@ const VehicleJourneySection = () => {
             </div>
         </div>
     );
-};
-
-export default VehicleJourneySection;
+}

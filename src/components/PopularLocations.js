@@ -1,10 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-const AirbnbGetawaySection = () => {
+const PopularLocations = () => {
     const [activeTab, setActiveTab] = useState('major-cities');
     const [showMore, setShowMore] = useState(false);
+    const router = useRouter();
 
     const locationCategories = {
         'major-cities': [
@@ -28,6 +30,12 @@ const AirbnbGetawaySection = () => {
     const handleTabChange = (tabId) => {
         setActiveTab(tabId);
         setShowMore(false);
+    };
+
+    const handleLocationClick = (location) => {
+        // Use 'location' query param for dubai-districts, 'city' for major-cities
+        const queryParam = activeTab === 'dubai-districts' ? 'location' : 'city';
+        router.push(`/rent?${queryParam}=${encodeURIComponent(location)}`);
     };
 
     const getDisplayedLocations = () => {
@@ -76,6 +84,7 @@ const AirbnbGetawaySection = () => {
                     {displayedLocations.map((location, index) => (
                         <button
                             key={index}
+                            onClick={() => handleLocationClick(location)}
                             className="
                                 text-left px-4 py-2 bg-gray-50
                                 hover:bg-blue-50 rounded border border-transparent
@@ -104,4 +113,4 @@ const AirbnbGetawaySection = () => {
     );
 };
 
-export default AirbnbGetawaySection;
+export default PopularLocations;

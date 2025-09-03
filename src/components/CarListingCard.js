@@ -1,12 +1,32 @@
 'use client';
-import React, { useState } from 'react';
-import { Heart, Phone, CheckCircle, Check, MessageCircle, Users, Settings, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
-import Pagination from '../components/Pagination';
+import React, { useState, useContext, useEffect, useCallback } from 'react';
+import { Heart, Phone, CheckCircle, Users, Settings, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
+import Pagination from './Pagination';
+import { FilterContext } from '@/app/rent/page';
+import debounce from 'lodash/debounce';
+
+// Function to slugify the car title for URL
+const slugify = (text) => {
+    return text
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^a-z0-9-]/g, '');
+};
+
+// Helper function to get the full image URL
+const getImageUrl = (url) =>
+    url ? `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${url}` : '/placeholder.jpg';
 
 // Car Listing Card Component
 const CarListingCard = ({ car }) => {
     const [isLiked, setIsLiked] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showPhone, setShowPhone] = useState(false);
+
+    useEffect(() => {
+        setCurrentImageIndex(0);
+    }, [car._id]);
 
     const handleImageChange = (direction) => {
         if (direction === 'next') {
@@ -24,28 +44,38 @@ const CarListingCard = ({ car }) => {
         return new Intl.NumberFormat('en-US').format(price);
     };
 
+    const handleCallClick = () => {
+        setShowPhone(!showPhone);
+    };
+
+    const features = [
+        car.deliveryAvailable ? 'Delivery Available' : 'No Delivery',
+        car.rentalTerms?.fuelPolicy || 'Fuel Policy Not Specified',
+        car.rentalTerms?.insuranceIncluded ? 'Insurance Included' : 'Insurance Not Included',
+    ];
+
+    const carTitle = car.make && car.model && car.year ? `${car.make} ${car.model} ${car.year}` : car.title || 'Unknown Car';
+    const slug = slugify(carTitle);
+    const phoneDisplay = car.agency?.contactPhone || 'No Phone';
+
     return (
-        <article className="rounded-lg border border-gray-200 overflow-hidden transition-all duration-300  w-full max-w-[875px] h-[316px] mb-6">
+        <article className="rounded-lg border border-gray-200 overflow-hidden transition-all duration-300 w-full max-w-[875px] h-[316px] mb-6">
             <div className="flex flex-col lg:flex-row">
-                {/* Image Section */}
                 <div className="relative lg:w-[360px] lg:h-[316px] w-full h-64 flex-shrink-0 group">
-                    <div className="relative h-full w-full overflow-hidden">
+                    <div className="relative h-full w-full overflow-hidden bg-gray-200">
                         <img
-                            src={car.images[currentImageIndex]}
-                            alt={car.title}
+                            src={getImageUrl(car.images[currentImageIndex]?.url)}
+                            alt={carTitle}
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                             loading="lazy"
                         />
+                        {!car.images[currentImageIndex]?.url && (
+                            <span className="absolute inset-0 flex items-center justify-center text-gray-500">No Image</span>
+                        )}
                     </div>
-
-                    {/* Badges */}
                     {car.featured && (
-                        <div className="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold">
-                            FEATURED
-                        </div>
+                        <div className="absolute top-3 left-3 bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold">FEATURED</div>
                     )}
-
-                    {/* Navigation Arrows */}
                     {car.images.length > 1 && (
                         <>
                             <button
@@ -64,17 +94,13 @@ const CarListingCard = ({ car }) => {
                             </button>
                         </>
                     )}
-
-                    {/* Heart Button */}
                     <button
                         onClick={toggleLike}
                         className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors shadow-sm"
-                        aria-label={isLiked ? "Remove from favorites" : "Add to favorites"}
+                        aria-label={isLiked ? 'Remove from favorites' : 'Add to favorites'}
                     >
                         <Heart className={`w-4 h-4 ${isLiked ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} />
                     </button>
-
-                    {/* Image Dots */}
                     {car.images.length > 1 && (
                         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1">
                             {car.images.map((_, idx) => (
@@ -86,78 +112,76 @@ const CarListingCard = ({ car }) => {
                         </div>
                     )}
                 </div>
-
-                {/* Content Section */}
                 <div className="flex-1 p-5 flex flex-col">
-                    {/* Price Section */}
                     <div className="mb-3 flex flex-wrap gap-4 items-center">
-                        {car.pricing.daily && (
+                        {car.pricing.daily?.discountedPrice && (
                             <div className="flex items-baseline gap-1">
-                                <h4 className="text-lg font-semibold text-gray-900">
-                                    <span className="text-sm">AED</span> {formatPrice(car.pricing.daily)}
+                                <h4 className="text-lg font-medium text-gray-900">
+                                    <span className="text-sm">AED</span> {formatPrice(car.pricing.daily.discountedPrice)}
                                 </h4>
                                 <span className="text-sm text-gray-500">/day</span>
                             </div>
                         )}
-                        {car.pricing.monthly && (
+                        {car.pricing.monthly?.discountedPrice && (
                             <div className="flex items-baseline gap-1">
-                                <h4 className="text-lg font-semibold text-gray-900">
-                                    <span className="text-sm">AED</span> {formatPrice(car.pricing.monthly)}
+                                <h4 className="text-lg font-medium text-gray-900">
+                                    <span className="text-sm">AED</span> {formatPrice(car.pricing.monthly.discountedPrice)}
                                 </h4>
                                 <span className="text-sm text-gray-500">/month</span>
                             </div>
                         )}
                     </div>
-
-                    {/* Car Details */}
                     <div className="flex flex-wrap items-center gap-3 mb-3 text-sm">
                         <span className="text-gray-600 font-medium">{car.category}</span>
                         <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                         <div className="flex items-center gap-1">
                             <Users className="w-4 h-4 text-gray-600" />
-                            <span>{car.specs.seats} seats</span>
+                            <span>{car.seatingCapacity || 'N/A'} seats</span>
                         </div>
                         <div className="flex items-center gap-1">
                             <Settings className="w-4 h-4 text-gray-600" />
-                            <span>{car.specs.doors} doors</span>
+                            <span>{car.doors || 'N/A'} doors</span>
                         </div>
                         <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
                         <div className="flex items-center gap-1">
                             <Settings className="w-4 h-4 text-gray-600" />
-                            <span>{car.specs.fuel}L</span>
+                            <span>{car.fuelType || 'N/A'}</span>
                         </div>
                     </div>
-
-                    {/* Title */}
-                    <h2 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2">
-                        {car.title}
+                    <h2 className="text-lg font-medium text-gray-900 mb-2 line-clamp-2" aria-label={`Car title: ${carTitle}`}>
+                        <Link href={`/details/${slug}`} className="no-underline hover:underline">
+                            {carTitle}
+                        </Link>
                     </h2>
-
-                    {/* Location */}
                     <div className="flex items-center gap-2 mb-3">
                         <MapPin className="w-4 h-4 text-gray-500" />
-                        <span className="text-gray-600 text-sm">{car.location}</span>
+                        <span className="text-gray-600 text-sm">{car.location || car.city || 'Location Not Specified'}</span>
                     </div>
-
-                    {/* Features */}
                     <div className="mb-4 space-y-2 text-sm text-gray-700">
-                        {['Free Delivery', '2 days rental available', 'Insurance included'].map((feature) => (
+                        {features.map((feature) => (
                             <div key={feature} className="flex items-center gap-2">
                                 <CheckCircle className="text-green-600 w-4 h-4 flex-shrink-0" />
                                 <span>{feature}</span>
                             </div>
                         ))}
                     </div>
-
-                    {/* Action Buttons */}
                     <div className="mt-auto">
                         <div className="flex flex-wrap items-center justify-between gap-4">
                             <div className="flex gap-2">
-                                <button className="group flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-sm font-medium text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg active:scale-95 shadow-md border border-blue-500/20">
-                                    <Phone className="w-4 h-4 text-white transition-transform duration-300 group-hover:rotate-12" />
-                                    Call
+                                <button
+                                    onClick={handleCallClick}
+                                    className="group flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-sm font-medium text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg active:scale-95 shadow-md border border-blue-500/20 max-w-[200px] truncate"
+                                    aria-label={showPhone ? `Hide phone number for ${car.agency?.agencyName || 'agency'}` : `Show phone number for ${car.agency?.agencyName || 'agency'}`}
+                                >
+                                    {showPhone ? (
+                                        <span className="truncate">{phoneDisplay}</span>
+                                    ) : (
+                                        <>
+                                            <Phone className="w-4 h-4 text-white transition-transform duration-300 group-hover:rotate-12" />
+                                            Call
+                                        </>
+                                    )}
                                 </button>
-
                                 <button className="group flex items-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white px-4 py-2 rounded-sm font-medium text-sm transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg active:scale-95 shadow-md border border-[#25D366]/20">
                                     <svg
                                         className="w-4 h-4 text-white transition-transform duration-300 group-hover:scale-110"
@@ -169,13 +193,10 @@ const CarListingCard = ({ car }) => {
                                     WhatsApp
                                 </button>
                             </div>
-                            <div className="w-16 h-12 bg-gray-100 rounded overflow-hidden">
-                                <img
-                                    src="/sae.webp"
-                                    alt="Agency Logo"
-                                    className="w-full h-full object-contain"
-                                    loading="lazy"
-                                />
+                            <div className="w-16 h-12 bg-gray-100 rounded overflow-hidden flex items-center justify-center">
+                                <span className="text-xs font-medium text-gray-700 text-center px-1 line-clamp-2">
+                                    {car.agency?.agencyName || 'Unknown Agency'}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -185,94 +206,176 @@ const CarListingCard = ({ car }) => {
     );
 };
 
-// Sample Car Data
-const sampleCars = [
-    {
-        id: 1,
-        images: [
-            "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-            "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        category: "Sedan",
-        title: "Honda Accord 2024",
-        specs: { seats: 5, doors: 4, fuel: 3 },
-        pricing: {
-            daily: 3945000,
-            monthly: 7900000,
-        },
-        location: 'Akala Hotels and Residences, DIFC, Dubai'
-    },
-    {
-        id: 2,
-        images: [
-            "https://images.unsplash.com/photo-1494905998402-395d579af36f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: false,
-        category: "SUV",
-        title: "Toyota Land Cruiser 2023",
-        specs: { seats: 7, doors: 4, fuel: 5 },
-        pricing: {
-            daily: 1200,
-            monthly: 25000,
-        },
-        location: 'Dubai Marina, Dubai'
-    },
-    {
-        id: 3,
-        images: [
-            "https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        category: "Luxury",
-        title: "Mercedes S-Class 2023",
-        specs: { seats: 4, doors: 4, fuel: 4 },
-        pricing: {
-            daily: 2500,
-            monthly: 50000,
-        },
-        location: 'Palm Jumeirah, Dubai'
-    },
-    {
-        id: 4,
-        images: [
-            "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: false,
-        category: "Sports",
-        title: "Porsche 911 Carrera",
-        specs: { seats: 2, doors: 2, fuel: 3 },
-        pricing: {
-            daily: 3500,
-            monthly: 70000,
-        },
-        location: 'Downtown Dubai, Dubai'
-    },
-    {
-        id: 5,
-        images: [
-            "https://images.unsplash.com/photo-1547038577-da80abbc4f19?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
-        ],
-        featured: true,
-        category: "Electric",
-        title: "Tesla Model X",
-        specs: { seats: 5, doors: 4, fuel: 0 },
-        pricing: {
-            daily: 1800,
-            monthly: 35000,
-        },
-        location: 'Business Bay, Dubai'
-    }
-];
-
 // Main Car Listing Grid Component
 const CarListingGrid = () => {
+    const { filters } = useContext(FilterContext);
+    const [cars, setCars] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const itemsPerPage = 5;
-    const totalItems = sampleCars.length;
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentCars = sampleCars.slice(startIndex, startIndex + itemsPerPage);
+    const fetchCars = useCallback(
+        debounce(async (page) => {
+            setIsLoading(true);
+            setError('');
+            try {
+                const queryParams = new URLSearchParams({ page, limit: itemsPerPage });
+
+                console.log('Current filters:', filters);
+
+                // Map filters to query parameters, distinguishing between city and location
+                if (filters.moreFilters.location) {
+                    const cities = [
+                        'Abu Dhabi', 'Dubai', 'Sharjah', 'Ras Al Khaimah', 'Ajman',
+                        'Fujairah', 'Umm Al Quwain', 'Al Ain'
+                    ];
+                    if (cities.includes(filters.moreFilters.location)) {
+                        queryParams.append('city', filters.moreFilters.location);
+                    } else {
+                        queryParams.append('location', filters.moreFilters.location);
+                    }
+                }
+                if (filters.search) queryParams.append('search', filters.search);
+                if (filters.category) queryParams.append('category', filters.category);
+                if (filters.selectedCarType) queryParams.append('bodyType', filters.selectedCarType);
+
+                // Handle price filters based on rental period
+                const rentalPeriod = filters.selectedRental || filters.moreFilters.rentalPeriod || 'daily';
+                if (filters.minPrice || filters.maxPrice) {
+                    if (rentalPeriod === 'daily') {
+                        if (filters.minPrice) queryParams.append('dailyPriceMin', filters.minPrice);
+                        if (filters.maxPrice) queryParams.append('dailyPriceMax', filters.maxPrice);
+                    } else if (rentalPeriod === 'weekly') {
+                        if (filters.minPrice) queryParams.append('weeklyPriceMin', filters.minPrice);
+                        if (filters.maxPrice) queryParams.append('weeklyPriceMax', filters.maxPrice);
+                    } else if (rentalPeriod === 'monthly') {
+                        if (filters.minPrice) queryParams.append('monthlyPriceMin', filters.minPrice);
+                        if (filters.maxPrice) queryParams.append('monthlyPriceMax', filters.maxPrice);
+                    }
+                }
+
+                // Handle moreFilters price range
+                if (filters.moreFilters.priceRange.min || filters.moreFilters.priceRange.max) {
+                    if (rentalPeriod === 'Daily') {
+                        if (filters.moreFilters.priceRange.min) queryParams.append('dailyPriceMin', filters.moreFilters.priceRange.min);
+                        if (filters.moreFilters.priceRange.max) queryParams.append('dailyPriceMax', filters.moreFilters.priceRange.max);
+                    } else if (rentalPeriod === 'Weekly') {
+                        if (filters.moreFilters.priceRange.min) queryParams.append('weeklyPriceMin', filters.moreFilters.priceRange.min);
+                        if (filters.moreFilters.priceRange.max) queryParams.append('weeklyPriceMax', filters.moreFilters.priceRange.max);
+                    } else if (rentalPeriod === 'Monthly') {
+                        if (filters.moreFilters.priceRange.min) queryParams.append('monthlyPriceMin', filters.moreFilters.priceRange.min);
+                        if (filters.moreFilters.priceRange.max) queryParams.append('monthlyPriceMax', filters.moreFilters.priceRange.max);
+                    }
+                }
+
+                // Handle sorting
+                const sortOption = filters.moreFilters.sortBy || filters.selectedSort;
+                if (sortOption) {
+                    if (sortOption === 'low-to-high' || sortOption === 'Price: Low to High') {
+                        queryParams.append('sortBy', 'pricing.daily.discountedPrice');
+                        queryParams.append('sortOrder', 'asc');
+                    } else if (sortOption === 'high-to-low' || sortOption === 'Price: High to Low') {
+                        queryParams.append('sortBy', 'pricing.daily.discountedPrice');
+                        queryParams.append('sortOrder', 'desc');
+                    } else if (sortOption === 'newest' || sortOption === 'Newest First') {
+                        queryParams.append('sortBy', 'createdAt');
+                        queryParams.append('sortOrder', 'desc');
+                    } else if (sortOption === 'Rating: High to Low') {
+                        queryParams.append('sortBy', 'averageRating');
+                        queryParams.append('sortOrder', 'desc');
+                    }
+                }
+
+                // Add other moreFilters
+                if (filters.moreFilters.carBrand) queryParams.append('make', filters.moreFilters.carBrand);
+                if (filters.moreFilters.modelYear) queryParams.append('year', filters.moreFilters.modelYear);
+                if (filters.moreFilters.seats) {
+                    const seatsMatch = filters.moreFilters.seats.match(/\d+/);
+                    if (seatsMatch) {
+                        queryParams.append('seatingCapacity', seatsMatch[0]);
+                    }
+                }
+                if (filters.moreFilters.vehicleType) queryParams.append('bodyType', filters.moreFilters.vehicleType);
+                if (filters.moreFilters.carFeatures.length > 0) queryParams.append('technicalFeatures', filters.moreFilters.carFeatures.join(','));
+                if (filters.moreFilters.paymentMode) queryParams.append('paymentModes', filters.moreFilters.paymentMode);
+                if (filters.moreFilters.transmission) queryParams.append('gearbox', filters.moreFilters.transmission);
+                if (filters.moreFilters.fuelType) queryParams.append('fuelType', filters.moreFilters.fuelType);
+                if (filters.moreFilters.carColor) queryParams.append('exteriorColor', filters.moreFilters.carColor);
+                if (filters.moreFilters.minAge) queryParams.append('minimumAge', filters.moreFilters.minAge);
+
+                // Debug logs
+                console.log('Location filter value:', filters.moreFilters.location);
+                console.log('Final query params:', queryParams.toString());
+
+                // Determine the correct API endpoint
+                let apiUrl;
+                if (filters.category) {
+                    const categorySlug = filters.category.toLowerCase().replace(/\s+/g, '-');
+                    apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/cars/public/category/${categorySlug}`;
+                } else if (filters.selectedCarType || filters.moreFilters.vehicleType) {
+                    const bodyType = filters.selectedCarType || filters.moreFilters.vehicleType;
+                    const bodyTypeSlug = bodyType.toLowerCase().replace(/\s+/g, '-');
+                    apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/cars/public/body-type/${bodyTypeSlug}`;
+                } else if (filters.moreFilters.carBrand) {
+                    const brandSlug = filters.moreFilters.carBrand.toLowerCase().replace(/\s+/g, '-');
+                    apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/cars/public/brand/${brandSlug}`;
+                } else {
+                    apiUrl = `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/cars/public`;
+                }
+
+                // Remove redundant params from query since they're in the URL
+                if (filters.category) {
+                    queryParams.delete('category');
+                }
+                if (filters.selectedCarType || filters.moreFilters.vehicleType) {
+                    queryParams.delete('bodyType');
+                }
+                if (filters.moreFilters.carBrand) {
+                    queryParams.delete('make');
+                }
+
+                const finalUrl = `${apiUrl}?${queryParams.toString()}`;
+                console.log('API URL:', finalUrl);
+
+                const response = await fetch(finalUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                console.log('API Response:', data);
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to fetch car listings');
+                }
+
+                setCars(data.cars || []);
+                setTotalPages(data.totalPages || 1);
+                setTotalItems(data.total || 0);
+                setCurrentPage(data.currentPage || 1);
+            } catch (err) {
+                console.error('Fetch error:', err);
+                setError(err.message || 'An error occurred while fetching car listings');
+            } finally {
+                setIsLoading(false);
+            }
+        }, 300),
+        [filters]
+    );
+
+    useEffect(() => {
+        fetchCars(currentPage);
+    }, [fetchCars, currentPage, filters]);
+
+    // Reset page to 1 when filters change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [filters]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -283,15 +386,20 @@ const CarListingGrid = () => {
         <div className="bg-white min-h-screen py-8">
             <div className="w-full max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Main Content */}
                     <div className="flex-1">
-                        <div className="space-y-6">
-                            {currentCars.map((car) => (
-                                <CarListingCard key={car.id} car={car} />
-                            ))}
+                        <div className="space-y-6" aria-live="polite">
+                            {isLoading && <div className="text-center text-gray-600">Loading car listings...</div>}
+                            {error && (
+                                <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm" role="alert">
+                                    {error}
+                                </div>
+                            )}
+                            {!isLoading && !error && cars.length === 0 && (
+                                <div className="text-center text-gray-600">No car listings found for the selected location.</div>
+                            )}
+                            {!isLoading &&
+                                cars.map((car) => <CarListingCard key={car._id} car={car} />)}
                         </div>
-
-                        {/* Pagination using code 2 import style */}
                         <div className="mt-12">
                             <Pagination
                                 currentPage={currentPage}
@@ -301,20 +409,12 @@ const CarListingGrid = () => {
                             />
                         </div>
                     </div>
-
-                    {/* Sidebar */}
                     <div className="lg:w-[360px] flex-shrink-0">
                         <div className="sticky top-4 space-y-6">
-                            {/* Membership Card */}
                             <div className="bg-gradient-to-br from-blue-900 to-blue-700 rounded-xl p-6 text-white">
                                 <h3 className="text-xl font-medium mb-4">Exclusive Member Benefits</h3>
                                 <ul className="space-y-3">
-                                    {[
-                                        'Priority vehicle reservations',
-                                        'Complimentary delivery',
-                                        'Exclusive discounts',
-                                        '24/7 VIP concierge'
-                                    ].map((benefit) => (
+                                    {['Priority vehicle reservations', 'Complimentary delivery', 'Exclusive discounts', '24/7 VIP concierge'].map((benefit) => (
                                         <li key={benefit} className="flex items-start">
                                             <CheckCircle className="text-blue-300 w-5 h-5 mt-0.5 mr-2 flex-shrink-0" />
                                             <span>{benefit}</span>
@@ -325,8 +425,6 @@ const CarListingGrid = () => {
                                     Join Now
                                 </button>
                             </div>
-
-                            {/* Help Card */}
                             <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
                                 <h3 className="text-lg font-medium mb-3">Need Help?</h3>
                                 <p className="text-gray-600 mb-4">Our specialists are available 24/7.</p>
@@ -335,16 +433,11 @@ const CarListingGrid = () => {
                                     Contact Us
                                 </button>
                             </div>
-
                         </div>
-
-
                     </div>
-
                 </div>
                 <div className="mt-16 border-b border-gray-200"></div>
             </div>
-
         </div>
     );
 };

@@ -245,7 +245,7 @@ const FerrariMediaGallery = () => {
     }, []);
 
     return (
-        <div className="bg-white py-1">
+        <div className="bg-white py-1 mt-30">
             <div className="w-full max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header Section - Responsive */}
                 <div className="flex flex-col lg:flex-row items-start justify-between mb-6 gap-4">

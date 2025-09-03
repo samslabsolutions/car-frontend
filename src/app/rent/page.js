@@ -1,16 +1,68 @@
+'use client';
 import Head from 'next/head';
+import { useState, createContext, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import CarFilterSection from '../../components/CarFilterSection';
 import Footer from '../../components/Footer';
-import BreadcrumbHeader from '../../components/text'
-import CarListingCard from '../../components/CarListingCard'
-import Pagination from '../../components/Pagination'
-import CarRentalPricing from '../../components/CarRentalPricing'
-import DubaiCarRentalSection from '../../components/DubaiCarRentalSection'
-import PopularLocations from '../../components/PopularLocations'
+import BreadcrumbHeader from '../../components/text';
+import CarListingCard from '../../components/CarListingCard';
+import CarRentalPricing from '../../components/CarRentalPricing';
+import DubaiCarRentalSection from '../../components/DubaiCarRentalSection';
+import PopularLocations from '../../components/PopularLocations';
 import FAQ from '../../components/FAQ';
 
+// Create a context for filters
+export const FilterContext = createContext();
+
 export default function RentPage() {
+    const searchParams = useSearchParams();
+
+    const [filters, setFilters] = useState({
+        transactionType: 'Rent',
+        location: '',
+        status: 'All',
+        propertyType: 'Residential',
+        bedsAndBaths: 'Beds & Baths',
+        selectedRental: '',
+        minPrice: '',
+        maxPrice: '',
+        selectedSort: '',
+        selectedCarType: '',
+        moreFilters: {
+            location: '',
+            carBrand: '',
+            modelYear: '',
+            seats: '',
+            vehicleType: '',
+            priceRange: { min: '', max: '' },
+            rentalPeriod: '',
+            carFeatures: [],
+            paymentMode: '',
+            transmission: '',
+            fuelType: '',
+            carColor: '',
+            minAge: '',
+            sortBy: '',
+        },
+    });
+
+    // Read query parameters and update filters
+    useEffect(() => {
+        const city = searchParams.get('city');
+        const location = searchParams.get('location');
+        const selectedLocation = city || location || ''; // Prefer location over city if both are present
+        if (selectedLocation) {
+            setFilters((prevFilters) => ({
+                ...prevFilters,
+                moreFilters: {
+                    ...prevFilters.moreFilters,
+                    location: decodeURIComponent(selectedLocation),
+                },
+            }));
+        }
+    }, [searchParams]);
+
     return (
         <>
             <Head>
@@ -19,19 +71,19 @@ export default function RentPage() {
             </Head>
 
             <div className="font-sans antialiased">
-                <Navbar />
-                <main >
-                    <CarFilterSection />
-                    <BreadcrumbHeader />
-                    <CarListingCard />
-                    <Pagination />
-                    <CarRentalPricing />
-                    <DubaiCarRentalSection />
-                    <FAQ />
-                    <PopularLocations />
-
-                </main>
-                <Footer />
+                <FilterContext.Provider value={{ filters, setFilters }}>
+                    <Navbar />
+                    <main>
+                        <CarFilterSection />
+                        <BreadcrumbHeader />
+                        <CarListingCard />
+                        <CarRentalPricing />
+                        <DubaiCarRentalSection />
+                        <FAQ />
+                        <PopularLocations />
+                    </main>
+                    <Footer />
+                </FilterContext.Provider>
             </div>
         </>
     );

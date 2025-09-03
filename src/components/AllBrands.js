@@ -1,15 +1,16 @@
 'use client';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const brands = [
-    { name: 'Mercedes', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/mercedes.svg' },
-    { name: 'BMW', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/bmw.svg' },
-    { name: 'Land Rover', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/range-rover.svg' },
-    { name: 'Rolls Royce', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/rolls-royce.svg' },
-    { name: 'Audi', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg' },
-    { name: 'Porsche', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/porsche.svg' },
-    { name: 'Ferrari', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/ferrari.svg' },
-    { name: 'Lamborghini', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/lamborghini.svg' },
+    { name: 'Mercedes', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/mercedes.svg', slug: 'mercedes' },
+    { name: 'BMW', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/bmw.svg', slug: 'bmw' },
+    { name: 'Land Rover', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/range-rover.svg', slug: 'land_rover' },
+    { name: 'Rolls Royce', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/rolls-royce.svg', slug: 'rolls_royce' },
+    { name: 'Audi', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/audi.svg', slug: 'audi' },
+    { name: 'Porsche', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/porsche.svg', slug: 'porsche' },
+    { name: 'Ferrari', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/ferrari.svg', slug: 'ferrari' },
+    { name: 'Lamborghini', logo: 'https://renty.ae/assets-nd/icons/site/brand_svg/lamborghini.svg', slug: 'lamborghini' },
 ];
 
 export default function AllBrands() {
@@ -28,26 +29,30 @@ export default function AllBrands() {
                         <hr className="mt-4 w-48 border-t-2 border-blue-600" />
                     </div>
 
-                    <button className="
-                        mt-6 sm:mt-0 inline-flex items-center gap-2
-                        px-5 py-2.5 text-sm font-semibold text-blue-600
-                        border border-blue-600 rounded-full
-                        hover:bg-blue-50 hover:text-blue-700
-                        transition-all duration-200
-                    ">
+                    <Link
+                        href="/brands"
+                        className="
+                            mt-6 sm:mt-0 inline-flex items-center gap-2
+                            px-5 py-2.5 text-sm font-semibold text-blue-600
+                            border border-blue-600 rounded-full
+                            hover:bg-blue-50 hover:text-blue-700
+                            transition-all duration-200
+                            no-underline
+                        "
+                    >
                         View all
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
-                    </button>
+                    </Link>
                 </div>
 
                 {/* Brand grid - single row layout */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
                     {brands.map((brand) => (
-                        <a
+                        <Link
                             key={brand.name}
-                            href={`/brands/${brand.name.toLowerCase()}`}
+                            href={`/brands/${brand.slug}`}
                             className="
                                 flex flex-col items-center justify-center
                                 bg-white p-4 rounded-lg
@@ -71,7 +76,7 @@ export default function AllBrands() {
                             <span className="text-xs text-gray-800 font-medium text-center">
                                 {brand.name}
                             </span>
-                        </a>
+                        </Link>
                     ))}
                 </div>
             </div>

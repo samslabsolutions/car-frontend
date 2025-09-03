@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import DubaiLocationsPage from '../../components/DubaiLocationsPage';
+import DubaiLocationsPage from '../../components/MoreLocationsPage';
 
 
 
